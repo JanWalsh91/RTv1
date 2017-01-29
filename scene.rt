@@ -1,0 +1,17 @@
+(o)global variables
+
+scene: (o)scene_1
+{
+    (o)global variables (scene)
+    camera: (o)camera_1
+    {
+        position:
+        (o)orientation/rotation:
+    }
+    light: light1{
+
+    }
+    sphere:{
+
+    }
+}

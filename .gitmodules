@@ -4,3 +4,6 @@
 [submodule "Libmathft"]
 	path = Libmathft
 	url = https://github.com/JanWalsh91/Libmathft.git
+[submodule "Libgraphicsft"]
+	path = Libgraphicsft
+	url = https://github.com/JanWalsh91/Libgraphicsft.git

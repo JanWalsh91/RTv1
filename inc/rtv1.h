@@ -3,38 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   rtv1.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jwalsh <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/28 17:15:35 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/01/29 17:52:41 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
-# include "SDL.h"
+# include "/Users/jwalsh/.brew/include/SDL2/SDL.h"
 # include "../Libft/libft.h"
 # include "../Libmathft/libmathft.h"
+# include "../Libgraphicsft/libgraphicsft.h"
 # include "keycode_mac.h"
 # include "colors.h"
 # include <fcntl.h>
 # include <errno.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <math.h>
 # include <stdio.h>
 # include <pthread.h>
+# include "scene.h"
+# include "object.h"
+# include "sphere.h"
 
 /*
 ** General settings
 */
 
 # define THREAD_COUNT 10
-# define WIN_H
-# define WIN_W
+# define DEFAULT_RES_H
+# define DEFAULT_RES_W
 //Default values if not provided by scene file.
-# define MAX_RAY_DEPTH 3
+# define DEFAULT_RAY_DEPTH 3
 
 /*
 ** Instructions
@@ -45,6 +46,16 @@
 # define LINE_0 "RTv1 instructions:"
 
 typedef int			t_color;
+
+typedef struct		s_shared_attributes
+{
+	char	*name;
+	t_pt2	resolution;
+	t_vec3	pos;
+	t_vec3	rotation;
+	t_color	color;
+	long	radius;
+}					t_shared_attributes;
 
 typedef enum		e_names
 {
@@ -64,25 +75,6 @@ typedef struct		s_incr
 	float			g;
 	float			b;
 }					t_incr;
-
-typedef struct		s_camera
-{
-	t_vec3			position;
-	t_vec3			direction;
-}					t_camera;
-
-typedef struct		s_light
-{
-	t_vec3			position;
-}					t_light;
-
-typedef struct		s_obejct
-{
-	t_vec3			position;
-	t_vec3			orientation;
-	t_type			type;
-	t_color			color;
-}					t_object;
 
 typedef struct		s_draw_tools
 {
@@ -118,8 +110,11 @@ typedef struct		s_th
 ** Main
 */
 
-
-
+int	parse_file(t_list **scenes, char *file);
+int parse_shared_attributes(char *line, t_shared_attributes *att);
+int parse_scene(int fd, char **line, t_shared_attributes global_att);
+int parse_object(int fd, char **line, t_shared_attributes global_att, t_shared_attributes scene_att);
+int update_shared_attirbutes();
 
 
 /*

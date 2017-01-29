@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   camera.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/27 15:57:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/29 17:24:43 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/29 15:01:34 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/01/29 15:02:23 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/rtv1.h"
+#include "rtv1.h"
+#ifndef CAMERA_H
+# define CAMERA_H
 
-int	main(int ac, char **av)
+typedef struct  s_camera
 {
-	t_list	*scenes;
-	int		i;
+    char        *name;
+    t_vec3      pos;
+    t_vec3      rotation;
+}               t_camera;
 
-	ac < 2 ? ft_display_usage_exit();
-	i = 0;
-	while (++i < ac)
-		if (!parse_file(&scenes, av[i]))
-			return (0);
-	//send info to raytracer(scenes)
-	return (0);
-}
+#endif

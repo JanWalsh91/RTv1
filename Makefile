@@ -15,7 +15,7 @@ LIBFT_NAME = libft.a
 LIBMATHFT_NAME = libmathft.a
 
 SRC_PATH = src/
-INC_PATH = include/
+INC_PATH = inc/
 LIB_PATH = Libft/
 LIBMATH_PATH = Libmathft/
 
