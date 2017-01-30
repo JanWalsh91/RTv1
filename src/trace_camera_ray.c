@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   object.h                                           :+:      :+:    :+:   */
+/*   trace_camera_ray.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/29 14:54:34 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/30 15:27:35 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/30 10:57:18 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/01/30 11:05:21 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
-#ifndef OBJECT_H
-# define OBJECT_H
+#include "../inc/rtv1.h"
 
-typedef struct	s_object
+/*
+** Updates the color of a pixel.
+*/
+
+int	trace_camera_ray(t_pt2 p, t_scene *scene)
 {
-	t_type			type;
-    char			*name;
-	int				radius;
-    void			*t;
-    t_vec3			pos;
-    t_vec3			rotation;
-    t_color			color;
-    t_shading		shading;
-	struct s_object	*next;
-}				t_object;
+	t_object **current_object;
 
-#endif
+	current_object = &(scene->objects);
+	while (current_object->next)
+		//check intersection
+		//store color
+	return (1);
+}

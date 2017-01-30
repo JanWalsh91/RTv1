@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_file.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/27 15:57:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/30 12:40:45 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/30 12:16:50 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/01/30 12:45:31 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/rtv1.h"
 
-int	main(int ac, char **av)
-{
-	t_scene	*scenes;
-	int		i;
-	t_list	**input;
+/*
+** Takes a file name, reads the file and copies each line in t_list input.
+*/
 
-	ac < 2 ? ft_display_usage_exit("usage") : 0;
-	i = 0;
-	while (++i < ac)
-		if (!get_file(av[i], input) || !parse_file(&scenes, input))
-			return (0);
-	//send info to raytracer(scenes)
-	return (0);
+int	get_file(char *file_name, t_list **input)
+{
+	char 	*new_line;
+	int		fd;
+	int		ret;
+
+	new_line = NULL;
+	if (!(fd = open(file_name, O_RDONLY)))
+        return (0); //open error
+	while ((ret = get_next_line(fd, &new_line) > 0))
+		ft_lstadd_end(input, ft_lstnew(new_line, sizeof(new_line)));
+	//if (ret < 0)
+		//reading error
+	return(1);
 }

@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   object.h                                           :+:      :+:    :+:   */
+/*   add_scene.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/29 14:54:34 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/30 15:27:35 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/30 11:53:17 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/01/30 12:03:01 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
-#ifndef OBJECT_H
-# define OBJECT_H
+/*
+** Adds a new scene to the list t_scene.
+*/
 
-typedef struct	s_object
+#include "../inc/rtv1.h"
+
+void	add_scene(t_scene **scenes, t_scene *new_scene)
 {
-	t_type			type;
-    char			*name;
-	int				radius;
-    void			*t;
-    t_vec3			pos;
-    t_vec3			rotation;
-    t_color			color;
-    t_shading		shading;
-	struct s_object	*next;
-}				t_object;
-
-#endif
+	if (new_scene)
+	{
+		if (!*scenes)
+			*scenes = new_scene;
+		else
+		{
+			while ((*scenes)->next)
+				*scenes = (*scenes)->next;
+			(*scenes)->next = new_scene;
+		}
+	}
+}

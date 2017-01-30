@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   object.h                                           :+:      :+:    :+:   */
+/*   add_camera.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/29 14:54:34 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/30 15:27:35 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/30 11:53:17 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/01/30 12:13:11 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
-#ifndef OBJECT_H
-# define OBJECT_H
+/*
+** Adds a new camera to the list t_cameras.
+*/
 
-typedef struct	s_object
+#include "../inc/rtv1.h"
+
+void	add_camera(t_camera **cameras, t_camera *new_camera)
 {
-	t_type			type;
-    char			*name;
-	int				radius;
-    void			*t;
-    t_vec3			pos;
-    t_vec3			rotation;
-    t_color			color;
-    t_shading		shading;
-	struct s_object	*next;
-}				t_object;
-
-#endif
+	if (new_camera)
+	{
+		if (!*cameras)
+			*cameras = new_camera;
+		else
+		{
+			while ((*cameras)->next)
+				*cameras = (*cameras)->next;
+			(*cameras)->next = new_camera;
+		}
+	}
+}

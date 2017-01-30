@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   object.h                                           :+:      :+:    :+:   */
+/*   split_trim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/29 14:54:34 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/30 15:27:35 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/30 15:22:02 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/01/30 15:26:21 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
-#ifndef OBJECT_H
-# define OBJECT_H
+#include "../inc/rtv1.h"
 
-typedef struct	s_object
+/*
+** Splits and trims lines from the input file. 
+*/
+
+char 	**split_trim(char *s)
 {
-	t_type			type;
-    char			*name;
-	int				radius;
-    void			*t;
-    t_vec3			pos;
-    t_vec3			rotation;
-    t_color			color;
-    t_shading		shading;
-	struct s_object	*next;
-}				t_object;
-
-#endif
+	char	**result = ft_strsplit(s, ':');
+	(result[0]) ? result[0] = ft_strtrim(result[0]) : 0;
+	(result[1]) ? result[1] = ft_strtrim(result[1]) : 0;
+	return (result);
+}

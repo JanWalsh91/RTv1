@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   object.h                                           :+:      :+:    :+:   */
+/*   update_image.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/29 14:54:34 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/30 15:27:35 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/30 10:59:22 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/01/30 10:59:24 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
-#ifndef OBJECT_H
-# define OBJECT_H
+#include "../inc/rtv1.h"
 
-typedef struct	s_object
+int draw_image(t_list *scene)
 {
-	t_type			type;
-    char			*name;
-	int				radius;
-    void			*t;
-    t_vec3			pos;
-    t_vec3			rotation;
-    t_color			color;
-    t_shading		shading;
-	struct s_object	*next;
-}				t_object;
+    t_pt2   i;
 
-#endif
+    i.x = 0;
+    i.y = 0;
+    //destroy / reset image
+    while (i.y < scene.res.y) //for each row
+        while (i.x < scene.res.x) //for each column
+            trace_camera_ray();
+    //get pixel color (ray trace)
+    //set pixel colors to image.
+    return(1);
+}

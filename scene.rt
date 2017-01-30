@@ -2,7 +2,7 @@
 
 scene: (o)scene_1
 {
-    (o)global variables (scene)
+    (o)scene variables
     camera: (o)camera_1
     {
         position:
@@ -11,6 +11,26 @@ scene: (o)scene_1
     light: light1{
 
     }
+    (o) scene variables
+    sphere:{
+
+    }
+}
+
+(o)global variables
+
+scene: (o)scene_1
+{
+(o)scene variables
+    camera: (o)camera_1
+    {
+        position:
+        (o)orientation/rotation:
+    }
+    light: light1{
+
+    }
+    (o) scene variables
     sphere:{
 
     }

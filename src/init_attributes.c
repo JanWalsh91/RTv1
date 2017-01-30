@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   trace_ray.c                                        :+:      :+:    :+:   */
+/*   init_attributes.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jwalsh <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/27 16:18:00 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/27 16:18:13 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/30 15:30:40 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/01/30 15:34:11 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
+#include "../inc/rtv1.h"
 
-int	trace_ray()
+/*
+** Initializes global, scene and element attributes.
+*/
+
+int	init_attributes(t_attributes *att)
 {
-	//for each object
-		//check intersection
-		//store color
+	if (!(att = (t_attributes *)ft_memalloc(sizeof(*att) * 3)))
+		return (0);
 	return (1);
 }

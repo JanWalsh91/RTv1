@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   object.h                                           :+:      :+:    :+:   */
+/*   add_light.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/29 14:54:34 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/30 15:27:35 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/30 11:53:17 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/01/30 12:09:52 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rtv1.h"
-#ifndef OBJECT_H
-# define OBJECT_H
+/*
+** Adds a new light to the list t_lights.
+*/
 
-typedef struct	s_object
+#include "../inc/rtv1.h"
+
+void	add_light(t_light **lights, t_light *new_light)
 {
-	t_type			type;
-    char			*name;
-	int				radius;
-    void			*t;
-    t_vec3			pos;
-    t_vec3			rotation;
-    t_color			color;
-    t_shading		shading;
-	struct s_object	*next;
-}				t_object;
-
-#endif
+	if (new_light)
+	{
+		if (!*lights)
+			*lights = new_light;
+		else
+		{
+			while ((*lights)->next)
+				*lights = (*lights)->next;
+			(*lights)->next = new_light;
+		}
+	}
+}
