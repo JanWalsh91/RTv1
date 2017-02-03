@@ -6,25 +6,39 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/30 16:03:23 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/03 12:44:21 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/rtv1.h"
 
 /*
-** Creates a new scene and sets default values.
+** Creates a new scene.
 */
 
 t_scene	*get_new_scene(char *name)
 {
+	printf("GET_NEW_SCENE\n");
 	t_scene *new_scene;
+	static int	i = 1;
 
+	new_scene = NULL;
 	if (!(new_scene = (t_scene *)ft_memalloc(sizeof(t_scene))))
 		return (0);
 	new_scene->next = NULL;
-	if (name)
+	//printf("---new_scene->name#:		[%p]---\n", &(new_scene->name));
+	if (!name)
+	{
+		printf("no name given\n");
+		new_scene->name = ft_strdup(ft_strjoin("Scene ", ft_itoa(i)));
+		++i;
+	}
+	else
+	{
+		printf("name given\n");
 		new_scene->name = ft_strdup(name);
-	//set default values for scene.
+	}
+	printf("new scene name: [%s]\n", new_scene->name);
+	printf("\n");
 	return (new_scene);
 }

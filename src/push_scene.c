@@ -1,32 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_scene.c                                        :+:      :+:    :+:   */
+/*   push_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 11:53:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/30 12:03:01 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/03 12:56:19 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
-** Adds a new scene to the list t_scene.
+** Adds a new scene to the end of list t_scene.
+** If the list of scenes is empty, makes scene_head point to the first scene.
+** Else, iterates to the end of the list and adds new scene there.
 */
 
 #include "../inc/rtv1.h"
 
-void	add_scene(t_scene **scenes, t_scene *new_scene)
+void	push_scene(t_scene **scenes_head, t_scene *new_scene)
 {
+	t_scene	*scene_ptr;
+
+	printf("PUSH_SCENE\n");
 	if (new_scene)
 	{
-		if (!*scenes)
-			*scenes = new_scene;
+		if (!*scenes_head)
+		{
+			*scenes_head = new_scene;
+		}
 		else
 		{
-			while ((*scenes)->next)
-				*scenes = (*scenes)->next;
-			(*scenes)->next = new_scene;
+			scene_ptr = *scenes_head;
+			while (scene_ptr->next)
+				scene_ptr = scene_ptr->next;
+			scene_ptr->next = new_scene;
 		}
 	}
+	printf("\n");
 }

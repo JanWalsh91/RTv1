@@ -1,0 +1,25 @@
+
+position: 1, 1, 1
+scene:
+{
+    camera: CAM1
+    {
+    }
+	camera: CAM2
+    {
+        position: 2, 2, 3
+    }
+}
+
+scene:
+{
+	resolution: 200, 200
+    camera: CAM3
+    {
+        position: 3, 3, 3
+    }
+	camera: CAM4
+    {
+        position: 4, 4, 4
+    }
+}

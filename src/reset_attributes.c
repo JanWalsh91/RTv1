@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_object.c                                       :+:      :+:    :+:   */
+/*   reset_attributes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/30 11:53:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/30 14:15:33 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/02/01 13:50:57 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/02/03 16:13:11 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-** Adds a new object to the list t_objects.
-*/
-
 #include "../inc/rtv1.h"
 
-void	add_object(t_object **objects, t_object *new_object)
+/*
+** Resets the attributes.
+*/
+
+int	reset_attributes(t_attributes *att)
 {
-	if (new_object)
-	{
-		if (!*objects)
-			*objects = new_object;
-		else
-		{
-			while ((*objects)->next)
-				*objects = (*objects)->next;
-			(*objects)->next = new_object;
-		}
-	}
+	printf("RESET_ATTRIBUTES\n");
+	(*att).res.x = INT_MAX;
+	(*att).res.y = INT_MAX;
+	(*att).ray_depth = INT_MAX;
+	(*att).pos.x = NAN;
+	(*att).pos.y = NAN;
+	(*att).pos.z = NAN;
+	(*att).col = INT_MAX;
+	(*att).radius = INT_MAX;
+	//print_attributes((*att)[i]);
+	//printf("");
+	return(1);
 }

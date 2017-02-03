@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_image.c                                       :+:      :+:    :+:   */
+/*   push_object.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/30 10:59:22 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/01 17:39:14 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/30 11:53:17 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/02/01 15:13:04 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
+** Adds a new object to the end of list t_objects.
+*/
+
 #include "../inc/rtv1.h"
 
-int draw_image(t_scene *scene)
+void	push_object(t_object **objects_head, t_object *new_object)
 {
-    t_pt2   i;
+	t_object	*obj_ptr;
 
-	(void)scene;
-    i.x = 0;
-    i.y = 0;
-    //destroy / reset image
-    //while (i.y < scene->res.y) //for each row
-     //   while (i.x < scene->res.x) //for each column
-      //      trace_camera_ray();
-    //get pixel color (ray trace)
-    //set pixel colors to image.
-    return(1);
+	if (new_object)
+	{
+		if (!*objects_head)
+			*objects_head = new_object;
+		else
+		{
+			obj_ptr = *objects_head;
+			while (obj_ptr->next)
+				obj_ptr = obj_ptr->next;
+			obj_ptr->next = new_object;
+		}
+	}
 }

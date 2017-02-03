@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jwalsh <marvin@42.fr>                      +#+  +:+       +#+         #
+#    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/01/28 17:03:52 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/02/03 16:57:37 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,25 @@ INC_PATH = inc/
 LIB_PATH = Libft/
 LIBMATH_PATH = Libmathft/
 
-SRC_NAME = main \
+SRC_NAME =	main \
+			add_camera \
+			add_light \
+			draw_image \
+			get_file \
+			get_new_object \
+			get_new_scene \
+			init_attributes \
+			parse_attributes_1 \
+			parse_color \
+			parse_input \
+			push_object \
+			push_scene \
+			reset_attributes \
+			rtv1 \
+			set_attributes \
+			split_trim \
+			trace_camera_ray \
+			debug
 
 SRC_NAME_PATH = $(addprefix $(SRC_PATH), $(SRC_NAME))
 SRC = $(addsuffix $(EXT), $(SRC_NAME_PATH))
@@ -29,7 +47,8 @@ OBJ = $(SRC:.c=.o)
 EXT = .c
 CC	= gcc
 FLG = -Werror -Wextra -Wall -Ofast
-SDL = -framework SDL2
+SDL = `sdl2-config --libs`
+#add after FLG on line 74
 
 C_NONE = \033[0m
 C_BOLD = \033[1m

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/01/30 16:37:48 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/03 16:41:56 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,27 @@
 # include <errno.h>
 # include <stdio.h>
 # include <pthread.h>
-# include "scene.h"
-# include "camera.h"
-# include "light.h"
-# include "object.h"
-# include "sphere.h"
+# include <limits.h>
 
 /*
 ** General settings
 */
 
 # define THREAD_COUNT 10
-# define DEFAULT_RES_H
-# define DEFAULT_RES_W
 //Default values if not provided by scene file.
-# define DEFAULT_RAY_DEPTH 3
+# define DEFAULT_RES_H 500
+# define DEFAULT_RES_W 700
+# define DEFAULT_RAY_DEPTH 5
+# define DEFAULT_POS_X 1
+# define DEFAULT_POS_Y 1
+# define DEFAULT_POS_Z 1
+# define DEFAULT_COL WHITE
+# define DEFAULT_ROT_X 0
+# define DEFAULT_ROT_Y 0
+# define DEFAULT_TOR_Z 0
+# define DEFAULT_
+# define DEFAULT_
+
 
 /*
 ** Instructions
@@ -49,20 +55,25 @@
 
 typedef int			t_color;
 
+typedef	struct		s_shading
+{
+}					t_shading;
+
 typedef struct		s_attributes
 {
-	char	*name;
-	t_pt2	res;
-	t_vec3	pos;
-	t_vec3	rot;
-	t_color	col;
-	long	radius;
+//	char		*name;
+	t_pt2		res;
+	int			ray_depth;
+	t_vec3		pos;
+	t_vec3		rot;
+	t_color		col;
+	t_shading	shading;
+	long		radius;
 }					t_attributes;
 
-typedef enum		e_names
-{
-}					t_names;
 
+//Keep in same order.
+# define OBJECTS "camera,light,plane,sphere,cylinder,cone"
 typedef enum		e_type
 {
 	CAMERA = 1,
@@ -72,6 +83,47 @@ typedef enum		e_type
 	CYLINDER = 5,
 	CONE = 6
 }					t_type;
+
+typedef struct	s_camera
+{
+    char			*name;
+    t_vec3			pos;
+    t_vec3			rotation;
+	struct s_camera	*next;
+}				t_camera;
+
+typedef struct	s_light
+{
+    char			*name;
+    t_vec3			pos;
+    t_vec3			rotation;
+    t_color			color;
+    struct s_light	*next;
+}				t_light;
+
+typedef struct	s_object
+{
+	t_type			type;
+    char			*name;
+	int				rad;
+    void			*t;
+    t_vec3			pos;
+    t_vec3			rot;
+    t_color			col;
+    t_shading		shading;
+	struct s_object	*next;
+}				t_object;
+
+typedef struct	s_scene
+{
+    t_pt2			res;
+    char			*name;
+    int				ray_depth;
+    t_camera		*cameras;
+    t_light			*lights;
+    t_object		*objects;
+    struct s_scene	*next;
+}				t_scene;
 
 typedef struct		s_incr
 {
@@ -122,24 +174,30 @@ typedef struct		s_th
 
 int			get_file(char *file_name, t_list **input);
 int			parse_input(t_scene **scenes, t_list **input);
-int			init_attributes(t_attributes *att);
+int			init_attributes(t_attributes **att);
 int			parse_resolution(t_pt2 *res, char *s);
+int			parse_ray_depth(int *ray_dpeth, char *s);
 int			parse_position(t_vec3 *pos, char *s);
-int			parse_rotation(t_vec3 *res, char *s);
+int			parse_rotation(t_vec3 *rot, char *s);
 int			parse_color(t_color *col, char *s);
-char 		**split_trim(char *s);
+char 		**split_trim(char *s, char c);
 t_scene		*get_new_scene(char *name);
-t_object	*get_new_object(char *name, char *type);
-void		add_scene(t_scene **scenes, t_scene *new_scene);
-void		add_object(t_object **objects, t_object *new_object);
+t_object	*get_new_object(char *scene_name, char *name, char *type);
+void		push_scene(t_scene **scenes, t_scene *new_scene);
+void		push_object(t_object **objects, t_object *new_object);
+int			set_attributes_scene(t_attributes *att, t_scene *scene);
+int			set_attributes_object(t_attributes *att, t_object *object);
+int			reset_attributes(t_attributes *att);
+int			reset_attributes(t_attributes *att);
+
 
 /*
 ** Ray Tracing Functions
 */
 
-int rtv1(t_scene **scene);
-int draw_image(t_scene *scene);
-int	trace_camera_ray(t_pt2 p, t_scene *scene);
+int			rtv1(t_scene *scene);
+int		 	draw_image(t_scene *scene);
+int			trace_camera_ray(t_pt2 p, t_scene *scene);
 
 /*
 ** SDL2 Functions
@@ -149,10 +207,17 @@ int	trace_camera_ray(t_pt2 p, t_scene *scene);
 ** List Managment Functions
 */
 
-
 /*
 ** Free Functions
 */
+
+/*
+** Debug functions
+*/
+
+void	print_scenes(t_scene *scenes_head);
+void	print_input(t_list **list_head);
+void	print_attributes(t_attributes att);
 
 
 #endif
