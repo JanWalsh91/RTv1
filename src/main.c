@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:57:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/04 12:41:39 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/04 14:06:15 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,24 @@
 
 int	main(int ac, char **av)
 {
+	t_list	*input;
 	t_scene	*scenes;
 	int		i;
-	t_list	*input;
+
 
 	printf("main\n");
+	input = NULL;
+	scenes = NULL;
 	ac < 2 ? ft_display_usage_exit("usage") : 0;
 	i = 0;
 	while (++i < ac)
 		if (!get_file(av[i], &input) || !parse_input(&scenes, &input))
 			return (0);
 	print_scenes(scenes);
-	
+	//calculate color(raytrace)
+	//init_sdl();
+	//update_image();
+	//event handling
 	if (SDL_Init(SDL_INIT_VIDEO))
 	{
 		printf("BIG ERROR");
@@ -62,24 +68,22 @@ int	main(int ac, char **av)
 	}
 	SDL_RenderPresent(ren);	
 	SDL_Event e;
-	(void)e;
 	int quit = 0;
 	while (!quit)
 	{
 		SDL_WaitEvent(&e);
-		if (e.type == SDL_WINDOWEVENT_CLOSE){
+		if (e.window.type == SDL_WINDOWEVENT_CLOSE){
 			quit = 1;
 		}
-	// 	if (e.type == SDL_KEYDOWN){
-	// 		quit = 1;
-	// 	}
-	// 	if (e.type == SDL_MOUSEBUTTONDOWN){
-	// 		quit = 1;
-	// 	}
+		if (e.window.type == SDL_KEYDOWN){
+			quit = 1;
+		}
+		if (e.window.type == SDL_MOUSEBUTTONDOWN){
+			quit = 1;
+		}
 	}
 	
 	SDL_DestroyWindow(win);
 	SDL_Quit();
-	//send info to raytracer(scenes)
 	return (0);
 }
