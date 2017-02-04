@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:57:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/04 14:06:15 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/04 14:34:25 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	main(int ac, char **av)
 {
 	t_list	*input;
 	t_scene	*scenes;
+	t_env	env;
 	int		i;
 
 
@@ -29,61 +30,25 @@ int	main(int ac, char **av)
 			return (0);
 	print_scenes(scenes);
 	//calculate color(raytrace)
-	//init_sdl();
+	init_sdl(scenes, &env);
 	//update_image();
-	//event handling
-	if (SDL_Init(SDL_INIT_VIDEO))
-	{
-		printf("BIG ERROR");
-		return (0);
-	}
-	SDL_Window *win = SDL_CreateWindow("TEST", 100, 100, scenes->res.x, scenes->res.y, SDL_WINDOW_SHOWN);
-	if (!win)
-	{
-		printf("SDL window ceartion error");
-		SDL_Quit();
-		return (0);
-	}
-	SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
-	if (!ren)
-	{
-		printf("SDL window ceartion error");
-		SDL_DestroyWindow(win);
-		SDL_Quit();
-		return (1);
-	}
-
-	SDL_SetRenderDrawColor(ren, 0xff, 0, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderClear(ren);
+	SDL_SetRenderDrawColor(env.ren, 0xff, 0xff, 0, SDL_ALPHA_OPAQUE);
+	SDL_RenderClear(env.ren);
 	int	y = 0;
 	while (y < scenes->res.y)
 	{
 		int x = 0;
 		while (x < scenes->res.x)
 		{
-			SDL_RenderDrawPoint(ren, y, x);
+			SDL_RenderDrawPoint(env.ren, y, x);
 			++x;
 		}
 		++y;
 	}
-	SDL_RenderPresent(ren);	
-	SDL_Event e;
-	int quit = 0;
-	while (!quit)
-	{
-		SDL_WaitEvent(&e);
-		if (e.window.type == SDL_WINDOWEVENT_CLOSE){
-			quit = 1;
-		}
-		if (e.window.type == SDL_KEYDOWN){
-			quit = 1;
-		}
-		if (e.window.type == SDL_MOUSEBUTTONDOWN){
-			quit = 1;
-		}
-	}
-	
-	SDL_DestroyWindow(win);
+
+	SDL_RenderPresent(env.ren);
+	handle_sdl_events(scenes, &env);
+	SDL_DestroyWindow(env.win);
 	SDL_Quit();
 	return (0);
 }

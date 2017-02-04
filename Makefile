@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/02/03 16:57:37 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/02/04 17:10:58 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,16 +20,20 @@ LIB_PATH = Libft/
 LIBMATH_PATH = Libmathft/
 
 SRC_NAME =	main \
-			add_camera \
-			add_light \
 			draw_image \
+			extract_cameras \
+			extract_lights \
 			get_file \
 			get_new_object \
 			get_new_scene \
+			handle_sdl_events \
 			init_attributes \
+			init_sdl \
 			parse_attributes_1 \
 			parse_color \
 			parse_input \
+			push_camera \
+			push_light \
 			push_object \
 			push_scene \
 			reset_attributes \

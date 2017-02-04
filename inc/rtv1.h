@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/03 16:41:56 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/04 17:10:36 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@
 # define DEFAULT_COL WHITE
 # define DEFAULT_ROT_X 0
 # define DEFAULT_ROT_Y 0
-# define DEFAULT_TOR_Z 0
-# define DEFAULT_
+# define DEFAULT_ROT_Z 0
+# define DEFAULT_FOV 50
 # define DEFAULT_
 
 
@@ -54,6 +54,13 @@
 # define LINE_0 "RTv1 instructions:"
 
 typedef int			t_color;
+
+typedef	struct		s_ray
+{
+	t_vec3		origin; //point of origin
+	t_vec3		dir; //must be normalized
+	t_color		col; // color found
+}					t_ray;
 
 typedef	struct		s_shading
 {
@@ -68,6 +75,7 @@ typedef struct		s_attributes
 	t_vec3		rot;
 	t_color		col;
 	t_shading	shading;
+	double		fov;
 	long		radius;
 }					t_attributes;
 
@@ -89,6 +97,9 @@ typedef struct	s_camera
     char			*name;
     t_vec3			pos;
     t_vec3			rotation;
+	double			fov;
+	double			scale;
+	t_color			**pixel_map;
 	struct s_camera	*next;
 }				t_camera;
 
@@ -122,6 +133,8 @@ typedef struct	s_scene
     t_camera		*cameras;
     t_light			*lights;
     t_object		*objects;
+	double			image_aspect_ratio;
+
     struct s_scene	*next;
 }				t_scene;
 
@@ -145,9 +158,9 @@ typedef struct		s_draw_tools
 typedef struct		s_env
 {
 	t_draw_tools	draw;
-	void			*mlx;
-	void			*win_mlx;
-	void			*img_mlx;
+	SDL_Window		*win;
+	SDL_Renderer	*ren;
+	SDL_Event		e;
 	int				h;
 	int				w;
 }					t_env;
@@ -186,8 +199,11 @@ t_object	*get_new_object(char *scene_name, char *name, char *type);
 void		push_scene(t_scene **scenes, t_scene *new_scene);
 void		push_object(t_object **objects, t_object *new_object);
 int			set_attributes_scene(t_attributes *att, t_scene *scene);
+int			extract_cameras(t_scene *scene);
+void		push_camera(t_camera **cameras_head, t_camera *new_camera);
+int			extract_lights(t_scene *scene);
+void		push_light(t_light **lights_head, t_light *new_light);
 int			set_attributes_object(t_attributes *att, t_object *object);
-int			reset_attributes(t_attributes *att);
 int			reset_attributes(t_attributes *att);
 
 
@@ -202,6 +218,9 @@ int			trace_camera_ray(t_pt2 p, t_scene *scene);
 /*
 ** SDL2 Functions
 */
+
+int			init_sdl(t_scene *scene, t_env *env);
+int			handle_sdl_events(t_scene *scenes, t_env *env);
 
 /*
 ** List Managment Functions

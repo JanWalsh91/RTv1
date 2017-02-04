@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/29 12:25:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/03 16:47:05 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/04 17:06:51 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int parse_input(t_scene **scenes_head, t_list **input)
 				return (0);
 			else if (ft_strcmp(s1[0], "scene") && !parse_attribute(s1, &(att[0])))
 				return (0);
-			print_attributes((att[0]));
+			//print_attributes((att[0]));
 		}
 		*input = (*input)->next; //if no ':' is found, ignore the line.
 	}
@@ -79,7 +79,7 @@ static int parse_scene(t_scene **scenes_head, char **s1, t_list **input, t_attri
 	}
 	if (!ft_strchr(((*input)->content), '}'))
 		return (0); //ERROR NO CLOSING BRACKET
-	set_attributes_scene(*att, new_scene);
+	set_attributes_scene(*att, new_scene); 
 	reset_attributes(&((*att)[1]));
 	printf("\n");
     return (1);

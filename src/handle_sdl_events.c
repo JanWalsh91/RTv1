@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   trace_camera_ray.c                                 :+:      :+:    :+:   */
+/*   handle_sdl_events.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/30 10:57:18 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/04 16:03:49 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/02/04 14:15:05 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/02/04 14:22:41 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/rtv1.h"
 
 /*
-** Updates the color of a pixel.
+** Handles SDL user events.
 */
 
-int	trace_camera_ray(t_pt2 p, t_scene *scene)
+int	handle_sdl_events(t_scene *scenes, t_env *env)
 {
-	(void)p;
-	(void)scene;
-	//t_object **current_object;
-
-	
-	//current_object = &(scene->objects);
-	//while (current_object->next)
-		//check intersection
-		//store color
+	(void)scenes;
+	int quit = 0;
+	while (!quit)
+	{
+		SDL_WaitEvent(&env->e);
+		if (env->e.window.type == SDL_WINDOWEVENT_CLOSE){
+			quit = 1;
+		}
+		if (env->e.window.type == SDL_KEYDOWN){
+			quit = 1;
+		}
+		if (env->e.window.type == SDL_MOUSEBUTTONDOWN){
+			quit = 1;
+		}
+	}
 	return (1);
 }

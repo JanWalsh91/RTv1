@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 13:30:31 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/03 16:30:04 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/04 16:55:37 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ int	set_attributes_scene(t_attributes *att, t_scene *scene)
 		if (att[i].ray_depth != INT_MAX)
 			scene->ray_depth = att[i].ray_depth;
 	}
+	scene->image_aspect_ratio = scene->res.x / (float)scene->res.y;
+	extract_lights(scene);
+	extract_cameras(scene);
 	return (1);
 }
 
@@ -70,6 +73,7 @@ static int	set_default_scene_values(t_scene *scene)
 	scene->res.y = DEFAULT_RES_H;
 	scene->res.x = DEFAULT_RES_W;
 	scene->ray_depth = DEFAULT_RAY_DEPTH;
+	scene->fov = DEFAULT_FOV;
 	//... add scene attributes here ...
 	return (1);
 }
