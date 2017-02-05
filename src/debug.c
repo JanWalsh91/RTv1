@@ -6,17 +6,21 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 17:13:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/03 15:38:50 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/05 16:43:51 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/rtv1.h"
 #include <stdio.h>
 
+
+
 void	print_scenes(t_scene *scenes_head)
 {
-	t_scene *s_ptr;
+	t_scene		*s_ptr;
 	t_object	*o_ptr;
+	t_object	*l_ptr;
+	t_object	*c_ptr;
 
 	printf("print_scenes\n");
 	s_ptr = scenes_head;
@@ -26,12 +30,32 @@ void	print_scenes(t_scene *scenes_head)
 		printf("	res: [%i, %i]\n", s_ptr->res.x, s_ptr->res.x);
 		printf("	ray_depth: [%i]\n", s_ptr->ray_depth);
 		o_ptr = s_ptr->objects;
+		printf("	objects:\n");
 		while (o_ptr)
 		{
 			printf("		object type: [%i]\n", o_ptr->type);
 			printf("		object name: [%s]\n", o_ptr->name);
 			printf("		object pos: [%f] [%f] [%f]\n", o_ptr->pos.x, o_ptr->pos.y, o_ptr->pos.z);
 			o_ptr = o_ptr->next;
+		}
+		c_ptr = s_ptr->cameras;
+		printf("	cameras:\n");
+		while (c_ptr)
+		{
+			printf("		object type: [%i]\n", c_ptr->type);
+			printf("		camera name: [%s]\n", c_ptr->name);
+			printf("		camera pos: [%f] [%f] [%f]\n", c_ptr->pos.x, c_ptr->pos.y, c_ptr->pos.z);
+			printf("		camera scale: [%f\n]", c_ptr->scale);
+			c_ptr = c_ptr->next;
+		}
+		printf("	lights:\n");
+		l_ptr = s_ptr->lights;
+		while (l_ptr)
+		{
+			printf("		object type: [%i]\n", l_ptr->type);
+			printf("		light name: [%s]\n", l_ptr->name);
+			printf("		light pos: [%f] [%f] [%f]\n", l_ptr->pos.x, l_ptr->pos.y, l_ptr->pos.z);
+			l_ptr = l_ptr->next;
 		}
 		s_ptr = s_ptr->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/04 17:10:36 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/05 16:46:02 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "/Users/jwalsh/.brew/include/SDL2/SDL.h"
 # include "../Libft/libft.h"
 # include "../Libmathft/libmathft.h"
-# include "../Libgraphicsft/libgraphicsft.h"
+//# include "../Libgraphicsft/libgraphicsft.h"
 # include "keycode_mac.h"
 # include "colors.h"
 # include <fcntl.h>
@@ -53,7 +53,12 @@
 # define INSTRUCTIONS_W 600
 # define LINE_0 "RTv1 instructions:"
 
-typedef int			t_color;
+typedef struct			s_color
+{
+	int			r;
+	int			g;
+	int			b;
+}						t_color;
 
 typedef	struct		s_ray
 {
@@ -92,26 +97,6 @@ typedef enum		e_type
 	CONE = 6
 }					t_type;
 
-typedef struct	s_camera
-{
-    char			*name;
-    t_vec3			pos;
-    t_vec3			rotation;
-	double			fov;
-	double			scale;
-	t_color			**pixel_map;
-	struct s_camera	*next;
-}				t_camera;
-
-typedef struct	s_light
-{
-    char			*name;
-    t_vec3			pos;
-    t_vec3			rotation;
-    t_color			color;
-    struct s_light	*next;
-}				t_light;
-
 typedef struct	s_object
 {
 	t_type			type;
@@ -122,6 +107,10 @@ typedef struct	s_object
     t_vec3			rot;
     t_color			col;
     t_shading		shading;
+	t_color			**pixel_map;
+	t_matrix4		ctw;
+	float			scale;
+	float			fov;
 	struct s_object	*next;
 }				t_object;
 
@@ -130,8 +119,8 @@ typedef struct	s_scene
     t_pt2			res;
     char			*name;
     int				ray_depth;
-    t_camera		*cameras;
-    t_light			*lights;
+    t_object		*cameras;
+    t_object		*lights;
     t_object		*objects;
 	double			image_aspect_ratio;
 
@@ -199,20 +188,20 @@ t_object	*get_new_object(char *scene_name, char *name, char *type);
 void		push_scene(t_scene **scenes, t_scene *new_scene);
 void		push_object(t_object **objects, t_object *new_object);
 int			set_attributes_scene(t_attributes *att, t_scene *scene);
-int			extract_cameras(t_scene *scene);
-void		push_camera(t_camera **cameras_head, t_camera *new_camera);
-int			extract_lights(t_scene *scene);
-void		push_light(t_light **lights_head, t_light *new_light);
 int			set_attributes_object(t_attributes *att, t_object *object);
 int			reset_attributes(t_attributes *att);
-
+int			extract_cameras_lights(t_scene *scene);
+int			init_cameras(t_scene *scene);
+int			update_camera_scale(t_object *camers);
+int			update_camera_ctw(t_object *camers);
 
 /*
 ** Ray Tracing Functions
 */
 
-int			rtv1(t_scene *scene);
+int			rtv1(t_scene **scenes);
 int		 	draw_image(t_scene *scene);
+t_ray		init_camera_ray(t_pt2 i, t_scene *scene);
 int			trace_camera_ray(t_pt2 p, t_scene *scene);
 
 /*
@@ -234,6 +223,7 @@ int			handle_sdl_events(t_scene *scenes, t_env *env);
 ** Debug functions
 */
 
+# define C(...) printf("check%i\n", __VA_ARGS__);
 void	print_scenes(t_scene *scenes_head);
 void	print_input(t_list **list_head);
 void	print_attributes(t_attributes att);

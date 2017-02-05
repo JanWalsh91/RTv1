@@ -6,11 +6,15 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 10:59:22 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/01 17:39:14 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/05 16:45:42 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/rtv1.h"
+
+/*
+** Updates the image
+*/
 
 int draw_image(t_scene *scene)
 {
@@ -19,11 +23,14 @@ int draw_image(t_scene *scene)
 	(void)scene;
     i.x = 0;
     i.y = 0;
-    //destroy / reset image
-    //while (i.y < scene->res.y) //for each row
-     //   while (i.x < scene->res.x) //for each column
-      //      trace_camera_ray();
-    //get pixel color (ray trace)
-    //set pixel colors to image.
+    while (++i.y < scene->res.y)
+	{
+		i.x = -1;
+		while (++i.x < scene->res.x)
+		{
+			init_camera_ray(i, scene);
+			trace_camera_ray(i, scene);
+		}
+	}
     return(1);
 }

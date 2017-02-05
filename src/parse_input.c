@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/29 12:25:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/04 17:06:51 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/05 16:41:11 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ static int parse_object(t_scene *scene, char **s2, t_list **input, t_attributes 
 	// printf("att->name: [%s]\n", (((*att)[2]).name));
 
 	new_object = get_new_object(scene->name, s2[1], s2[0]);
+	//printf("name of new object: [%s]\n", new_object->name);
 	push_object(&scene->objects, new_object);
 	*input = (*input)->next;
 	printf("next_line: [%s]\n", (*input)->content);

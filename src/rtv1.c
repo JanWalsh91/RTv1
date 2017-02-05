@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 10:39:56 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/04 16:21:17 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/05 15:34:23 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,40 @@
 ** and using it for each pixel (multiplied by more sstuff).
 */
 
-int rtv1(t_scene *scene)
+/*
+** 
+*/
+
+int rtv1(t_scene **scenes)
 {
+	t_env	env;
+
+	draw_image(*scenes);
+	init_sdl(*scenes, &env);
+	SDL_SetRenderDrawColor(env.ren, 0xff, 0xff, 0, SDL_ALPHA_OPAQUE);
+	SDL_RenderClear(env.ren);
+	int	y = 0;
+	while (y < (*scenes)->res.y)
+	{
+		int x = 0;
+		while (x < (*scenes)->res.x)
+		{
+			SDL_RenderDrawPoint(env.ren, y, x);
+			++x;
+		}
+		++y;
+	}
+	
+	SDL_RenderPresent(env.ren);
+	handle_sdl_events(*scenes, &env);
+	SDL_DestroyWindow(env.win);
+	SDL_Quit();
+
+
 	t_pt2	i;
 
 	i.y = -1;
-	(void)scene;
-    //initialize image.
-	//initiliaze pixel_map (when moving cameras to their own list)
-    while (++i.y < scene->res.y)
-	{
-		i.x = -1;
-		while (++i.x < scene->res.x)
-		{
-			init_camera_ray(i, );
-			trace_camera_ray();
-		}
-	}
-	
-    //draw_image(t_list *scene);
-    //initialize window
-    //put image to window
-    //sdl functions
+	(void)scenes;
+
     return(1);
 }
