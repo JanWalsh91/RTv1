@@ -22,7 +22,7 @@ int	parse_resolution(t_pt2 *res, char *s, size_t line)
 	{
 		C(3)
 		printf("line: %lu\n", line);
-		error_line_exit("Formatting error for resolution", line);
+		error_line_exit((char *)"Formatting error for resolution", line);
 	}
 	C(2)
 	s2 = split_trim(s, ',');

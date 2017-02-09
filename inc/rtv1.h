@@ -232,7 +232,7 @@ int			handle_sdl_events(t_scene *scenes, t_env *env);
 ** Error Functions
 */
 
-void	error_line_exit(char *msg, size_t line);
+void	error_line_exit(const char *msg, size_t line);
 
 /*
 ** Debug functions

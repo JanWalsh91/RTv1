@@ -51,7 +51,7 @@ OBJ = $(SRC:.c=.o)
 
 EXT = .c
 CC	= gcc
-FLG = -Werror -Wextra -Wall -Ofast
+FLG = -Werror -Wextra -Wall
 SDL = `sdl2-config --libs`
 #add after FLG on line 74
 
@@ -71,12 +71,12 @@ ECHO = echo
 all: $(NAME)
 
 %.o : %.c
-	@$(CC) $(FLG) -I$(INC_PATH) -I$(LIB_PATH)inc/ -I$(LIBMATH_PATH) -c -o $@ $^
+	@$(CC) $(FLG) -g -I$(INC_PATH) -I$(LIB_PATH)inc/ -I$(LIBMATH_PATH) -c -o $@ $^
 
 $(NAME): $(OBJ)
 	@make -C $(LIB_PATH)
 	@make -C $(LIBMATH_PATH)
-	@$(CC) $(FLG) $(SDL) -lpthread $(LIB_PATH)$(LIBFT_NAME) $(LIBMATH_PATH)$(LIBMATHFT_NAME) $(OBJ) -o $(NAME)
+	@$(CC) $(FLG) $(SDL) -g $(LIB_PATH)$(LIBFT_NAME) $(LIBMATH_PATH)$(LIBMATHFT_NAME) $(OBJ) -o $(NAME)
 	@$(ECHO) "$(C_GREEN)RTv1 compilation done.$(C_NONE)"
 
 clean:

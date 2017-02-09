@@ -21,9 +21,15 @@ int	main(int ac, char **av)
 	t_list	*input;
 	t_scene	*scenes;
 	int		i;
-	// char *s = ft_strdup("test\n");
+	char *s;
+	s = ft_strdup("test\n");
 
-	ft_printf("alksjdfh");
+	i = 0;
+	input = NULL;
+	scenes = NULL;
+	printf("%s\n", s);
+
+	ft_printf("alksjdfh [%s]\n", s);
 	input = NULL;
 	scenes = NULL;
 	ac < 2 ? ft_display_usage_exit("usage") : 0;

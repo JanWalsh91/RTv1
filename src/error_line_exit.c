@@ -16,12 +16,9 @@
 ** Prints an error to the screen and exits the program.
 */
 
-void	error_line_exit(char *msg, size_t line)
+void	error_line_exit(const char *msg, size_t line)
 {
-	// char *test = ft_strdup("mytest");
-	(void)msg;
-	(void)line;
-	ft_printf("%s\n", "a;lsdkfj ;alksdjf ;alksdfj ");
-	ft_printf("ERROR at line: %s\n", (char *)msg);
+	// ft_printf("test: %s\n", msg);
+	ft_printf("%{red}ERROR at line: %lu : %s\n%{}", line, (char *)msg);
 	exit(0);
 }
