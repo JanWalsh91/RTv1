@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/03 13:35:32 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/06 16:15:48 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_object	*get_new_object(char *scene_name, char *name, char *type)
 	//printf("	scene_name: [%s]", scene_name);
 	//printf("	object_name: [%s]\n", name);
 	if (!(new_object = (t_object *)ft_memalloc(sizeof(t_object))))
-		return (0);
+		ft_error_exit("Malloc error");
 	new_object->next = NULL;
 	if (!name)
 	{
@@ -60,16 +60,17 @@ static int	get_type(char *type)
 	char	**list;
 	int		i;
 
-	i = 0;
-	
+	printf("GET_TYPE\n");
+	i = 0;	
 	list = ft_strsplit(OBJECTS, ',');
-	while (ft_strcmp(list[i], type))
+	while (i < OBJECT_COUNT && ft_strcmp(list[i], type))
 		++i;
-	if (!ft_strcmp(list[i], type))
+	if (i < OBJECT_COUNT)
 	{
 		//free list.
 		return (i + 1);
 	}
 	//free list.
+	ft_error_exit("Formatting error in .rt file: invalid object type");
 	return (0); //ERROR: INVALID OBJECT TYPE
 }

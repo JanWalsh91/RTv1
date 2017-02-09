@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reset_attributes.c                                 :+:      :+:    :+:   */
+/*   set_line_count.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/01 13:50:57 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/06 16:05:02 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/02/09 11:25:15 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/02/09 11:42:37 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/rtv1.h"
 
 /*
-** Resets the attributes.
+** Sets line count in input linked list.
 */
 
-int	reset_attributes(t_attributes *att)
+int	set_line_count(t_list **input)
 {
-	printf("RESET_ATTRIBUTES\n");
-	(*att).res.x = INT_MAX;
-	(*att).res.y = INT_MAX;
-	(*att).ray_depth = INT_MAX;
-	(*att).pos.x = NAN;
-	(*att).pos.y = NAN;
-	(*att).pos.z = NAN;
-	(*att).col.r = INT_MAX;
-	(*att).col.g = INT_MAX;
-	(*att).col.b = INT_MAX;
-	(*att).rad = INT_MAX;
+	P("SET_LINE_COUNT\n")
+	static int	i = -1;
+	t_list *ptr;
+
+	ptr = *input;
+	while (ptr)
+	{
+		ptr->content_size = ++i;
+		ptr= ptr->next;
+	}
 	return(1);
 }

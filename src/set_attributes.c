@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 13:30:31 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/05 16:26:16 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/06 17:04:08 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	set_attributes_scene(t_attributes *att, t_scene *scene)
 		if (att[i].ray_depth != INT_MAX)
 			scene->ray_depth = att[i].ray_depth;
 	}
-	scene->image_aspect_ratio = scene->res.x / (float)scene->res.y;
+	scene->image_aspect_ratio = (float)scene->res.x / (float)scene->res.y;
+	printf("image_aspect_ratio: [%f]\n", scene->image_aspect_ratio);
 	extract_cameras_lights(scene);
 	init_cameras(scene);
 	printf("END_SET_ATTRIBUTES_SCENE\n");
@@ -62,8 +63,15 @@ int	set_attributes_object(t_attributes *att, t_object *object)
 		}
 		if (att[i].rot.x != NAN && att[i].rot.y != NAN && att[i].rot.z != NAN)
 			object->rot = att[i].rot;
-		if (att->col.r != INT_MAX)
+		//printf("att[i]: [%i] [%i] [%i]\n", att[i].col.r, att[i].col.g, att[i].col.b);
+		if (att[i].col.r != INT_MAX && att[i].col.g != INT_MAX && att[i].col.b != INT_MAX)
+		{
+			// printf("object col: [%i] [%i] [%i]\n", object->col.r, object->col.g, object->col.b);
 			object->col = att[i].col;
+		}
+		if (att[i].rad != INT_MAX)
+			object->rad = att[i].rad;
+
 		//object->shading = att[i].shading;
 	}
 	return (1);
@@ -83,9 +91,9 @@ static int	set_default_object_values(t_object *object)
 	object->pos.x = DEFAULT_POS_X;
 	object->pos.y = DEFAULT_POS_Y;
 	object->pos.z = DEFAULT_POS_Z;
-	object->col.r = (DEFAULT_COL | 0xFF0000) << 4;
-	object->col.g = (DEFAULT_COL | 0x00FF00) << 2;
-	object->col.b = DEFAULT_COL | 0x0000FF;
+	object->col.r = 0xff;
+	object->col.g = 0xff;
+	object->col.b = 0xff;
 	object->fov = DEFAULT_FOV;
 	//... add obj attributes here ...
 	return (1);

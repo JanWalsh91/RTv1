@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 17:13:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/05 16:43:51 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/06 15:38:39 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ void	print_scenes(t_scene *scenes_head)
 			printf("		object type: [%i]\n", o_ptr->type);
 			printf("		object name: [%s]\n", o_ptr->name);
 			printf("		object pos: [%f] [%f] [%f]\n", o_ptr->pos.x, o_ptr->pos.y, o_ptr->pos.z);
+			printf("		object col: [%i] [%i] [%i]\n", o_ptr->col.r, o_ptr->col.g, o_ptr->col.b);
+			if (o_ptr->type == SPHERE)
+				printf("		object rad: [%f]\n", o_ptr->rad);
 			o_ptr = o_ptr->next;
 		}
 		c_ptr = s_ptr->cameras;
@@ -45,7 +48,7 @@ void	print_scenes(t_scene *scenes_head)
 			printf("		object type: [%i]\n", c_ptr->type);
 			printf("		camera name: [%s]\n", c_ptr->name);
 			printf("		camera pos: [%f] [%f] [%f]\n", c_ptr->pos.x, c_ptr->pos.y, c_ptr->pos.z);
-			printf("		camera scale: [%f\n]", c_ptr->scale);
+			printf("		camera scale: [%f]\n", c_ptr->scale);
 			c_ptr = c_ptr->next;
 		}
 		printf("	lights:\n");
@@ -84,4 +87,9 @@ void	print_attributes(t_attributes att)
 	printf("res:		[%i][%i]\n", att.res.x, att.res.y);
 	printf("ray_depth:	[%i]\n", att.ray_depth);
 	printf("pos:		[%f][%f][%f]\n", att.pos.x, att.pos.y, att.pos.z);
+}
+
+void	print_vec(t_vec3 vec)
+{
+	printf("print_vec: [%f][%f][%f]\n", vec.x, vec.y, vec.z);
 }

@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/02/05 16:46:25 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/02/09 11:28:45 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,26 +20,28 @@ LIB_PATH = Libft/
 LIBMATH_PATH = Libmathft/
 
 SRC_NAME =	main \
+			cast_camera_ray \
 			draw_image \
+			error_line_exit \
 			extract_cameras_lights \
 			get_file \
 			get_new_object \
 			get_new_scene \
+			get_intersection \
 			handle_sdl_events \
 			init_attributes \
 			init_camera_ray \
 			init_cameras \
 			init_sdl \
 			parse_attributes_1 \
-			parse_color \
 			parse_input \
 			push_object \
 			push_scene \
 			reset_attributes \
 			rtv1 \
 			set_attributes \
+			set_line_count \
 			split_trim \
-			trace_camera_ray \
 			debug
 
 SRC_NAME_PATH = $(addprefix $(SRC_PATH), $(SRC_NAME))
@@ -69,7 +71,7 @@ ECHO = echo
 all: $(NAME)
 
 %.o : %.c
-	@$(CC) $(FLG) -I$(INC_PATH) -I$(LIB_PATH) -I$(LIBMATH_PATH) -c -o $@ $^
+	@$(CC) $(FLG) -I$(INC_PATH) -I$(LIB_PATH)inc/ -I$(LIBMATH_PATH) -c -o $@ $^
 
 $(NAME): $(OBJ)
 	@make -C $(LIB_PATH)

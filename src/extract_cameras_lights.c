@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:55:53 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/05 16:42:54 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/06 15:25:32 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	extract_cameras_lights(t_scene *scene)
 	t_object	*o_ptr;
 		
 	o_ptr = scene->objects;
-	printf("current obj name: [%s]\n", o_ptr->name);
+	//printf("current obj name: [%s]\n", o_ptr->name);
 	while (o_ptr->type == CAMERA || o_ptr->type == LIGHT)
 	{
 		to_move = o_ptr;
@@ -34,10 +34,10 @@ int	extract_cameras_lights(t_scene *scene)
 		to_move->type == LIGHT ? push_object(&scene->lights, to_move) : 0;
 		o_ptr = scene->objects;
 	}
-	printf("current obj name: [%s]\n", o_ptr->next->name);
+	//o_ptr->next ? printf("-current obj name: [%s]\n", o_ptr->next->name) : 0;
 	while (o_ptr->next)
 	{
-		printf("current obj name: [%s]\n", o_ptr->next->name);
+		//printf("current obj name: [%s]\n", o_ptr->next->name);
 		if (o_ptr->next->type == CAMERA || o_ptr->next->type == LIGHT)
 		{
 			to_move = o_ptr->next;
@@ -49,6 +49,6 @@ int	extract_cameras_lights(t_scene *scene)
 		else
 			o_ptr = o_ptr->next;
 	}
-	printf("END_EXTRACT_CAMERAS_LIGHTS\n");
+	//printf("END_EXTRACT_CAMERAS_LIGHTS\n");
 	return (1);
 }

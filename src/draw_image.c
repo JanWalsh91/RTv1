@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 10:59:22 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/05 16:45:42 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/06 17:16:23 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,18 @@
 int draw_image(t_scene *scene)
 {
     t_pt2   i;
+	t_ray	cam_ray;
 
-	(void)scene;
-    i.x = 0;
-    i.y = 0;
+	printf("DRAW_IMAGE\n");
+    i.y = -1;
     while (++i.y < scene->res.y)
 	{
 		i.x = -1;
 		while (++i.x < scene->res.x)
 		{
-			init_camera_ray(i, scene);
-			trace_camera_ray(i, scene);
+			//printf("pix: [%i][%i]\n", i.y, i.x);
+			cam_ray = init_camera_ray(i, scene);
+			scene->cameras->pixel_map[i.y][i.x] = cast_camera_ray(&cam_ray, scene);
 		}
 	}
     return(1);

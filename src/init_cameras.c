@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 15:36:08 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/05 16:21:06 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/06 17:01:53 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,16 @@ int	init_cameras(t_scene *scene)
 	t_object	*c_ptr;
 	int	x;
 
+	printf("INIT_CAMERAS\n");
 	c_ptr = scene->cameras;
 	while (c_ptr)
 	{
 		if (!(c_ptr->pixel_map = (t_color **)ft_memalloc(scene->res.y * sizeof(t_color *))))
-			return (0);
+			ft_error_exit("Malloc error");
 		x = -1;
 		while (++x < scene->res.x)
 			if (!(c_ptr->pixel_map[x] = (t_color *)ft_memalloc(scene->res.y * sizeof(t_color))))
-				return (0);
+				ft_error_exit("Malloc error");
 		c_ptr->ctw = new_identity_matrix4();
 		update_camera_scale(c_ptr);
 		update_camera_ctw(c_ptr);
@@ -45,6 +46,7 @@ int	init_cameras(t_scene *scene)
 int	update_camera_scale(t_object *camera)
 {
 	camera->scale = tan(to_radian(camera->fov * 0.5));
+	printf("scale: [%f]\n", camera->scale);
 	return (1);
 }
 

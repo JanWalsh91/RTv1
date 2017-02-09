@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:30:40 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/03 16:12:01 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/06 16:12:28 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	init_attributes(t_attributes **att)
 
 	printf("INIT_ATTRIBUTES\n");
 	if (!(*att = (t_attributes *)ft_memalloc(sizeof(t_attributes) * 3)))
-		return (0);
+		ft_error_exit("Malloc error");
 	i = -1;
 	while (++i < 3)
 		reset_attributes(&((*att)[i]));

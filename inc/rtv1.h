@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/05 16:46:02 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/09 11:57:57 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define RTV1_H
 
 # include "/Users/jwalsh/.brew/include/SDL2/SDL.h"
-# include "../Libft/libft.h"
+# include "../Libft/inc/libft.h"
+# include "../Libft/inc/ft_printf.h"
 # include "../Libmathft/libmathft.h"
 //# include "../Libgraphicsft/libgraphicsft.h"
 # include "keycode_mac.h"
@@ -37,11 +38,13 @@
 # define DEFAULT_POS_X 1
 # define DEFAULT_POS_Y 1
 # define DEFAULT_POS_Z 1
-# define DEFAULT_COL WHITE
+# define DEFAULT_COL_R 0xAA
+# define DEFAULT_COL_G 0xAA
+# define DEFAULT_COL_B 0xFF
 # define DEFAULT_ROT_X 0
 # define DEFAULT_ROT_Y 0
 # define DEFAULT_ROT_Z 0
-# define DEFAULT_FOV 50
+# define DEFAULT_FOV 90
 # define DEFAULT_
 
 
@@ -64,6 +67,7 @@ typedef	struct		s_ray
 {
 	t_vec3		origin; //point of origin
 	t_vec3		dir; //must be normalized
+	float		t; // closest valid intersection
 	t_color		col; // color found
 }					t_ray;
 
@@ -81,12 +85,13 @@ typedef struct		s_attributes
 	t_color		col;
 	t_shading	shading;
 	double		fov;
-	long		radius;
+	double		rad;
 }					t_attributes;
 
 
 //Keep in same order.
 # define OBJECTS "camera,light,plane,sphere,cylinder,cone"
+# define OBJECT_COUNT 6
 typedef enum		e_type
 {
 	CAMERA = 1,
@@ -101,7 +106,7 @@ typedef struct	s_object
 {
 	t_type			type;
     char			*name;
-	int				rad;
+	double			rad;
     void			*t;
     t_vec3			pos;
     t_vec3			rot;
@@ -175,13 +180,15 @@ typedef struct		s_th
 */
 
 int			get_file(char *file_name, t_list **input);
+int			set_line_count(t_list **input);
 int			parse_input(t_scene **scenes, t_list **input);
 int			init_attributes(t_attributes **att);
-int			parse_resolution(t_pt2 *res, char *s);
-int			parse_ray_depth(int *ray_dpeth, char *s);
-int			parse_position(t_vec3 *pos, char *s);
-int			parse_rotation(t_vec3 *rot, char *s);
-int			parse_color(t_color *col, char *s);
+int			parse_resolution(t_pt2 *res, char *s, size_t line);
+int			parse_ray_depth(int *ray_dpeth, char *s, size_t line);
+int			parse_position(t_vec3 *pos, char *s, size_t line);
+int			parse_rotation(t_vec3 *rot, char *s, size_t line);
+int			parse_color(t_color *col, char *s, size_t line);
+int			parse_radius(double *rad, char *s, size_t line);
 char 		**split_trim(char *s, char c);
 t_scene		*get_new_scene(char *name);
 t_object	*get_new_object(char *scene_name, char *name, char *type);
@@ -202,7 +209,9 @@ int			update_camera_ctw(t_object *camers);
 int			rtv1(t_scene **scenes);
 int		 	draw_image(t_scene *scene);
 t_ray		init_camera_ray(t_pt2 i, t_scene *scene);
-int			trace_camera_ray(t_pt2 p, t_scene *scene);
+t_color		cast_camera_ray(t_ray *cam_ray, t_scene *scene);
+int			get_intersection(t_ray *ray, t_object *obj);
+int			get_sphere_intersection(t_ray *ray, t_object *obj);
 
 /*
 ** SDL2 Functions
@@ -220,13 +229,21 @@ int			handle_sdl_events(t_scene *scenes, t_env *env);
 */
 
 /*
+** Error Functions
+*/
+
+void	error_line_exit(char *msg, size_t line);
+
+/*
 ** Debug functions
 */
 
-# define C(...) printf("check%i\n", __VA_ARGS__);
+# define C(...) ft_printf("check%i\n", __VA_ARGS__);
+# define P(x) ft_printf(x);
 void	print_scenes(t_scene *scenes_head);
 void	print_input(t_list **list_head);
 void	print_attributes(t_attributes att);
+void	print_vec(t_vec3 vec);
 
 
 #endif

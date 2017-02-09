@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/05 13:24:40 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/06 17:05:45 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_scene	*get_new_scene(char *name)
 
 	new_scene = NULL;
 	if (!(new_scene = (t_scene *)ft_memalloc(sizeof(t_scene))))
-		return (0);
+		ft_error_exit("Malloc error");
 	new_scene->next = NULL;
 	//printf("---new_scene->name#:		[%p]---\n", &(new_scene->name));
 	if (!name)

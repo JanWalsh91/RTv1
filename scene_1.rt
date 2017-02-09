@@ -1,17 +1,20 @@
-
-position: 1, 1, 1
-scene:
+resolution: 500, 500, 600
+scene: scene1
 {
-	sphere: s1
+	sphere: sphere1
 	{
-		position: 40, 40, 40
+		position: 0, 2, 6
+		radius: 2
+		color: 0, 000, 200
 	}
-	light: mylight
+	sphere: sphere2
 	{
-		position: 5, 5, 5
+		position: 0, 0, 7
+		radius: 3
+		color: 255, 0, 100
 	}
-    camera: CAM1
-    {
-		position: 0, 0, 0
-    }
+	camera: cam1
+	{
+		pos: 0, 0, 0
+	}
 }
