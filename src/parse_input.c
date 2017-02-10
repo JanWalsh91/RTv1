@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/29 12:25:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/09 11:54:34 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/10 13:59:40 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ static void parse_attribute(char **s, t_attributes *att, size_t line)
 	printf("PARSE_ATTRIBUTE\n");
 	if (ft_strcmp_percent(s[0], "ray_depth", 0.5))
 		parse_ray_depth(&(att->ray_depth), s[1], line);
-	if (ft_strcmp_percent(s[0], "resolution", 0.3) || ft_strcmp_percent(s[0], "size", 1))
+	else if (ft_strcmp_percent(s[0], "resolution", 0.3) || ft_strcmp_percent(s[0], "size", 1))
 		parse_resolution(&(att->res), s[1], line);
 	else if (ft_strcmp_percent(s[0], "position", 0.3))
 		parse_position(&(att->pos), s[1], line);
@@ -140,7 +140,5 @@ static void parse_attribute(char **s, t_attributes *att, size_t line)
 		parse_radius(&(att->rad), s[1], line);
 	else
 		error_line_exit("Formatting error: invalid attributename", line);
-	//else if (ft_strstr(s[0], "col") || ft_strstr(s[0], "color"))
-	//	return (parse_color(&(att->col), s[1]));
 	printf("\n");
 }

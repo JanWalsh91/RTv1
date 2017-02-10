@@ -18,7 +18,6 @@
 
 void	error_line_exit(const char *msg, size_t line)
 {
-	// ft_printf("test: %s\n", msg);
-	ft_printf("%{red}ERROR at line: %lu : %s\n%{}", line, (char *)msg);
+	ft_printf("%{red}ERROR line %lu: %s\n%{}", line, (char *)msg);
 	exit(0);
 }

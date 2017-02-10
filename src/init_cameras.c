@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 15:36:08 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/06 17:01:53 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/10 14:01:14 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	init_cameras(t_scene *scene)
 }
 
 /*
-** calcualtes camera->ctw matrix and calculates scale. 
+** Calculates scale. 
 */
 
 int	update_camera_scale(t_object *camera)
@@ -50,9 +50,17 @@ int	update_camera_scale(t_object *camera)
 	return (1);
 }
 
+/*
+** Updates the camera to world matrix.
+*/
+
 int	update_camera_ctw(t_object *camera)
 {
-	(void)camera;
-	//update ctw matrix
+	t_vec3 center;
+	
+	center.x = 0;
+	center.y = 0;
+	center.z = 0;
+	camera->ctw = vec3_to_rot_matrix(center, camera->rot);
 	return (1);
 }

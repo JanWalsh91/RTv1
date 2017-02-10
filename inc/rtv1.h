@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/09 11:57:57 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/10 14:29:31 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ t_ray		init_camera_ray(t_pt2 i, t_scene *scene);
 t_color		cast_camera_ray(t_ray *cam_ray, t_scene *scene);
 int			get_intersection(t_ray *ray, t_object *obj);
 int			get_sphere_intersection(t_ray *ray, t_object *obj);
+int			get_plane_intersection(t_ray *ray, t_object *obj);
 
 /*
 ** SDL2 Functions

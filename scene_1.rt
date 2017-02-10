@@ -1,20 +1,33 @@
-resolution: 500, 500, 600
+resolution: 1000, 1000
 scene: scene1
 {
 	sphere: sphere1
 	{
-		position: 0, 2, 6
+		position: 25, 1, 10
 		radius: 2
-		color: 0, 000, 200
+		color: 23, 050, 188
 	}
 	sphere: sphere2
 	{
-		position: 0, 0, 7
+		position: -1, 0, 7
 		radius: 3
-		color: 255, 0, 100
+		color: 200, 200, 20
+	}
+	plane: cyan
+	{
+		position: 0, 2, 5
+		rotation: 0, -5, 0
+		color: 135,206, 250
+	}
+	plane: turquoise
+	{
+		position: 0, -1, 10
+		rotation: 1, 2, 0
+		color: 0, 75, 75
 	}
 	camera: cam1
 	{
-		pos: 0, 0, 0
+		pos: 0, 0, -50
+		rot: 0, 0, -20
 	}
 }

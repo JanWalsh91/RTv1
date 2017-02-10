@@ -19,7 +19,7 @@
 int	set_line_count(t_list **input)
 {
 	P("SET_LINE_COUNT\n")
-	static int	i = -1;
+	static int	i = 0;
 	t_list *ptr;
 
 	ptr = *input;
