@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/29 15:02:42 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/01 17:33:19 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/11 12:30:59 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ typedef struct	s_light
 {
     char			*name;
     t_vec3			pos;
-    t_vec3			rotation;
+    t_vec3			direction;
     t_color			color;
     struct s_light	*next;
 }				t_light;

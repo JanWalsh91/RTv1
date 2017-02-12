@@ -6,7 +6,7 @@ scene: (o)scene_1
     camera: (o)camera_1
     {
         position:
-        (o)orientation/rotation:
+        (o)orientation/direction:
     }
     light: light1{
 
@@ -25,7 +25,7 @@ scene: (o)scene_1
     camera: (o)camera_1
     {
         position:
-        (o)orientation/rotation:
+        (o)orientation/direction:
     }
     light: light1{
 

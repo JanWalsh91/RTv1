@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:55:53 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/06 15:25:32 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/12 14:07:20 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	extract_cameras_lights(t_scene *scene)
 	t_object	*o_ptr;
 		
 	o_ptr = scene->objects;
+	if (!o_ptr)
+		ft_error_exit("No objects ->exit");
 	//printf("current obj name: [%s]\n", o_ptr->name);
 	while (o_ptr->type == CAMERA || o_ptr->type == LIGHT)
 	{

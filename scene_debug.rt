@@ -1,0 +1,15 @@
+resolution: 500, 500
+scene: scene1
+{
+	sphere: sphere1
+	{
+		position: 25, 1, 10
+		radius: 2
+		color: 23, 50, 188
+	}
+	camera: cam1
+	{
+		pos: 0, 0, -50
+		dir: 0, 0, -20
+	}
+}

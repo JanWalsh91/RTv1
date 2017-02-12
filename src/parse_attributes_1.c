@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 16:41:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/09 12:09:09 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/12 13:40:18 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,19 @@ int	parse_position(t_vec3 *pos, char *s, size_t line)
 	return(1);
 }
 
-int	parse_rotation(t_vec3 *rot, char *s, size_t line)
+int	parse_direction(t_vec3 *dir, char *s, size_t line)
 {
 	char **s2;
-(void)line;
-	printf("	parse_rotation: [%s]\n", s);
+
+	printf("	parse_direction: [%s]\n", s);
 	if (ft_charcount(s, ',') != 2)
-		error_line_exit("rotation formatting error", line);
+		error_line_exit("direction formatting error", line);
 	s2 = split_trim(s, ',');
 	if (!(s2[0] && s2[1] && s2[2]))
-		error_line_exit("rotation formatting error", line);
-	rot->x = ft_atoi(s2[0]);
-	rot->y = ft_atoi(s2[1]);
-	rot->z = ft_atoi(s2[2]);
+		error_line_exit("direction formatting error", line);
+	dir->x = ft_atoi(s2[0]);
+	dir->y = ft_atoi(s2[1]);
+	dir->z = ft_atoi(s2[2]);
 	return(1);
 }
 
@@ -85,7 +85,6 @@ int	parse_ray_depth(int *ray_depth, char *s, size_t line)
 
 int	parse_color(t_color *col, char *s, size_t line)
 {
-	(void)line;
 	char **s2;
 
 	printf("	parse_color: [%s]\n", s);
@@ -102,4 +101,24 @@ int	parse_color(t_color *col, char *s, size_t line)
 		error_line_exit("color formatting error", line);
 	printf("	parse_color end r: [%i] g: [%i] b: [%i]\n", col->r, col->g, col->b);
 	return(1);
+}
+
+int	parse_angle(double *angle, char *s, size_t line)
+{
+	printf("	parse_angle: [%s]\n", s);
+	if (s)
+		*angle = ft_atoi(s);
+	else
+		error_line_exit("angle formatting error", line);
+	return (1);
+}
+
+int	parse_height(double *height, char *s, size_t line)
+{
+	printf("	parse_height: [%s]\n", s);
+	if (s)
+		*height = ft_atoi(s);
+	else
+		error_line_exit("height formatting error", line);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/29 12:25:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/10 13:59:40 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/12 15:36:34 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	parse_input(t_scene **scenes_head, t_list **input)
 			s1 = split_trim((*input)->content, ':');
 			!ft_strcmp(s1[0], "scene") ? 
 			parse_scene(scenes_head, s1, input, &att) : parse_attribute(s1, &(att[0]), (*input)->content_size);
+			print_scenes(*scenes_head);
 		}
 		*input = (*input)->next;
 	}
@@ -68,14 +69,17 @@ static void parse_scene(t_scene **scenes_head, char **s1, t_list **input, t_attr
 			//(*input)->content ? printf("next_line: [%s]\n", (*input)->content) : 0;
 			ft_strstr(OBJECTS, s2[0]) ? 
 			parse_object(new_scene, s2, input, att) : parse_attribute(s2, &((*att)[1]), (*input)->content_size);
+			// print_scenes(*scenes_head);
 		}
 		*input = (*input)->next; //if no ':' is found, ignore the line.
 		(*input) ? printf("next_line: [%s]\n", (*input)->content) : 0;
 	}
 	if (!*input || !ft_strchr((*input)->content, '}'))
 			error_line_exit("Formatting error: missing '{'", (*input)->content_size);
+	print_attributes(**att);
 	set_attributes_scene(*att, new_scene); 
 	reset_attributes(&((*att)[1]));
+	// print_scenes(*scenes_head);
 	printf("\n");
 }
 
@@ -126,19 +130,23 @@ static void parse_attribute(char **s, t_attributes *att, size_t line)
 	//printf("parse_attribute: s[0]: [%s] s[1]: [%s] \n", s[0], s[1]);
 
 	printf("PARSE_ATTRIBUTE\n");
-	if (ft_strcmp_percent(s[0], "ray_depth", 0.5))
+	if (ft_strcmp_percent(s[0], "ray_depth", 1))
 		parse_ray_depth(&(att->ray_depth), s[1], line);
 	else if (ft_strcmp_percent(s[0], "resolution", 0.3) || ft_strcmp_percent(s[0], "size", 1))
 		parse_resolution(&(att->res), s[1], line);
 	else if (ft_strcmp_percent(s[0], "position", 0.3))
 		parse_position(&(att->pos), s[1], line);
-	else if (ft_strcmp_percent(s[0], "rotation", 0.3))
-		parse_rotation(&(att->rot), s[1], line);
+	else if (ft_strcmp_percent(s[0], "direction", 0.3))
+		parse_direction(&(att->dir), s[1], line);
 	else if (ft_strcmp_percent(s[0], "color", 0.5))
 		parse_color(&(att->col), s[1], line);
-	else if (ft_strcmp_percent(s[0], "radius", 0.5))
+	else if (ft_strcmp_percent(s[0], "radius", 1))
 		parse_radius(&(att->rad), s[1], line);
+	else if (ft_strcmp_percent(s[0], "angle", 1))
+		parse_angle(&(att->angle), s[1], line);
+	else if (ft_strcmp_percent(s[0], "height", 1))
+		parse_height(&(att->height), s[1], line);
 	else
-		error_line_exit("Formatting error: invalid attributename", line);
+		error_line_exit("Formatting error: invalid attribute name", line);
 	printf("\n");
 }

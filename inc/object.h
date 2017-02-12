@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/29 14:54:34 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/01 17:31:46 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/11 12:30:59 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ typedef struct	s_object
 	int				rad;
     void			*t;
     t_vec3			pos;
-    t_vec3			rot;
+    t_vec3			dir;
     t_color			col;
     t_shading		shading;
 	struct s_object	*next;

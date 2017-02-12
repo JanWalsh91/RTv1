@@ -6,25 +6,24 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/10 14:29:31 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/12 15:48:02 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RTV1_H
 # define RTV1_H
 
-# include "/Users/jwalsh/.brew/include/SDL2/SDL.h"
-# include "../Libft/inc/libft.h"
-# include "../Libft/inc/ft_printf.h"
-# include "../Libmathft/libmathft.h"
-//# include "../Libgraphicsft/libgraphicsft.h"
-# include "keycode_mac.h"
-# include "colors.h"
 # include <fcntl.h>
 # include <errno.h>
 # include <stdio.h>
 # include <pthread.h>
 # include <limits.h>
+# include "/Users/jwalsh/.brew/include/SDL2/SDL.h"
+# include "../Libft/inc/libft.h"
+# include "../Libft/inc/ft_printf.h"  //?
+# include "../Libmathft/libmathft.h"
+# include "keycode_mac.h"
+# include "colors.h"
 
 /*
 ** General settings
@@ -38,12 +37,15 @@
 # define DEFAULT_POS_X 1
 # define DEFAULT_POS_Y 1
 # define DEFAULT_POS_Z 1
+# define DEFAULT_DIR_X 0
+# define DEFAULT_DIR_Y 0
+# define DEFAULT_DIR_Z 1
 # define DEFAULT_COL_R 0xAA
 # define DEFAULT_COL_G 0xAA
 # define DEFAULT_COL_B 0xFF
-# define DEFAULT_ROT_X 0
-# define DEFAULT_ROT_Y 0
-# define DEFAULT_ROT_Z 0
+# define DEFAULT_dir_X 0
+# define DEFAULT_dir_Y 0
+# define DEFAULT_dir_Z 0
 # define DEFAULT_FOV 90
 # define DEFAULT_
 
@@ -81,11 +83,13 @@ typedef struct		s_attributes
 	t_pt2		res;
 	int			ray_depth;
 	t_vec3		pos;
-	t_vec3		rot;
+	t_vec3		dir;
 	t_color		col;
 	t_shading	shading;
 	double		fov;
 	double		rad;
+	double		angle;
+	double		height;
 }					t_attributes;
 
 
@@ -106,11 +110,13 @@ typedef struct	s_object
 {
 	t_type			type;
     char			*name;
-	double			rad;
+	double			rad; //radius for sphere, or cylinder, or cone.
+	double			angle; //angle of cone.
+	double			height; //height of cone/cylinder
     void			*t;
     t_vec3			pos;
-    t_vec3			rot;
-    t_color			col;
+    t_vec3			dir;
+    t_color			col;	
     t_shading		shading;
 	t_color			**pixel_map;
 	t_matrix4		ctw;
@@ -186,9 +192,11 @@ int			init_attributes(t_attributes **att);
 int			parse_resolution(t_pt2 *res, char *s, size_t line);
 int			parse_ray_depth(int *ray_dpeth, char *s, size_t line);
 int			parse_position(t_vec3 *pos, char *s, size_t line);
-int			parse_rotation(t_vec3 *rot, char *s, size_t line);
+int			parse_direction(t_vec3 *dir, char *s, size_t line);
 int			parse_color(t_color *col, char *s, size_t line);
 int			parse_radius(double *rad, char *s, size_t line);
+int			parse_angle(double *angle, char *s, size_t line);
+int			parse_height(double *height, char *s, size_t line);
 char 		**split_trim(char *s, char c);
 t_scene		*get_new_scene(char *name);
 t_object	*get_new_object(char *scene_name, char *name, char *type);
@@ -213,6 +221,9 @@ t_color		cast_camera_ray(t_ray *cam_ray, t_scene *scene);
 int			get_intersection(t_ray *ray, t_object *obj);
 int			get_sphere_intersection(t_ray *ray, t_object *obj);
 int			get_plane_intersection(t_ray *ray, t_object *obj);
+int			get_cylinder_intersection(t_ray *ray, t_object *obj);
+int			get_cone_intersection(t_ray *ray, t_object *obj);
+int			solve_quadratic(t_vec3 q, double *t, t_ray *ray);
 
 /*
 ** SDL2 Functions

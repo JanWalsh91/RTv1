@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:22:02 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/02 14:43:11 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/12 14:16:31 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char 	**split_trim(char *s, char c)
 	i = -1;
 	//printf("split_trim: [%s] [%c]\n", s, c);
 	result = ft_strsplit(s, c);
-	//printf("check1\n");
+	free(s);
 	while (result && result[++i])
 	{
 		result[i] = ft_strtrim(result[i]);

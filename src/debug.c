@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 17:13:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/06 15:38:39 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/12 14:33:01 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	print_scenes(t_scene *scenes_head)
 	t_object	*l_ptr;
 	t_object	*c_ptr;
 
-	printf("print_scenes\n");
+	ft_printf("%{u}%{red}print_scenes%{}\n");
 	s_ptr = scenes_head;
 	while (s_ptr)
 	{
@@ -33,35 +33,41 @@ void	print_scenes(t_scene *scenes_head)
 		printf("	objects:\n");
 		while (o_ptr)
 		{
+			printf("	object name: [%s]\n", o_ptr->name);
 			printf("		object type: [%i]\n", o_ptr->type);
-			printf("		object name: [%s]\n", o_ptr->name);
 			printf("		object pos: [%f] [%f] [%f]\n", o_ptr->pos.x, o_ptr->pos.y, o_ptr->pos.z);
 			printf("		object col: [%i] [%i] [%i]\n", o_ptr->col.r, o_ptr->col.g, o_ptr->col.b);
+			printf("		object dir: [%f] [%f] [%f]\n", o_ptr->dir.x, o_ptr->dir.y, o_ptr->dir.z);
 			if (o_ptr->type == SPHERE)
 				printf("		object rad: [%f]\n", o_ptr->rad);
+			if (o_ptr->type == CYLINDER || o_ptr->type == CONE)
+				// if (!isnan(o_ptr->height))
+					printf("		object height: [%f]\n", o_ptr->height);
 			o_ptr = o_ptr->next;
 		}
 		c_ptr = s_ptr->cameras;
 		printf("	cameras:\n");
 		while (c_ptr)
 		{
+			printf("	camera name: [%s]\n", c_ptr->name);
 			printf("		object type: [%i]\n", c_ptr->type);
-			printf("		camera name: [%s]\n", c_ptr->name);
 			printf("		camera pos: [%f] [%f] [%f]\n", c_ptr->pos.x, c_ptr->pos.y, c_ptr->pos.z);
 			printf("		camera scale: [%f]\n", c_ptr->scale);
+			printf("		camera fov: [%f]\n", c_ptr->fov);
 			c_ptr = c_ptr->next;
 		}
 		printf("	lights:\n");
 		l_ptr = s_ptr->lights;
 		while (l_ptr)
 		{
+			printf("	light name: [%s]\n", l_ptr->name);
 			printf("		object type: [%i]\n", l_ptr->type);
-			printf("		light name: [%s]\n", l_ptr->name);
 			printf("		light pos: [%f] [%f] [%f]\n", l_ptr->pos.x, l_ptr->pos.y, l_ptr->pos.z);
 			l_ptr = l_ptr->next;
 		}
 		s_ptr = s_ptr->next;
 	}
+	printf("\n");
 }
 
 void	print_input(t_list **list_head)
@@ -93,3 +99,8 @@ void	print_vec(t_vec3 vec)
 {
 	printf("print_vec: [%f][%f][%f]\n", vec.x, vec.y, vec.z);
 }
+
+// void	print_pixel_map(t_color **map)
+// {
+	
+// }

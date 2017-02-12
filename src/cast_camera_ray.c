@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 10:57:18 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/07 16:24:11 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/12 12:14:12 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_color	cast_camera_ray(t_ray *cam_ray, t_scene *scene)
 	current_object = scene->objects;
 	while (current_object)
 	{
-		//printf("intersection with: [%s]\n", (*current_object)->name);
+		//printf("intersection with: [%s]\n", (current_object)->name);
 		if (get_intersection(cam_ray, current_object))
 		{
 			if (cam_ray->t < t)

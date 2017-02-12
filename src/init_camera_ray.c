@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:05:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/10 14:15:52 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/12 16:33:41 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_ray	init_camera_ray(t_pt2 i, t_scene *scene)
 	//set camera origin.
 	cam_ray.origin = cam->pos;
 	// set the direction of the camera based on pix.
-	// rotation is not taken into account yet.
+	// direction is not taken into account yet.
 	// insead of simple assignement, calc ctw matrix and apply its result on pix to dir.
 	cam_ray.dir = vec3_normalize(pix);
 	// cam_ray.dir = vec3_matrix4_product(cam_ray.dir, cam->ctw);

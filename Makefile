@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/02/09 11:28:45 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/02/11 13:38:14 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC_NAME =	main \
 			rtv1 \
 			set_attributes \
 			set_line_count \
+			solve_quadratic \
 			split_trim \
 			debug
 

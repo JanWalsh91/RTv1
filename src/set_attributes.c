@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 13:30:31 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/06 17:04:08 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/12 15:14:26 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ int	set_attributes_scene(t_attributes *att, t_scene *scene)
 	{
 		if (att[i].res.x != INT_MAX && att[i].res.y != INT_MAX)
 			scene->res = att[i].res;
+		ft_printf("att[i].ray_depth: [%i]\n", att[i].ray_depth);
 		if (att[i].ray_depth != INT_MAX)
 			scene->ray_depth = att[i].ray_depth;
+	ft_printf("%{cyan}%{d}Update scene values: res.y: [%i] res.x: [%i] ray_depth: [%i]\n%{}", scene->res.y, scene->res.x, scene->ray_depth);
 	}
 	scene->image_aspect_ratio = (float)scene->res.x / (float)scene->res.y;
 	printf("image_aspect_ratio: [%f]\n", scene->image_aspect_ratio);
@@ -55,22 +57,17 @@ int	set_attributes_object(t_attributes *att, t_object *object)
 	while (++i < 3)
 	{
 		if (!isnan(att[i].pos.x) && !isnan(att[i].pos.y) && !isnan(att[i].pos.z))
-		{
-			// printf("update object->pos\n");
-			// printf("att[i].pos: [%f][%f][%f]\n", att[i].pos.x, att[i].pos.y, att[i].pos.z);
-			// printf("object->pos.x: [%f]\n", object->pos.x );
-			object->pos = att[i].pos;
-		}
-		if (att[i].rot.x != NAN && att[i].rot.y != NAN && att[i].rot.z != NAN)
-			object->rot = att[i].rot;
-		//printf("att[i]: [%i] [%i] [%i]\n", att[i].col.r, att[i].col.g, att[i].col.b);
-		if (att[i].col.r != INT_MAX && att[i].col.g != INT_MAX && att[i].col.b != INT_MAX)
-		{
-			// printf("object col: [%i] [%i] [%i]\n", object->col.r, object->col.g, object->col.b);
-			object->col = att[i].col;
-		}
-		if (att[i].rad != INT_MAX)
-			object->rad = att[i].rad;
+			ft_memcpy(&object->pos, &att[i].pos, sizeof(t_vec3));
+		if (!isnan(att[i].dir.x) && !isnan(att[i].dir.y) && !isnan(att[i].dir.z))
+			ft_memcpy(&object->dir, &att[i].dir, sizeof(t_vec3));
+		if (!isnan(att[i].col.r) && !isnan(att[i].col.g) && !isnan(att[i].col.b))
+			ft_memcpy(&object->col, &att[i].col, sizeof(t_color));
+		if (!isnan(att[i].rad))
+			ft_memcpy(&object->rad, &att[i].rad, sizeof(double));
+		if (!isnan(att[i].angle))
+			ft_memcpy(&object->angle, &att[i].angle, sizeof(double));
+		if (!isnan(att[i].height))
+			ft_memcpy(&object->height, &att[i].height, sizeof(double));
 
 		//object->shading = att[i].shading;
 	}
@@ -82,6 +79,7 @@ static int	set_default_scene_values(t_scene *scene)
 	scene->res.y = DEFAULT_RES_H;
 	scene->res.x = DEFAULT_RES_W;
 	scene->ray_depth = DEFAULT_RAY_DEPTH;
+	ft_printf("%{cyan}Default scene values: res.y: [%i] res.x: [%i] ray_depth: [%i]\n%{}", scene->res.y, scene->res.x, scene->ray_depth);
 	//... add scene attributes here ...
 	return (1);
 }
@@ -91,6 +89,9 @@ static int	set_default_object_values(t_object *object)
 	object->pos.x = DEFAULT_POS_X;
 	object->pos.y = DEFAULT_POS_Y;
 	object->pos.z = DEFAULT_POS_Z;
+	object->dir.x = DEFAULT_DIR_X;
+	object->dir.y = DEFAULT_DIR_Y;
+	object->dir.z = DEFAULT_DIR_Z;
 	object->col.r = 0xff;
 	object->col.g = 0xff;
 	object->col.b = 0xff;

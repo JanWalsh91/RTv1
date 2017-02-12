@@ -1,0 +1,16 @@
+resolution: 1000, 1000
+scene: scene1
+{
+	cylinder: cyan
+	{
+		position: 0, -2, 1
+		direction: 0, 0, 0
+		radius: 3
+		color: 135,206, 250
+	}
+camera: cam1
+	{
+		pos: 0, 0, -20
+		dir: 0, 0, 0
+	}
+}
