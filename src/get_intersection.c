@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:11:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/12 15:57:46 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/13 13:00:06 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,17 +104,18 @@ int	get_plane_intersection(t_ray *ray, t_object *obj)
 
 int		get_cylinder_intersection(t_ray *ray, t_object *obj)
 {
-	t_vec3	q; //simpify to t_vec3
+	t_vec3	q;
 	t_vec3 	ray_tmp;
 	t_vec3	obj_tmp;
 	t_vec3	x;
 	double	t;
 
+	ray->dir = vec3_normalize(ray->dir);
 	ray_tmp = ray->dir;
 	ray_tmp.y = 0;
 	obj_tmp = obj->dir;
 	obj_tmp.y = 0;
-	//x = ray origin - obj position
+
 	x = vec3_subtract(ray->origin, obj->pos);
 	q.x = vec3_dot(ray_tmp, ray_tmp) - pow(vec3_dot(ray_tmp, obj_tmp), 2); 
 	q.y = 2 * (vec3_dot(ray_tmp, x) - vec3_dot(ray_tmp, obj_tmp) * vec3_dot(x, obj_tmp));
@@ -122,6 +123,8 @@ int		get_cylinder_intersection(t_ray *ray, t_object *obj)
 	if (solve_quadratic(q, &t, ray))
 	{
 		ray->t = t;
+		//check height for BOTH results of quadratic
+		//t_vec3 pos = vec3_product(ray->dir, t); //position of intersecting point.
 		return (1);
 	}		
 	else
@@ -139,11 +142,11 @@ int		get_cone_intersection(t_ray *ray, t_object *obj)
 	t_vec3	x;
 
 	vec3_normalize(obj->dir);
-	k = tan(to_radian(obj->angle) / 2);
+	k = pow(obj->rad / obj->height, 2);
 	x = vec3_subtract(ray->origin, obj->pos);
-	q.x = vec3_dot(ray->dir, ray->dir) - (1 + k * k) * powf(vec3_dot(ray->dir, obj->dir), 2);
-	q.y = 2 * (vec3_dot(ray->dir, x) - (1+k*k) * vec3_dot(ray->dir, obj->dir) * vec3_dot(x, obj->dir));
-	q.z = vec3_dot(x, x) - (1+k*k)* powf(vec3_dot(x, obj->dir), 2);
+	q.x = vec3_dot(ray->dir, ray->dir) - (1 + k) * powf(vec3_dot(ray->dir, obj->dir), 2);
+	q.y = 2 * (vec3_dot(ray->dir, x) - (1 + k) * vec3_dot(ray->dir, obj->dir) * vec3_dot(x, obj->dir));
+	q.z = vec3_dot(x, x) - (1 + k) * powf(vec3_dot(x, obj->dir), 2);
  	if (solve_quadratic(q, &t, ray))
 	{
 		ray->t = t;
@@ -153,32 +156,3 @@ int		get_cone_intersection(t_ray *ray, t_object *obj)
 		return (0);
 	return (0);
 }
-
-// int		get_cone_intersection(t_ray *ray, t_object *obj)
-// {
-// 	double a, b, c; //simpify to t_vec3
-// 	t_vec3 	ray_tmp;
-// 	t_vec3	obj_tmp;
-// 	t_vec3	x;
-// 	double	t;
-
-// 	ray_tmp = ray->dir;
-// 	ray_tmp.z = 0;
-// 	obj_tmp = obj->dir;
-// 	obj_tmp.z = 0;
-// 	x = vec3_subtract(ray->origin, obj->pos);
-// 	a = vec3_dot(ray_tmp, ray_tmp) - pow(vec3_dot(ray_tmp, obj_tmp), 2); 
-// 	b = 2 * (vec3_dot(ray_tmp, x) - vec3_dot(ray_tmp, obj_tmp) * vec3_dot(x, obj_tmp));
-// 	c = vec3_dot(x, x) - pow(vec3_dot(x, obj_tmp), 2) - obj->rad * obj->rad;
-// 	if (solve_quadratic(a, b, c, &t))
-// 	{
-// 		(t < ray->t) ? ray->t = t : 0;
-// 		return (1);
-// 	}		
-// 	else
-// 		return (0);
-// 	//get_cylinder_body_intersection
-
-// 	//get_cap_intersection
-// 	return (0);
-// }

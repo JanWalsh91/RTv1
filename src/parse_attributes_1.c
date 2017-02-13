@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 16:41:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/12 13:40:18 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/13 12:32:30 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ int	parse_position(t_vec3 *pos, char *s, size_t line)
 	s2 = split_trim(s, ',');
 	if (!s2[0] || !s2[1] || !s2[2])
 		error_line_exit("position formatting error", line);
-	pos->x = (float)ft_atoi(s2[0]);
-	pos->y = (float)ft_atoi(s2[1]);
-	pos->z = (float)ft_atoi(s2[2]);
+	pos->x = ft_atod(s2[0]);
+	pos->y = ft_atod(s2[1]);
+	pos->z = ft_atod(s2[2]);
 	printf("	parse position end: x: [%f] y: [%f] z: [%f]\n", pos->x, pos->y, pos->z);
 	return(1);
 }
@@ -55,9 +55,9 @@ int	parse_direction(t_vec3 *dir, char *s, size_t line)
 	s2 = split_trim(s, ',');
 	if (!(s2[0] && s2[1] && s2[2]))
 		error_line_exit("direction formatting error", line);
-	dir->x = ft_atoi(s2[0]);
-	dir->y = ft_atoi(s2[1]);
-	dir->z = ft_atoi(s2[2]);
+	dir->x = ft_atod(s2[0]);
+	dir->y = ft_atod(s2[1]);
+	dir->z = ft_atod(s2[2]);
 	return(1);
 }
 
@@ -66,7 +66,7 @@ int	parse_radius(double *rad, char *s, size_t line)
 	(void)line;
 	printf("	parse_radius: [%s]\n", s);
 	if (s)
-		*rad = ft_atoi(s);
+		*rad = ft_atod(s);
 	else
 		error_line_exit("radius formatting error", line);
 	return (1);
@@ -107,7 +107,7 @@ int	parse_angle(double *angle, char *s, size_t line)
 {
 	printf("	parse_angle: [%s]\n", s);
 	if (s)
-		*angle = ft_atoi(s);
+		*angle = ft_atod(s);
 	else
 		error_line_exit("angle formatting error", line);
 	return (1);
@@ -117,7 +117,7 @@ int	parse_height(double *height, char *s, size_t line)
 {
 	printf("	parse_height: [%s]\n", s);
 	if (s)
-		*height = ft_atoi(s);
+		*height = ft_atod(s);
 	else
 		error_line_exit("height formatting error", line);
 	return (1);

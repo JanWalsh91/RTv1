@@ -3,9 +3,10 @@ scene: scene1
 {
 	cylinder: cyan
 	{
-		position: 0, -2, 1
-		direction: 0, 0, 0
-		radius: 3
+		position: 2, 0, 5
+		direction: 10, 1, 0
+		radius: 2
+		height: 1
 		color: 135,206, 250
 	}
 camera: cam1

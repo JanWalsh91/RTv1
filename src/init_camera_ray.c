@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:05:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/12 16:33:41 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/13 11:48:59 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_ray	init_camera_ray(t_pt2 i, t_scene *scene)
 	t_vec3 pix;
 	pix.x = (2 * (i.x + 0.5) / (float)scene->res.x - 1) * scene->image_aspect_ratio * cam->scale;
 	pix.y = (1 - 2 * (i.y + 0.5) / (float)scene->res.y) * cam->scale;
-	pix.z = 1; //distance of image screen from camera origin.
+	pix.z = 2; //distance of image screen from camera origin.
 	if (i.x == 0 && i.y == 0)
 	{
 		printf("pix vec: ");
