@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 15:36:08 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 11:43:20 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/13 17:06:13 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,9 @@ int	update_camera_ctw(t_object *camera)
 {
 	t_vec3 center;
 	
-	(void)camera;
 	center.x = 0;
 	center.y = 0;
-	center.z = 0;
-	// camera->ctw = vec3_to_dir_matrix(center, camera->dir);
+	center.z = 1;
+	camera->ctw = get_rodrigues_matrix(camera->dir, center);
 	return (1);
 }

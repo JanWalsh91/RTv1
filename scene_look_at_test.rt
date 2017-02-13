@@ -1,0 +1,17 @@
+resolution: 500, 500
+scene: scene1
+{
+	sphere: cyan
+	{
+		position: 5, 0, 0
+		direction: 10, 1, 0
+		radius: 2
+		height: 1
+		color: 135, 206, 250
+	}
+camera: cam1
+	{
+		pos: 0, 0, -30
+		look at: 5, 0, 0
+	}
+}

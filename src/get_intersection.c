@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:11:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 13:00:06 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/13 17:34:42 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ int		get_cone_intersection(t_ray *ray, t_object *obj)
 	double	k;
 	t_vec3	x;
 
-	vec3_normalize(obj->dir);
 	k = pow(obj->rad / obj->height, 2);
 	x = vec3_subtract(ray->origin, obj->pos);
 	q.x = vec3_dot(ray->dir, ray->dir) - (1 + k) * powf(vec3_dot(ray->dir, obj->dir), 2);

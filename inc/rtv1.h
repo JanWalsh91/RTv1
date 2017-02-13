@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 11:41:15 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/13 14:45:20 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@
 # define DEFAULT_COL_G 0xAA
 # define DEFAULT_COL_B 0xFF
 # define DEFAULT_dir_X 0
-# define DEFAULT_dir_Y 0
+# define DEFAULT_dir_Y 1
 # define DEFAULT_dir_Z 0
-# define DEFAULT_FOV 90
+# define DEFAULT_FOV 45
 # define DEFAULT_
-
+# define CAM_IMG_PANE_DIST 1
 
 /*
 ** Instructions
@@ -84,6 +84,7 @@ typedef struct		s_attributes
 	int			ray_depth;
 	t_vec3		pos;
 	t_vec3		dir;
+	t_vec3		look_at;
 	t_color		col;
 	t_shading	shading;
 	double		fov;
@@ -116,6 +117,7 @@ typedef struct	s_object
     void			*t;
     t_vec3			pos;
     t_vec3			dir;
+	t_vec3			look_at;
     t_color			col;	
     t_shading		shading;
 	t_color			**pixel_map;
@@ -193,6 +195,7 @@ int			parse_resolution(t_pt2 *res, char *s, size_t line);
 int			parse_ray_depth(int *ray_dpeth, char *s, size_t line);
 int			parse_position(t_vec3 *pos, char *s, size_t line);
 int			parse_direction(t_vec3 *dir, char *s, size_t line);
+int			parse_look_at(t_vec3 *dir, char *s, size_t line);
 int			parse_color(t_color *col, char *s, size_t line);
 int			parse_radius(double *rad, char *s, size_t line);
 int			parse_angle(double *angle, char *s, size_t line);

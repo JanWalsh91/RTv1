@@ -16,21 +16,21 @@ scene: scene1
 
 	cone: my cone
 	{
-		position: 100, 100, 20
-		direction: 0, 0, 1
+		position: -10, 10, 60
+		direction: 0, 1, 0
 		radius: 10
 		height: 100
 		color: 150, 50, 100
 	}
 	plane: my plane
 	{
-		position: 0, -1, 10
+		position: -10, -10, 10
 		direction: 1, 2, 0
 		color: 0, 75, 75
 	}
 	camera: cam1
 	{
-		pos: 0, 0, -50
-		dir: 0, 0, -20
+		pos: 0, 0, -80
+		look at: 0, 0, 0
 	}
 }

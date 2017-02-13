@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 16:41:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 12:32:30 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/13 14:11:21 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,22 @@ int	parse_direction(t_vec3 *dir, char *s, size_t line)
 	dir->x = ft_atod(s2[0]);
 	dir->y = ft_atod(s2[1]);
 	dir->z = ft_atod(s2[2]);
+	return(1);
+}
+
+int	parse_look_at(t_vec3 *look_at, char *s, size_t line)
+{
+	char **s2;
+
+	printf("	parse_look_at: [%s]\n", s);
+	if (ft_charcount(s, ',') != 2)
+		error_line_exit("look_at formatting error", line);
+	s2 = split_trim(s, ',');
+	if (!(s2[0] && s2[1] && s2[2]))
+		error_line_exit("look_at formatting error", line);
+	look_at->x = ft_atod(s2[0]);
+	look_at->y = ft_atod(s2[1]);
+	look_at->z = ft_atod(s2[2]);
 	return(1);
 }
 

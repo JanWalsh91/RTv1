@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:05:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 11:48:59 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/13 16:51:24 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_ray	init_camera_ray(t_pt2 i, t_scene *scene)
 	t_vec3 pix;
 	pix.x = (2 * (i.x + 0.5) / (float)scene->res.x - 1) * scene->image_aspect_ratio * cam->scale;
 	pix.y = (1 - 2 * (i.y + 0.5) / (float)scene->res.y) * cam->scale;
-	pix.z = 2; //distance of image screen from camera origin.
+	pix.z = CAM_IMG_PANE_DIST; //distance of image screen from camera origin.
 	if (i.x == 0 && i.y == 0)
 	{
 		printf("pix vec: ");
@@ -33,12 +33,15 @@ t_ray	init_camera_ray(t_pt2 i, t_scene *scene)
 	}
 	//set camera origin.
 	cam_ray.origin = cam->pos;
+	// cam_ray.origin.x = 0;
+	// cam_ray.origin.y = 0;
+	// cam_ray.origin.z = 0;
 	// set the direction of the camera based on pix.
 	// direction is not taken into account yet.
 	// insead of simple assignement, calc ctw matrix and apply its result on pix to dir.
 	cam_ray.dir = vec3_normalize(pix);
-	// cam_ray.dir = vec3_matrix4_product(cam_ray.dir, cam->ctw);
-	// cam_ray.dir = vec3_normalgit subize(cam_ray.dir);
+	cam_ray.dir = vec3_matrix4_product(cam_ray.dir, cam->ctw);
+	cam_ray.dir = vec3_normalize(cam_ray.dir);
 	if (i.x == 0 && i.y == 0)
 	{
 		printf("cam origin: ");
