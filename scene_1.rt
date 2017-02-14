@@ -1,4 +1,4 @@
-resolution: 1000, 500
+resolution: 100, 100
 scene: scene1
 {
 	sphere: sphere1
@@ -9,8 +9,8 @@ scene: scene1
 	}
 	sphere: sphere2
 	{
-		position: -5, 20, 7
-		radius: 3
+		position: -5, 20, 50
+		radius: 5
 		color: 200, 200, 20
 	}
 

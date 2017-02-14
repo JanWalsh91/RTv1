@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:11:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 17:34:42 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/14 14:19:19 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int		get_sphere_intersection(t_ray *ray, t_object *obj)
 			return (0); // both t0 and t.y are negative 
 	}
 	ray->t = t.x;
-	//ft_printf("INTERSECTION!");
+	printf("INTERSECTION! : t : [%f]\n", ray->t);
 	return (1);
 }
 
@@ -125,11 +125,11 @@ int		get_cylinder_intersection(t_ray *ray, t_object *obj)
 		ray->t = t;
 		//check height for BOTH results of quadratic
 		//t_vec3 pos = vec3_product(ray->dir, t); //position of intersecting point.
+		// printf("INTERSECTION! : t : [%f]\n", ray->t);
 		return (1);
 	}		
 	else
 		return (0);
-
 	//get_cap_intersection
 	return (0);
 }
