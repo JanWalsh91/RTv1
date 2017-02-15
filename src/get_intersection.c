@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:11:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/14 14:19:19 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/15 16:58:12 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int		get_sphere_intersection(t_ray *ray, t_object *obj)
 			return (0); // both t0 and t.y are negative 
 	}
 	ray->t = t.x;
-	printf("INTERSECTION! : t : [%f]\n", ray->t);
+	// printf("INTERSECTION! : t : [%f]\n", ray->t);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/02/11 13:38:14 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/02/15 17:10:46 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,7 +53,7 @@ OBJ = $(SRC:.c=.o)
 EXT = .c
 CC	= gcc
 FLG = -Werror -Wextra -Wall
-SDL = `sdl2-config --libs`
+SDL = `~/.brew/bin/sdl2-config --libs`
 #add after FLG on line 74
 
 C_NONE = \033[0m

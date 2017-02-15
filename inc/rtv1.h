@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 14:45:20 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/15 17:09:46 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ typedef struct	s_object
     t_shading		shading;
 	t_color			**pixel_map;
 	t_matrix4		ctw;
+	t_matrix4		mtw;
+	t_matrix4		wtm;
 	float			scale;
 	float			fov;
 	struct s_object	*next;

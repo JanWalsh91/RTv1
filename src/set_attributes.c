@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 13:30:31 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 14:48:50 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/15 16:50:08 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int	set_default_scene_values(t_scene *scene);
 static int	set_default_object_values(t_object *object);
+static void	set_mtw(t_object *obj);
+static void	set_wtm(t_object *obj);
 
 /*
 ** Gives user-defiend attributes to a scene.
@@ -80,6 +82,8 @@ int	set_attributes_object(t_attributes *att, t_object *object)
 
 		//object->shading = att[i].shading;
 	}
+	set_mtw(object);
+	set_wtm(object);
 	return (1);
 }
 
@@ -114,6 +118,72 @@ static void	set_dir(t_object *obj)
 	print_vec(obj->look_at);
 	print_vec(obj->pos);
 	obj->dir = vec3_subtract(obj->look_at, obj->pos);
-	ft_printf("%{red}------%{}");
 	print_vec(obj->dir);
+}
+
+/*
+** Matrix that will be used on ray to be thrown in Model Space.
+*/
+
+static void	set_wtm(t_object *obj)
+{
+	//only for cone for now.
+	if (obj->type != CONE)
+		return ;
+	t_vec3	  rot;
+	t_matrix4 tmp;
+
+	obj->wtm = new_identity_matrix4();
+	//scale for height
+	//scale for radius
+	tmp = new_identity_matrix4();
+	tmp[2][2] = obj->rad;
+	tmp[1][1] = obj->height;
+	obj->wtm = matrix4_product(obj->wtm, tmp);
+	//rotation for direction
+	tmp = new_identity_matrix4();
+	rot.x = atan2(obj->dir.y, obj->dir.z);
+	if (z >= 0)
+    	rot.y = -atan2(obj->dir.x * cos(rot.x), obj->dir.z );
+ 	else
+    	rot.y = atan2(obj->dir.x * cos(rot.x), -obj->dir.z );
+	rot.z = atan2(cos(rot.x), sin(rot.x) * sin(rot.y));
+	obj->wtm = matrix4_product(obj->wtm, new_rotation_matrix4(rot.x, 'x'));
+	obj->wtm = matrix4_product(obj->wtm, new_rotation_matrix4(rot.y, 'y'));
+	obj->wtm = matrix4_product(obj->wtm, new_rotation_matrix4(rot.z, 'z'));
+	//translate for position
+	obj->wtm = matrix4_translation(obj->wtm, obj->pos);
+}
+
+/*
+** Matrix that will be used on intersection position to convert back to World Space.
+*/
+
+static void	set_mtw(t_object *obj)
+{
+	//only for cone for now.
+	if (obj->type != CONE)
+		return ;
+	t_vec3		rot;
+	t_matrix4 tmp;
+
+	obj->mtw = new_identity_matrix4();
+	//translate for position
+	obj->mtw = matrix4_translation(obj->mtw, vec3_product(obj->pos, -1));
+	//rotation for direction
+	rot.x = atan2(obj->dir.y, obj->dir.z);
+	if (z >= 0)
+    	rot.y = -atan2(obj->dir.x * cos(rot.x), obj->dir.z );
+ 	else
+    	rot.y = atan2(obj->dir.x * cos(rot.x), -obj->dir.z );
+	rot.z = atan2(cos(rot.x), sin(rot.x) * sin(rot.y));
+	obj->mtw = matrix4_product(obj->mtw, new_rotation_matrix4(-rot.x, 'x'));
+	obj->mtw = matrix4_product(obj->mtw, new_rotation_matrix4(-rot.y, 'y'));
+	obj->mtw = matrix4_product(obj->mtw, new_rotation_matrix4(-rot.z, 'z'));
+	//scale for height
+	//scale for radius
+	tmp = new_identity_matrix4();
+	tmp[2][2] = 1 / obj->rad;
+	tmp[1][1] = 1 / obj->height;
+	obj->mtw = matrix4_product(obj->mtw, tmp);
 }

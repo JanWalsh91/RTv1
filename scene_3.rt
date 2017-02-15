@@ -1,0 +1,17 @@
+resolution: 500, 300
+scene: scene1
+{
+	cone: my cone
+	{
+		position: -10, 10, 60
+		direction: 0, 1, 0
+		radius: 10
+		height: 100
+		color: 150, 50, 100
+	}
+	camera: cam1
+	{
+		pos: 0, 0, -80
+		look at: 0, 0, 0
+	}
+}
