@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 15:36:08 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 17:06:13 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/18 13:20:12 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,14 @@ int	update_camera_scale(t_object *camera)
 
 int	update_camera_ctw(t_object *camera)
 {
-	t_vec3 center;
+	t_vec3 tmp;
 	
-	center.x = 0;
-	center.y = 0;
-	center.z = 1;
-	camera->ctw = get_rodrigues_matrix(camera->dir, center);
+	tmp.x = 0;
+	tmp.y = 0;
+	tmp.z = 1;
+	camera->ctw = get_rodrigues_matrix(camera->dir, tmp);
+	camera->ctw[0][3] = camera->pos.x;
+	camera->ctw[1][3] = camera->pos.y;
+	camera->ctw[2][3] = camera->pos.z;
 	return (1);
 }

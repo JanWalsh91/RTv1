@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 17:13:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/12 14:33:01 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/15 17:35:38 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,3 +104,18 @@ void	print_vec(t_vec3 vec)
 // {
 	
 // }
+
+void	print_matrix(t_matrix4 m)
+{
+	int i;
+	int	y;
+
+	y = -1;
+	while (++y < 4)
+	{
+		i = -1;
+		while (++i < 4)
+			printf("[%f]", m[y][i]);
+		printf("\n");
+	}
+}

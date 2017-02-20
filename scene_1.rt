@@ -17,7 +17,7 @@ scene: scene1
 	cone: my cone
 	{
 		position: -10, 10, 60
-		direction: 0, 1, 0
+		direction: 0, 1, 1
 		radius: 10
 		height: 100
 		color: 150, 50, 100

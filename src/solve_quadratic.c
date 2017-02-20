@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/11 13:25:29 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/11 15:37:41 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/20 11:23:43 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,22 @@
 ** if it exists.
 */
 
-int	solve_quadratic(t_vec3 q, double *t, t_ray *ray)
+int	solve_quadratic(t_vec3 q, double *r1, double *r2)
 {
-	double	root1;
-	double	root2;
 	double	d;
 
-(void)ray;
+	*r1 = -1;
+	*r2 = -1;
 	d = q.y * q.y - 4 * q.x * q.z;
 	if (d == 0)
 	{
-		*t = -q.y / (2 * q.x);
+		*r1 = -q.y / (2 * q.x);
 		return (1);
 	}
 	if (d > 0)
 	{
-		root1 = (-q.y + sqrtf(d)) / (2 * q.x);
-		root2 = (-q.y - sqrtf(d)) / (2 * q.x);
-		*t = (root1 < root2) ? root1 : root2;
+		*r1 = (-q.y + sqrtf(d)) / (2 * q.x);
+		*r2 = (-q.y - sqrtf(d)) / (2 * q.x);
 		return (1);
 	}
 	return (0);

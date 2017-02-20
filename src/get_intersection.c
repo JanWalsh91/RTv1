@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:11:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/15 16:58:12 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/20 15:02:01 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@
 
 int		get_intersection(t_ray *ray, t_object *obj)
 {
+	obj->dir = vec3_normalize(obj->dir);
+	static int i = 1;
+	if (i)
+	{
+		printf("get_intersection\n");
+		i--;
+	}
 	if (obj->type == SPHERE)
 		return (get_sphere_intersection(ray, obj));
 	else if (obj->type == PLANE)
@@ -29,44 +36,6 @@ int		get_intersection(t_ray *ray, t_object *obj)
 	else if (obj->type == CONE)
 		return (get_cone_intersection(ray, obj));
 	return (0); //error ? (should never get here)
-}
-
-/*
-** Consider doing sphere intersection with quadratic equation instead.
-*/
-
-int		get_sphere_intersection(t_ray *ray, t_object *obj)
-{
-	t_vec2 t;
-	t_vec2 th;
-	float	d2;
-	float	tmp;
-
-	t_vec3 p = vec3_subtract(obj->pos, ray->origin);
-	th.x = vec3_dot(p, ray->dir);
-	if (th.x < 0)
-		return (0); 
-	d2 = vec3_dot(p, p) - th.x * th.x; 
-	if (d2 > obj->rad * obj->rad)
-		return (0); 
-	th.y = sqrt(obj->rad * obj->rad - d2); 
-	t.x = th.x - th.y; 
-	t.y = th.x + th.y;
-	if (t.x > t.y)
-	{
-		tmp = t.x;
-		t.x = t.y;
-		t.y = tmp;		
-	}
-	if (t.x < 0)
-	{ 
-		t.x = t.y; // if t0 is negative, let's use t.y instead 
-		if (t.x < 0)
-			return (0); // both t0 and t.y are negative 
-	}
-	ray->t = t.x;
-	// printf("INTERSECTION! : t : [%f]\n", ray->t);
-	return (1);
 }
 
 /*
@@ -82,8 +51,8 @@ int		get_sphere_intersection(t_ray *ray, t_object *obj)
 
 int	get_plane_intersection(t_ray *ray, t_object *obj)
 {
-    float denom;
-	t_vec3 p;
+    double	denom;
+	t_vec3	p;
 
 	denom = vec3_dot(obj->dir, ray->dir);
 	if (denom < 0) //only for double-sided polygons.
@@ -93,65 +62,137 @@ int	get_plane_intersection(t_ray *ray, t_object *obj)
 	}
     if (denom > 1e-6)
 	{ 
-		p = vec3_subtract(obj->pos, ray->origin); // switch ??
+		p = vec3_subtract(obj->pos, ray->origin); //switch?
 		ray->t = vec3_dot(p, obj->dir) / denom;
         return (ray->t >= 0); 
     }
 	return (0);
 }
 
-//add height to cylinders and check for cap intersection. 
+/*
+** Consider doing sphere intersection with quadratic equation instead.
+*/
+
+int		get_sphere_intersection(t_ray *ray, t_object *obj)
+{
+	t_intersection_tools	i;
+
+	i.v1 = vec3_subtract(ray->origin, obj->pos);
+	i.q.x = vec3_dot(ray->dir, ray->dir);
+	i.q.y = 2 * vec3_dot(i.v1, ray->dir);
+	i.q.z = vec3_dot(i.v1, i.v1) - pow(obj->rad, 2);
+ 	if (!solve_quadratic(i.q, &i.r1, &i.r2))
+		return (0);
+	obj->height > 0 ? get_finite_cylinder_intersection(ray, obj, &i) : 0;
+	(i.r2 < i.r1) ? ft_swapd(&i.r1, &i.r2) : 0;
+	obj->height > 0 ? get_cyclinder_caps_intersection(ray, obj, &i) : 0;
+	(i.r1 < 0) ? i.r1 = i.r2 : 0;
+	if (i.r1 < 0)
+		return (0);
+	ray->t = i.r1;
+	return (1);
+}
 
 int		get_cylinder_intersection(t_ray *ray, t_object *obj)
 {
-	t_vec3	q;
-	t_vec3 	ray_tmp;
-	t_vec3	obj_tmp;
-	t_vec3	x;
-	double	t;
+	t_intersection_tools	i;
 
-	ray->dir = vec3_normalize(ray->dir);
-	ray_tmp = ray->dir;
-	ray_tmp.y = 0;
-	obj_tmp = obj->dir;
-	obj_tmp.y = 0;
-
-	x = vec3_subtract(ray->origin, obj->pos);
-	q.x = vec3_dot(ray_tmp, ray_tmp) - pow(vec3_dot(ray_tmp, obj_tmp), 2); 
-	q.y = 2 * (vec3_dot(ray_tmp, x) - vec3_dot(ray_tmp, obj_tmp) * vec3_dot(x, obj_tmp));
-	q.z = vec3_dot(x, x) - pow(vec3_dot(x, obj_tmp), 2) - obj->rad * obj->rad;
-	if (solve_quadratic(q, &t, ray))
-	{
-		ray->t = t;
-		//check height for BOTH results of quadratic
-		//t_vec3 pos = vec3_product(ray->dir, t); //position of intersecting point.
-		// printf("INTERSECTION! : t : [%f]\n", ray->t);
-		return (1);
-	}		
-	else
+	i.v3 = vec3_subtract(ray->origin, obj->pos);
+	i.v1 = vec3_product(obj->dir, vec3_dot(ray->dir, obj->dir));
+	i.v1 = vec3_subtract(ray->dir, i.v1);
+	i.q.x = vec3_dot(i.v1, i.v1);
+	i.v2 = vec3_product(obj->dir, vec3_dot(i.v3, obj->dir));
+	i.v2 = vec3_subtract(i.v3, i.v2);
+	i.q.y = 2 * vec3_dot(i.v1, i.v2);
+	i.q.z = vec3_dot(i.v2, i.v2) - powf(obj->rad, 2);
+ 	if (!solve_quadratic(i.q, &i.r1, &i.r2))
 		return (0);
-	//get_cap_intersection
+	obj->height > 0 ? get_finite_cylinder_intersection(ray, obj, &i) : 0;
+	(i.r2 < i.r1) ? ft_swapd(&i.r1, &i.r2) : 0;
+	obj->height > 0 ? get_cyclinder_caps_intersection(ray, obj, &i) : 0;
+	(i.r1 < 0) ? i.r1 = i.r2 : 0;
+	if (i.r1 < 0)
+		return (0);
+	ray->t = i.r1;
+	return (1);
+}
+
+int		get_finite_cylinder_intersection(t_ray *ray, t_object *obj, t_intersection_tools *i)
+{
+	//chek for validity of roots. 
+	//set to -1 those which are not on finite cylinder body.
+	//check first point: distance r1
+	if (i->r1 > 0) //first point;
+	{
+		i->p = vec3_add(ray->origin, vec3_product(ray->dir, i->r1));
+		if (vec3_dot(obj->dir, vec3_subtract(i->p, obj->pos)) < 0 ||
+			vec3_dot(obj->dir, vec3_subtract(i->p, vec3_add(obj->pos, vec3_product(obj->dir, obj->height)))) > 0)
+			i->r1 = -1;
+	}
+	if (i->r2 > 0) //second point;
+	{
+		i->p = vec3_add(ray->origin, vec3_product(ray->dir, i->r2));
+		if (vec3_dot(obj->dir, vec3_subtract(i->p, obj->pos)) < 0 ||
+			vec3_dot(obj->dir, vec3_subtract(i->p, vec3_add(obj->pos, vec3_product(obj->dir, obj->height)))) > 0)
+			i->r2 = -1;
+	}
+	return (1);
+}
+
+int		get_disc_intersection(t_ray *ray, t_object *disc)
+{
+	float denom;
+	t_vec3 p;
+
+	denom = vec3_dot(disc->dir, ray->dir);
+	if (denom < 0) //only for double-sided polygons.
+	{
+		disc->dir = vec3_product(disc->dir, -1);
+		denom = vec3_dot(disc->dir, ray->dir);
+	}
+    if (denom > 1e-6)
+	{ 
+		p = vec3_subtract(disc->pos, ray->origin); // switch ??
+		ray->t = vec3_dot(p, disc->dir) / denom; //distance of intersection to ray origin.
+		p = vec3_add(ray->origin, vec3_product(ray->dir, ray->t)); //point of intersection
+		if (vec3_dot(vec3_subtract(p, disc->pos), vec3_subtract(p, disc->pos)) < powf(disc->rad, 2))
+			return (ray->t >= 0); 
+	}
 	return (0);
+}
+
+int		get_cyclinder_caps_intersection(t_ray *ray, t_object *obj, t_intersection_tools *i)
+{
+	t_object	disc;
+	t_ray		ray2;
+	
+	ray2 = *ray;
+	disc.rad = obj->rad;
+	disc.pos = obj->pos;
+	disc.dir = obj->dir;
+	if (get_disc_intersection(&ray2, &disc))
+		ray2.t < i->r1 || i->r1 == -1 ? i->r1 = ray2.t : 0;
+	disc.pos = vec3_add(disc.pos, vec3_product(obj->dir, obj->height));
+	if (get_disc_intersection(&ray2, &disc))
+		ray2.t < i->r1 || i->r1 == -1 ? i->r1 = ray2.t : 0;
+	return (1);
 }
 
 int		get_cone_intersection(t_ray *ray, t_object *obj)
 {
-	t_vec3	q;
-	double	t;
-	double	k;
-	t_vec3	x;
+	t_intersection_tools	i;
 
-	k = pow(obj->rad / obj->height, 2);
-	x = vec3_subtract(ray->origin, obj->pos);
-	q.x = vec3_dot(ray->dir, ray->dir) - (1 + k) * powf(vec3_dot(ray->dir, obj->dir), 2);
-	q.y = 2 * (vec3_dot(ray->dir, x) - (1 + k) * vec3_dot(ray->dir, obj->dir) * vec3_dot(x, obj->dir));
-	q.z = vec3_dot(x, x) - (1 + k) * powf(vec3_dot(x, obj->dir), 2);
- 	if (solve_quadratic(q, &t, ray))
-	{
-		ray->t = t;
-		return (1);
-	}		
-	else
+	i.d1 = pow(obj->rad / obj->height, 2.);
+	i.v1 = vec3_subtract(ray->origin, obj->pos);
+	i.q.x = vec3_dot(ray->dir, ray->dir) - (1 + i.d1) * powf(vec3_dot(ray->dir, obj->dir), 2);
+	i.q.y = 2 * (vec3_dot(ray->dir, i.v1) - (1 + i.d1) * vec3_dot(ray->dir, obj->dir) * vec3_dot(i.v1, obj->dir));
+	i.q.z = vec3_dot(i.v1, i.v1) - (1 + i.d1) * powf(vec3_dot(i.v1, obj->dir), 2);
+ 	if (!solve_quadratic(i.q, &i.r1, &i.r2))
+	 	return (0);
+	(i.r2 < i.r1) ? ft_swapd(&i.r1, &i.r2) : 0;
+	(i.r1 < 0) ? i.r1 = i.r2 : 0;
+	if (i.r1 < 0)
 		return (0);
-	return (0);
+	ray->t = i.r1;	
+	return (1);
 }

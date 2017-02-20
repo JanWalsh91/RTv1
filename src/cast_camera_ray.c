@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 10:57:18 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 13:52:32 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/20 15:16:52 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,33 @@
 
 t_color	cast_camera_ray(t_ray *cam_ray, t_scene *scene)
 {
+	// printf("CAST_CAMERA_RAY\n");
 	t_color		col;
+	t_object *obj;	
 	double		t;
 
 	t = INFINITY;
-	//printf("CAST_CAMERA_RAY\n");
-	t_object *current_object;
-	
-	current_object = scene->objects;
-	while (current_object)
+	obj = scene->objects;
+	// iterate over all objects and update the closest intersection.
+	while (obj)
 	{
-		//printf("intersection with: [%s]\n", (current_object)->name);
-		if (get_intersection(cam_ray, current_object))
+		// Tranform ray origin and direction to model space.
+		// cam_ray->dir2 = vec3_normalize(vec3_matrix4_product(cam_ray->dir, obj->wtm));
+		// cam_ray->origin2 = pvec3_matrix4_product(cam_ray->origin, obj->wtm);
+		if (get_intersection(cam_ray, obj))
 		{
-			if (cam_ray->t < t)
-			{
+			// Update closest interesection and assign color.
+			// if (cam_ray->t < t)
+			// {
+			// 	//update t, 
 				t = cam_ray->t;
-				col = (current_object)->col;
-			}
+				col = (obj)->col;
+			// 	// printf(" --> t: [%f] cam_ray->t: [%f]\n", t, cam_ray->t);
+			// }
 		} 
-		current_object = (current_object)->next;
+		obj = (obj)->next;
 	}
+	// If no intersection is found, return background color. 
 	(t == INFINITY) ? col.r = 0x0F, col.g = 0x0F, col.b = 0x0F : 0;
 	return (col);
 }

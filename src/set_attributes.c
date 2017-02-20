@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 13:30:31 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/15 16:50:08 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/18 18:24:24 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	set_default_scene_values(t_scene *scene);
 static int	set_default_object_values(t_object *object);
-static void	set_mtw(t_object *obj);
-static void	set_wtm(t_object *obj);
+// static void	set_mtw(t_object *obj);
+// static void	set_wtm(t_object *obj);
 
 /*
 ** Gives user-defiend attributes to a scene.
@@ -56,6 +56,7 @@ int	set_attributes_object(t_attributes *att, t_object *object)
 	int	i;
 
 	printf("SET_ATTRIBUTES_OBJECT\n");
+	printf("object: [%s]\n", object->name);
 	i = -1;
 	set_default_object_values(object);
 	while (++i < 3)
@@ -69,7 +70,6 @@ int	set_attributes_object(t_attributes *att, t_object *object)
 			ft_memcpy(&object->look_at, &att[i].look_at, sizeof(t_vec3));
 			set_dir(object);
 		}
-		vec3_normalize(object->dir);
 		if (!isnan(att[i].col.r) && !isnan(att[i].col.g) && !isnan(att[i].col.b))
 			ft_memcpy(&object->col, &att[i].col, sizeof(t_color));
 		if (!isnan(att[i].rad))
@@ -79,11 +79,16 @@ int	set_attributes_object(t_attributes *att, t_object *object)
 		if (!isnan(att[i].height))
 			ft_memcpy(&object->height, &att[i].height, sizeof(double));
 		
-
+		vec3_normalize(object->dir);
 		//object->shading = att[i].shading;
 	}
-	set_mtw(object);
-	set_wtm(object);
+	if (object->type == CAMERA || object->type == LIGHT)
+		return (1);
+	printf("position: ");
+	print_vec(object->pos);
+	//printf("fov: [%f]\n", object->fov);
+	// set_mtw(object);
+	// set_wtm(object);
 	return (1);
 }
 
@@ -118,6 +123,7 @@ static void	set_dir(t_object *obj)
 	print_vec(obj->look_at);
 	print_vec(obj->pos);
 	obj->dir = vec3_subtract(obj->look_at, obj->pos);
+	vec3_normalize(obj->dir);
 	print_vec(obj->dir);
 }
 
@@ -125,65 +131,69 @@ static void	set_dir(t_object *obj)
 ** Matrix that will be used on ray to be thrown in Model Space.
 */
 
-static void	set_wtm(t_object *obj)
-{
-	//only for cone for now.
-	if (obj->type != CONE)
-		return ;
-	t_vec3	  rot;
-	t_matrix4 tmp;
+// static void	set_wtm(t_object *obj)
+// {
+// 	printf("set_wtm\n");
 
-	obj->wtm = new_identity_matrix4();
-	//scale for height
-	//scale for radius
-	tmp = new_identity_matrix4();
-	tmp[2][2] = obj->rad;
-	tmp[1][1] = obj->height;
-	obj->wtm = matrix4_product(obj->wtm, tmp);
-	//rotation for direction
-	tmp = new_identity_matrix4();
-	rot.x = atan2(obj->dir.y, obj->dir.z);
-	if (z >= 0)
-    	rot.y = -atan2(obj->dir.x * cos(rot.x), obj->dir.z );
- 	else
-    	rot.y = atan2(obj->dir.x * cos(rot.x), -obj->dir.z );
-	rot.z = atan2(cos(rot.x), sin(rot.x) * sin(rot.y));
-	obj->wtm = matrix4_product(obj->wtm, new_rotation_matrix4(rot.x, 'x'));
-	obj->wtm = matrix4_product(obj->wtm, new_rotation_matrix4(rot.y, 'y'));
-	obj->wtm = matrix4_product(obj->wtm, new_rotation_matrix4(rot.z, 'z'));
-	//translate for position
-	obj->wtm = matrix4_translation(obj->wtm, obj->pos);
-}
+// 	//only for cone for now.
+// 	// t_vec3	  rot;
+// 	t_matrix4	tmp;
+// 	t_vec3		v;
+// 	v.x = 0;
+// 	v.y = 1;
+// 	v.z = 0;
+
+// 	obj->wtm = new_identity_matrix4();
+// 	tmp = new_identity_matrix4();
+// 	//Apply translation
+// 	//Apply rotation
+// 	if (obj->type != SPHERE)
+// 		obj->wtm = matrix4_product(obj->mtw, get_rodrigues_matrix(v, obj->dir));
+// 	//Apply scale
+// 	obj->wtm = matrix4_product(obj->wtm, matrix4_translation(tmp, vec3_product(obj->pos, -1)));
+// 	obj->type == SPHERE || obj->type == CYLINDER ? tmp[0][0] = 1 / obj->rad : 0;
+// 	obj->type == SPHERE ? tmp[1][1] = 1 / obj->rad : 0;
+// 	obj->type == SPHERE || obj->type == CYLINDER ? tmp[2][2] = 1 / obj->rad : 0;
+// 	obj->type == CYLINDER || obj->type == CONE ? tmp[1][1] = 1 / obj->height : 0;
+// 	obj->wtm = matrix4_product(obj->wtm, tmp);
+// 	//translate for position
+// 	// ft_printf("%{red}");
+// 	// print_matrix(obj->wtm);
+// 	// ft_printf("%{}\n");
+// }
 
 /*
 ** Matrix that will be used on intersection position to convert back to World Space.
 */
 
-static void	set_mtw(t_object *obj)
-{
-	//only for cone for now.
-	if (obj->type != CONE)
-		return ;
-	t_vec3		rot;
-	t_matrix4 tmp;
+// static void	set_mtw(t_object *obj)
+// {
+// 	printf("set_mtw\n");
+// 	t_matrix4	tmp;
+// 	t_vec3		v;
+// 	v.x = 0;
+// 	v.y = 1;
+// 	v.z = 0;
 
-	obj->mtw = new_identity_matrix4();
-	//translate for position
-	obj->mtw = matrix4_translation(obj->mtw, vec3_product(obj->pos, -1));
-	//rotation for direction
-	rot.x = atan2(obj->dir.y, obj->dir.z);
-	if (z >= 0)
-    	rot.y = -atan2(obj->dir.x * cos(rot.x), obj->dir.z );
- 	else
-    	rot.y = atan2(obj->dir.x * cos(rot.x), -obj->dir.z );
-	rot.z = atan2(cos(rot.x), sin(rot.x) * sin(rot.y));
-	obj->mtw = matrix4_product(obj->mtw, new_rotation_matrix4(-rot.x, 'x'));
-	obj->mtw = matrix4_product(obj->mtw, new_rotation_matrix4(-rot.y, 'y'));
-	obj->mtw = matrix4_product(obj->mtw, new_rotation_matrix4(-rot.z, 'z'));
-	//scale for height
-	//scale for radius
-	tmp = new_identity_matrix4();
-	tmp[2][2] = 1 / obj->rad;
-	tmp[1][1] = 1 / obj->height;
-	obj->mtw = matrix4_product(obj->mtw, tmp);
-}
+// 	obj->mtw = new_identity_matrix4();
+// 	tmp = new_identity_matrix4();
+// 	//Apply rotation
+// 	tmp = matrix4_translation(tmp, obj->pos);
+// 	obj->mtw = matrix4_product(obj->mtw, tmp);
+// 	if (obj->type != SPHERE)
+// 		obj->mtw = matrix4_product(obj->mtw, get_rodrigues_matrix(v, obj->dir));
+// 	//Apply scale
+// 	obj->type == SPHERE ? tmp[0][0] = obj->rad : 0;
+// 	obj->type == SPHERE ? tmp[1][1] = obj->rad : 0;
+// 	obj->type == SPHERE ? tmp[2][2] = obj->rad : 0;
+// 	obj->type == CYLINDER || obj->type == CONE ? tmp[1][1] = obj->height : 0;
+// 	obj->mtw = matrix4_product(obj->mtw, tmp);
+// 	//Apply translation
+// 	// ft_printf("%{cyan}MTW matrix\n");
+// 	// print_matrix(obj->mtw);
+// 	// ft_printf("%{}");
+// 	// printf("\n");
+// 	// ft_printf("%{cyan}");
+// 	// print_matrix(obj->mtw);
+// 	// ft_printf("%{}");
+// }

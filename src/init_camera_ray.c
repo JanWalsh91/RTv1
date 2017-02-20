@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:05:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/14 14:48:26 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/18 18:19:38 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ t_ray	init_camera_ray(t_pt2 i, t_scene *scene)
 	pix.y = (1 - 2 * (i.y + 0.5) / (float)scene->res.y) * cam->scale;
 	pix.z = CAM_IMG_PANE_DIST; //distance of image screen from camera origin.
 	cam_ray.dir = vec3_normalize(pix);
-	// if (i.x == 0 && i.y == 0)
-	// {
-	// 	printf("pix vec: ");
-	// 	print_vec(pix);
-	// }
+	if (i.x == 0 && i.y == 0)
+	{
+		printf("pix vec: ");
+		print_vec(pix);
+	}
 	//set cam_ray origin in world space.
-	cam_ray.origin = cam->pos;
-	//transform the ray.dir to world space (a common space where all object are).
-	cam_ray.dir = vec3_matrix4_product(cam_ray.dir, cam->ctw);
-	cam_ray.dir = vec3_normalize(cam_ray.dir);
+	// cam_ray.origin = cam->pos;
+	cam_ray.origin.x = 0;
+	cam_ray.origin.y = 0;
+	cam_ray.origin.z = 0;
 	if (i.x == 0 && i.y == 0)
 	{
 		printf("cam origin: ");
@@ -45,6 +45,18 @@ t_ray	init_camera_ray(t_pt2 i, t_scene *scene)
 		printf("cam dir: ");
 		print_vec(cam_ray.dir);
 	}
-
+	//transform the ray.dir to world space (a common space where all object are).
+	cam_ray.origin = pvec3_matrix4_product(cam_ray.origin, cam->ctw);
+	cam_ray.dir = vec3_matrix4_product(cam_ray.dir, cam->ctw);
+	cam_ray.dir = vec3_normalize(cam_ray.dir);
+	if (i.x == 0 && i.y == 0)
+	{
+		printf("---after ctw matrix:\ncam origin: ");
+		print_vec(cam_ray.origin);
+		printf("cam dir: ");
+		print_vec(cam_ray.dir);
+		printf("CtW: \n");
+		print_matrix(cam->ctw);
+	}
 	return (cam_ray);
 }

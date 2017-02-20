@@ -1,17 +1,24 @@
-resolution: 500, 300
+resolution: 500, 500
 scene: scene1
 {
-	cone: my cone
+	sphere: sphere
 	{
-		position: -10, 10, 60
-		direction: 0, 1, 0
-		radius: 10
-		height: 100
-		color: 150, 50, 100
+		position: 5, 2, 7
+		radius: 5
+		color: 150, 150, 200
+	}
+	cylinder: BLUE CONE
+	{
+		position: 5, 0, -5
+		direction: 0, 1, -4
+		radius: 2
+		height: 20
+		angle: 50
+		color: 50, 50, 200
 	}
 	camera: cam1
 	{
-		pos: 0, 0, -80
+		pos: 0, 0, -50
 		look at: 0, 0, 0
 	}
 }

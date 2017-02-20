@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/15 17:09:46 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/20 14:30:15 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,13 @@ typedef	struct		s_ray
 {
 	t_vec3		origin; //point of origin
 	t_vec3		dir; //must be normalized
+	double		root1;
+	double		root2;
+	// t_vec3		origin2;
+	// t_vec3		dir2;
 	float		t; // closest valid intersection
+	t_vec3		i; // interection points in World View
+	t_vec3		n; //normal at intersection point
 	t_color		col; // color found
 }					t_ray;
 
@@ -121,9 +127,9 @@ typedef struct	s_object
     t_color			col;	
     t_shading		shading;
 	t_color			**pixel_map;
-	t_matrix4		ctw;
-	t_matrix4		mtw;
-	t_matrix4		wtm;
+	t_matrix4		ctw; //camera to world matrix (only for cameras)
+	// t_matrix4		mtw; //model to world matrix (only for objects in scene)
+	// t_matrix4		wtm; //world to model matrix (only for objects in scene)
 	float			scale;
 	float			fov;
 	struct s_object	*next;
@@ -150,6 +156,20 @@ typedef struct		s_incr
 	float			g;
 	float			b;
 }					t_incr;
+
+typedef struct		s_intersection_tools
+{
+	t_vec3			q; //quadratic equation components
+	double			r1;
+	double			r2; // quadratic equation solutions (roots)
+	double			t; // final solution (closest intersection point)
+	t_vec3			p; //tmp point.
+	t_vec3			v1;
+	t_vec3			v2;
+	t_vec3			v3; //extra tmp vectors.
+	double			d1;
+	double			d2; //extra tmp doubles.
+}					t_intersection_tools;
 
 typedef struct		s_draw_tools
 {
@@ -227,8 +247,12 @@ int			get_intersection(t_ray *ray, t_object *obj);
 int			get_sphere_intersection(t_ray *ray, t_object *obj);
 int			get_plane_intersection(t_ray *ray, t_object *obj);
 int			get_cylinder_intersection(t_ray *ray, t_object *obj);
+int			get_finite_cylinder_intersection(t_ray *ray, t_object *obj, t_intersection_tools *i);
+int			get_cyclinder_caps_intersection(t_ray *ray, t_object *obj, t_intersection_tools *i);
 int			get_cone_intersection(t_ray *ray, t_object *obj);
-int			solve_quadratic(t_vec3 q, double *t, t_ray *ray);
+int			get_caps_intersection(t_ray *ray, t_object *obj, double *t);
+int			get_disc_intersection(t_ray *ray, t_object *disc);
+int			solve_quadratic(t_vec3 q, double *r1, double *r2);
 
 /*
 ** SDL2 Functions
@@ -261,6 +285,6 @@ void	print_scenes(t_scene *scenes_head);
 void	print_input(t_list **list_head);
 void	print_attributes(t_attributes att);
 void	print_vec(t_vec3 vec);
-
+void	print_matrix(t_matrix4 m);
 
 #endif
