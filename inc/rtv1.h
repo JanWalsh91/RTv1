@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/20 14:30:15 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/21 12:04:33 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include "/Users/jwalsh/.brew/include/SDL2/SDL.h"
 # include "../Libft/inc/libft.h"
 # include "../Libft/inc/ft_printf.h"  //?
-# include "../Libmathft/libmathft.h"
+# include "../Libmathft/inc/libmathft.h"
 # include "keycode_mac.h"
 # include "colors.h"
 

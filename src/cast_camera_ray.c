@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 10:57:18 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/20 15:16:52 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/21 12:05:11 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_color	cast_camera_ray(t_ray *cam_ray, t_scene *scene)
 {
 	// printf("CAST_CAMERA_RAY\n");
 	t_color		col;
-	t_object *obj;	
+	t_object *obj;
 	double		t;
 
 	t = INFINITY;
