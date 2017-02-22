@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 13:50:57 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 14:08:43 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/22 14:33:39 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@ int	reset_attributes(t_attributes *att)
 	set_vec_to_nan(&(*att).pos);
 	set_vec_to_nan(&(*att).dir);
 	set_vec_to_nan(&(*att).look_at);
-	(*att).col.r = INT_MAX;
-	(*att).col.g = INT_MAX;
-	(*att).col.b = INT_MAX;
+	(*att).col.x = INT_MAX;
+	(*att).col.y = INT_MAX;
+	(*att).col.z = INT_MAX;
 	(*att).rad = NAN;
 	(*att).angle = NAN;
 	(*att).height = NAN;
+	(*att).intensity = NAN;
 	print_attributes(*att);
 	return(1);
 }

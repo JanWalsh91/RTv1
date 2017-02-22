@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 15:36:08 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/18 13:20:12 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/21 14:42:00 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	init_cameras(t_scene *scene)
 		while (++x < scene->res.y)
 			if (!(c_ptr->pixel_map[x] = (t_color *)ft_memalloc(scene->res.x * sizeof(t_color))))
 				ft_error_exit("Malloc error");
-		c_ptr->ctw = new_identity_matrix4();
+		c_ptr->ctw = m_new_identity();
 		update_camera_scale(c_ptr);
 		update_camera_ctw(c_ptr);
 		c_ptr = c_ptr->next;
@@ -63,7 +63,7 @@ int	update_camera_ctw(t_object *camera)
 	tmp.x = 0;
 	tmp.y = 0;
 	tmp.z = 1;
-	camera->ctw = get_rodrigues_matrix(camera->dir, tmp);
+	camera->ctw = m_new_rodriguez(camera->dir, tmp);
 	camera->ctw[0][3] = camera->pos.x;
 	camera->ctw[1][3] = camera->pos.y;
 	camera->ctw[2][3] = camera->pos.z;

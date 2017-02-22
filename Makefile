@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/02/15 17:10:46 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/02/22 11:06:16 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,14 @@ LIBMATH_PATH = Libmathft/
 
 SRC_NAME =	main \
 			cast_camera_ray \
+			cast_shadow_ray \
 			draw_image \
 			error_line_exit \
 			extract_cameras_lights \
 			get_file \
 			get_new_object \
 			get_new_scene \
+			get_normal \
 			get_intersection \
 			handle_sdl_events \
 			init_attributes \

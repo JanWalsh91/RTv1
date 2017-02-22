@@ -1,13 +1,37 @@
-resolution: 100, 100
+resolution: 1000, 1000
 scene: scene1
 {
-	cylinder: sphere
+	sphere: PURPLE
 	{
-		position: 2, 0, 5
-		radius: 2
-		color: 135,206, 250
+		position: 0, 0, 2
+		radius: 8
+		color: 250, 0, 150
 	}
-camera: cam1
+	sphere: BLUE
+	{
+		position: 1, 10, 0
+		radius: 9
+		color: 0,150, 250
+	}
+	sphere: GREEN
+	{
+		position: -9, 10, 20
+		radius: 9
+		color: 0, 150, 100 
+	}
+	light: l
+	{
+		position: 0, 0, -20
+		color: 0, 200, 200
+		intensity: 1
+	}
+	sphere: bounding sphere
+	{
+		position: 0, 0, 0
+		radius: 150
+		color: 50, 50, 50 
+	}
+	camera: cam1
 	{
 		pos: 0, 0, -100
 		look at: 0, 0, 0

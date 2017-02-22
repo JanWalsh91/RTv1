@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/06 17:05:45 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/21 14:40:22 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,9 @@ t_scene	*get_new_scene(char *name)
 		printf("name given\n");
 		new_scene->name = ft_strdup(name);
 	}
-
 	new_scene->objects = NULL;
 	new_scene->cameras = NULL;
 	new_scene->lights = NULL;
-
 	printf("new scene name: [%s]\n", new_scene->name);
 	printf("\n");
 	return (new_scene);

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 13:30:31 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/18 18:24:24 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/22 14:31:12 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 static int	set_default_scene_values(t_scene *scene);
 static int	set_default_object_values(t_object *object);
-// static void	set_mtw(t_object *obj);
-// static void	set_wtm(t_object *obj);
 
 /*
 ** Gives user-defiend attributes to a scene.
@@ -61,16 +59,16 @@ int	set_attributes_object(t_attributes *att, t_object *object)
 	set_default_object_values(object);
 	while (++i < 3)
 	{
-		if (!vec3_isnan(att[i].pos))
+		if (!v_isnan(att[i].pos))
 			ft_memcpy(&object->pos, &att[i].pos, sizeof(t_vec3));
-		if (!vec3_isnan(att[i].dir))
+		if (!v_isnan(att[i].dir))
 			ft_memcpy(&object->dir, &att[i].dir, sizeof(t_vec3));
-		if (!vec3_isnan(att[i].look_at))
+		if (!v_isnan(att[i].look_at))
 		{
 			ft_memcpy(&object->look_at, &att[i].look_at, sizeof(t_vec3));
 			set_dir(object);
 		}
-		if (!isnan(att[i].col.r) && !isnan(att[i].col.g) && !isnan(att[i].col.b))
+		if (!isnan(att[i].col.x) && !isnan(att[i].col.y) && !isnan(att[i].col.z))
 			ft_memcpy(&object->col, &att[i].col, sizeof(t_color));
 		if (!isnan(att[i].rad))
 			ft_memcpy(&object->rad, &att[i].rad, sizeof(double));
@@ -78,8 +76,9 @@ int	set_attributes_object(t_attributes *att, t_object *object)
 			ft_memcpy(&object->angle, &att[i].angle, sizeof(double));
 		if (!isnan(att[i].height))
 			ft_memcpy(&object->height, &att[i].height, sizeof(double));
-		
-		vec3_normalize(object->dir);
+		if (!isnan(att[i].intensity))
+			ft_memcpy(&object->intensity, &att[i].intensity, sizeof(double));
+		object->dir = v_norm(object->dir);
 		//object->shading = att[i].shading;
 	}
 	if (object->type == CAMERA || object->type == LIGHT)
@@ -110,9 +109,9 @@ static int	set_default_object_values(t_object *object)
 	object->dir.x = DEFAULT_DIR_X;
 	object->dir.y = DEFAULT_DIR_Y;
 	object->dir.z = DEFAULT_DIR_Z;
-	object->col.r = 0xff;
-	object->col.g = 0xff;
-	object->col.b = 0xff;
+	object->col.x = 0xff;
+	object->col.y = 0xff;
+	object->col.z = 0xff;
 	object->fov = DEFAULT_FOV;
 	//... add obj attributes here ...
 	return (1);
@@ -122,8 +121,8 @@ static void	set_dir(t_object *obj)
 {
 	print_vec(obj->look_at);
 	print_vec(obj->pos);
-	obj->dir = vec3_subtract(obj->look_at, obj->pos);
-	vec3_normalize(obj->dir);
+	obj->dir = v_sub(obj->look_at, obj->pos);
+	v_norm(obj->dir);
 	print_vec(obj->dir);
 }
 
@@ -137,20 +136,20 @@ static void	set_dir(t_object *obj)
 
 // 	//only for cone for now.
 // 	// t_vec3	  rot;
-// 	t_matrix4	tmp;
+// 	t_matrix	tmp;
 // 	t_vec3		v;
 // 	v.x = 0;
 // 	v.y = 1;
 // 	v.z = 0;
 
-// 	obj->wtm = new_identity_matrix4();
-// 	tmp = new_identity_matrix4();
+// 	obj->wtm = m_new_identity();
+// 	tmp = m_new_identity();
 // 	//Apply translation
 // 	//Apply rotation
 // 	if (obj->type != SPHERE)
-// 		obj->wtm = matrix4_product(obj->mtw, get_rodrigues_matrix(v, obj->dir));
+// 		obj->wtm = matrix4_product(obj->mtw, m_new_rodriguez(v, obj->dir));
 // 	//Apply scale
-// 	obj->wtm = matrix4_product(obj->wtm, matrix4_translation(tmp, vec3_product(obj->pos, -1)));
+// 	obj->wtm = matrix4_product(obj->wtm, matrix4_translation(tmp, v_scale(obj->pos, -1)));
 // 	obj->type == SPHERE || obj->type == CYLINDER ? tmp[0][0] = 1 / obj->rad : 0;
 // 	obj->type == SPHERE ? tmp[1][1] = 1 / obj->rad : 0;
 // 	obj->type == SPHERE || obj->type == CYLINDER ? tmp[2][2] = 1 / obj->rad : 0;
@@ -169,19 +168,19 @@ static void	set_dir(t_object *obj)
 // static void	set_mtw(t_object *obj)
 // {
 // 	printf("set_mtw\n");
-// 	t_matrix4	tmp;
+// 	t_matrix	tmp;
 // 	t_vec3		v;
 // 	v.x = 0;
 // 	v.y = 1;
 // 	v.z = 0;
 
-// 	obj->mtw = new_identity_matrix4();
-// 	tmp = new_identity_matrix4();
+// 	obj->mtw = m_new_identity();
+// 	tmp = m_new_identity();
 // 	//Apply rotation
 // 	tmp = matrix4_translation(tmp, obj->pos);
 // 	obj->mtw = matrix4_product(obj->mtw, tmp);
 // 	if (obj->type != SPHERE)
-// 		obj->mtw = matrix4_product(obj->mtw, get_rodrigues_matrix(v, obj->dir));
+// 		obj->mtw = matrix4_product(obj->mtw, m_new_rodriguez(v, obj->dir));
 // 	//Apply scale
 // 	obj->type == SPHERE ? tmp[0][0] = obj->rad : 0;
 // 	obj->type == SPHERE ? tmp[1][1] = obj->rad : 0;

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 16:41:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 14:11:21 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/22 14:29:57 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,13 +109,13 @@ int	parse_color(t_color *col, char *s, size_t line)
 	s2 = split_trim(s, ',');
 	if (!s2[0] || !s2[1] || !s2[2])
 		error_line_exit("color formatting error", line);
-	col->r = ft_atoi(s2[0]);
-	col->g = ft_atoi(s2[1]);
-	col->b = ft_atoi(s2[2]);
-	if (col->r < 0 || col->g < 0 || col->b < 0 ||
-		col->r > 255 || col->g > 255 || col->b > 255)
+	col->x = ft_atoi(s2[0]);
+	col->y = ft_atoi(s2[1]);
+	col->z = ft_atoi(s2[2]);
+	if (col->x < 0 || col->y < 0 || col->z < 0 ||
+		col->x > 255 || col->y > 255 || col->z > 255)
 		error_line_exit("color formatting error", line);
-	printf("	parse_color end r: [%i] g: [%i] b: [%i]\n", col->r, col->g, col->b);
+	printf("	parse_color end r: [%f] g: [%f] b: [%f]\n", col->x, col->y, col->z);
 	return(1);
 }
 
@@ -136,5 +136,15 @@ int	parse_height(double *height, char *s, size_t line)
 		*height = ft_atod(s);
 	else
 		error_line_exit("height formatting error", line);
+	return (1);
+}
+
+int	parse_intensity(double *intensity, char *s, size_t line)
+{
+	printf("	parse_intensity: [%s]\n", s);
+	if (s)
+		*intensity = ft_atod(s);
+	else
+		error_line_exit("intensity formatting error", line);
 	return (1);
 }

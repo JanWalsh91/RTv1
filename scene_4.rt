@@ -9,10 +9,10 @@ scene: scene1
 	}
 	cylinder: BLUE CYLINDER
 	{
-		position: 1, -2, 5
+		position: -1, -2, 5
 		direction: 1, 0.5, 5
 		radius: 1
-		height: 1
+		height: 30
 		color: 00, 50, 250
 	}
 	cylinder: YELLOW CYLINDER
@@ -20,12 +20,12 @@ scene: scene1
 		position: 1, -2, 5
 		direction: -2, 1, 0
 		radius: 1
-		height: 1
+		height: 5
 		color: 250, 250, 0
 	}
 	cylinder: RED CYLINDER
 	{
-		position: 1, -2, 5
+		position: 1, 2, 5
 		direction: 1, 2, 0
 		radius: 1
 		height: 1
@@ -33,15 +33,20 @@ scene: scene1
 	}
 	cylinder: GREEN CYLINDER
 	{
-		position: 1, -2, 5
+		position: -1, 2, 5
 		direction: 1, -2, 0
 		radius: 1
 		height: 1
 		color: 0, 250, 250
 	}
+	light: mylight
+	{
+		position; 50, 50, 0
+		color: 255, 255, 255 
+	}
 	camera: cam1
 	{
-		pos: 0, 0, -50
+		pos: 0, 0, -20
 		look at: 0, 0, 0
 	}
 }

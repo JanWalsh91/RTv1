@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 17:13:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/15 17:35:38 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/22 14:30:54 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	print_scenes(t_scene *scenes_head)
 			printf("	object name: [%s]\n", o_ptr->name);
 			printf("		object type: [%i]\n", o_ptr->type);
 			printf("		object pos: [%f] [%f] [%f]\n", o_ptr->pos.x, o_ptr->pos.y, o_ptr->pos.z);
-			printf("		object col: [%i] [%i] [%i]\n", o_ptr->col.r, o_ptr->col.g, o_ptr->col.b);
+			printf("		object col: [%f] [%f] [%f]\n", o_ptr->col.x, o_ptr->col.y, o_ptr->col.z);
 			printf("		object dir: [%f] [%f] [%f]\n", o_ptr->dir.x, o_ptr->dir.y, o_ptr->dir.z);
 			if (o_ptr->type == SPHERE)
 				printf("		object rad: [%f]\n", o_ptr->rad);
@@ -105,7 +105,7 @@ void	print_vec(t_vec3 vec)
 	
 // }
 
-void	print_matrix(t_matrix4 m)
+void	print_matrix(t_matrix m)
 {
 	int i;
 	int	y;

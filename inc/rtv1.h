@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/21 12:04:33 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/22 15:23:40 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 # define DEFAULT_FOV 45
 # define DEFAULT_
 # define CAM_IMG_PANE_DIST 1
+# define BIAS 0.01
 
 /*
 ** Instructions
@@ -58,12 +59,20 @@
 # define INSTRUCTIONS_W 600
 # define LINE_0 "RTv1 instructions:"
 
-typedef struct			s_color
+//Keep in same order.
+# define OBJECTS "camera,light,plane,sphere,cylinder,cone"
+# define OBJECT_COUNT 6
+typedef enum		e_type
 {
-	int			r;
-	int			g;
-	int			b;
-}						t_color;
+	CAMERA = 1,
+	LIGHT = 2,
+	PLANE = 3,
+	SPHERE = 4,
+	CYLINDER = 5,
+	CONE = 6
+}					t_type;
+
+typedef t_vec3			t_color;
 
 typedef	struct		s_ray
 {
@@ -73,9 +82,10 @@ typedef	struct		s_ray
 	double		root2;
 	// t_vec3		origin2;
 	// t_vec3		dir2;
-	float		t; // closest valid intersection
-	t_vec3		i; // interection points in World View
-	t_vec3		n; //normal at intersection point
+	double		t; // closest valid intersection
+	t_vec3		hit; // interection points in World View
+	t_type		hit_type;
+	t_vec3		nhit; //normal at intersection point
 	t_color		col; // color found
 }					t_ray;
 
@@ -97,21 +107,10 @@ typedef struct		s_attributes
 	double		rad;
 	double		angle;
 	double		height;
+	double		intensity;
 }					t_attributes;
 
 
-//Keep in same order.
-# define OBJECTS "camera,light,plane,sphere,cylinder,cone"
-# define OBJECT_COUNT 6
-typedef enum		e_type
-{
-	CAMERA = 1,
-	LIGHT = 2,
-	PLANE = 3,
-	SPHERE = 4,
-	CYLINDER = 5,
-	CONE = 6
-}					t_type;
 
 typedef struct	s_object
 {
@@ -124,12 +123,13 @@ typedef struct	s_object
     t_vec3			pos;
     t_vec3			dir;
 	t_vec3			look_at;
-    t_color			col;	
+    t_color			col;
+	double			intensity;
     t_shading		shading;
 	t_color			**pixel_map;
-	t_matrix4		ctw; //camera to world matrix (only for cameras)
-	// t_matrix4		mtw; //model to world matrix (only for objects in scene)
-	// t_matrix4		wtm; //world to model matrix (only for objects in scene)
+	t_matrix		ctw; //camera to world matrix (only for cameras)
+	// t_matrix		mtw; //model to world matrix (only for objects in scene)
+	// t_matrix		wtm; //world to model matrix (only for objects in scene)
 	float			scale;
 	float			fov;
 	struct s_object	*next;
@@ -222,6 +222,7 @@ int			parse_color(t_color *col, char *s, size_t line);
 int			parse_radius(double *rad, char *s, size_t line);
 int			parse_angle(double *angle, char *s, size_t line);
 int			parse_height(double *height, char *s, size_t line);
+int			parse_intensity(double *intensity, char *s, size_t line);
 char 		**split_trim(char *s, char c);
 t_scene		*get_new_scene(char *name);
 t_object	*get_new_object(char *scene_name, char *name, char *type);
@@ -243,6 +244,21 @@ int			rtv1(t_scene **scenes);
 int		 	draw_image(t_scene *scene);
 t_ray		init_camera_ray(t_pt2 i, t_scene *scene);
 t_color		cast_camera_ray(t_ray *cam_ray, t_scene *scene);
+void		update_ray(t_ray *ray, t_object *obj, double *t);
+t_vec3		get_normal(t_ray *ray, t_object *obj);
+void		cast_shadow_ray(t_ray *cam_ray, t_object *obj, t_scene *scene);
+
+/*
+** SDL2 Functions
+*/
+
+int			init_sdl(t_scene *scene, t_env *env);
+int			handle_sdl_events(t_scene *scenes, t_env *env);
+
+/*
+** Intersection functions.
+*/
+
 int			get_intersection(t_ray *ray, t_object *obj);
 int			get_sphere_intersection(t_ray *ray, t_object *obj);
 int			get_plane_intersection(t_ray *ray, t_object *obj);
@@ -253,17 +269,6 @@ int			get_cone_intersection(t_ray *ray, t_object *obj);
 int			get_caps_intersection(t_ray *ray, t_object *obj, double *t);
 int			get_disc_intersection(t_ray *ray, t_object *disc);
 int			solve_quadratic(t_vec3 q, double *r1, double *r2);
-
-/*
-** SDL2 Functions
-*/
-
-int			init_sdl(t_scene *scene, t_env *env);
-int			handle_sdl_events(t_scene *scenes, t_env *env);
-
-/*
-** List Managment Functions
-*/
 
 /*
 ** Free Functions
@@ -285,6 +290,6 @@ void	print_scenes(t_scene *scenes_head);
 void	print_input(t_list **list_head);
 void	print_attributes(t_attributes att);
 void	print_vec(t_vec3 vec);
-void	print_matrix(t_matrix4 m);
+void	print_matrix(t_matrix m);
 
 #endif

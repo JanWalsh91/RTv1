@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/29 12:25:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 14:11:31 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/21 17:03:46 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,10 @@ static void parse_attribute(char **s, t_attributes *att, size_t line)
 		parse_angle(&(att->angle), s[1], line);
 	else if (ft_strcmp_percent(s[0], "height", 1))
 		parse_height(&(att->height), s[1], line);
-	else if (ft_strcmp_percent(s[0], "look at", 0.3))
+	else if (ft_strcmp_percent(s[0], "look at", 0.5))
 		parse_look_at(&(att->look_at), s[1], line);
+	else if (ft_strcmp_percent(s[0], "intensity", 0.5))
+		parse_intensity(&(att->intensity), s[1], line);
 	else
 		error_line_exit("Formatting error: invalid attribute name", line);
 	printf("\n");

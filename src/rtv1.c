@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 10:39:56 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/07 15:23:21 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/22 14:32:39 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int rtv1(t_scene **scenes)
 		while (x < (*scenes)->res.x)
 		{
 			col = (*scenes)->cameras->pixel_map[y][x];
-			SDL_SetRenderDrawColor(env.ren, col.r, col.g, col.b, SDL_ALPHA_OPAQUE);
+			SDL_SetRenderDrawColor(env.ren, col.x, col.y, col.z, SDL_ALPHA_OPAQUE);
 			SDL_RenderDrawPoint(env.ren, x, y);
 			++x;
 		}
