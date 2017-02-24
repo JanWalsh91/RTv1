@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/23 14:24:59 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/24 16:22:09 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <pthread.h>
 # include <limits.h>
+# include <stdbool.h>
 # include "/Users/jwalsh/.brew/include/SDL2/SDL.h"
 # include "../Libft/inc/libft.h"
 # include "../Libft/inc/ft_printf.h"  //?
@@ -58,6 +59,54 @@
 # define INSTRUCTIONS_H 512
 # define INSTRUCTIONS_W 600
 # define LINE_0 "RTv1 instructions:"
+
+# define TYPES "{,},scene,camera,light,plane,sphere,cylinder,cone,resolution,\
+ray depth,background color,position,direction,rotation,look_at,color,radius,\
+height,refraction,reflection,specular,transparency,fov,intensity,import,read"
+typedef enum		e_token
+{
+	T_OPEN_BRACKET,
+	T_CLOSE_BRACKET,
+	//scene
+	T_SCENE,
+	//objects
+	T_CAMERA,
+	T_LIGHT,
+	T_PLANE,
+	T_SPHERE,
+	T_CYLINDER,
+	T_CONE,
+	// T_TORUS,
+	// T_CUBE, 
+	//attributes scene
+	T_RESOLUTION,
+	T_RAY_DEPTH,
+	T_BACKGROUND_COLOR,
+	//attributes objects
+	T_POSITION,
+	T_DIRECTION,
+	T_ROTATION,
+	T_LOOK_AT,
+	T_COLOR,
+	T_RADIUS,
+	T_HEIGHT,
+	T_REFRACTION, //angle of refraction
+	T_REFLECTION, //0 does not reflect, 1 perfectly reflects. Reflection for objects
+	T_SPECULAR, //reflection for lights. 0 - 1
+	T_TRANSPARENCY,
+	//attribtues camera
+	T_FOV,
+	//attribtues light
+	T_INTENSITY,
+	//io
+	T_IMPORT_RT_FILE,
+	T_READ_RT_FILE,
+	T_READ_OBJ_FILE, 
+	T_READ_TEXTURE_FILE,
+	T_READ_MATERIAL_FILE,
+	T_COUNT
+}					t_token;
+
 
 //Keep in same order.
 # define OBJECTS "camera,light,plane,sphere,cylinder,cone"
@@ -102,7 +151,7 @@ typedef struct		s_attributes
 	t_vec3		dir;
 	t_vec3		look_at;
 	t_color		col;
-	t_shading	shading;
+	t_shading	shading;// ???
 	double		fov;
 	double		rad;
 	double		angle;
@@ -147,6 +196,30 @@ typedef struct	s_scene
 
     struct s_scene	*next;
 }				t_scene;
+
+typedef	struct		s_input
+{
+	int				token;
+	char			*value;
+	char			*file_name;
+	size_t			line_number;
+	struct s_input	*next;
+}					t_input;
+
+typedef struct		s_parse_tools
+{
+	bool			in_scene;
+	bool			in_object;
+	t_list			**input;
+	int				fd;
+	char			*file_name;
+	t_attributes 	**att;
+	char 			*key;
+	char			*value;
+	char			*types;
+	char			*objects;
+
+}					t_parse_tools;
 
 typedef struct		s_incr
 {
@@ -209,7 +282,9 @@ typedef struct		s_th
 ** File Parsing Functions
 */
 
-int			get_file(char *file_name, t_list **input);
+// int			get_file(char *file_name, t_list **input);
+int			get_file(char *file_name, t_input **input);
+int			get_token(char *key);
 int			set_line_count(t_list **input);
 int			parse_input(t_scene **scenes, t_list **input);
 int			init_attributes(t_attributes **att);
@@ -273,6 +348,13 @@ int			solve_quadratic(t_vec3 q, double *r1, double *r2);
 /*
 ** Free Functions
 */
+
+/*
+** List management Functions
+*/
+
+void		input_pushback(t_input **input, t_input *n);
+t_input		*input_new(char *line, char *file_name, int fd, t_input **input);
 
 /*
 ** Error Functions

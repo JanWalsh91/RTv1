@@ -1,22 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   t_object_del.c                                     :+:      :+:    :+:   */
+/*   input_pushback.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/04 17:14:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/04 17:21:27 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/02/24 15:02:03 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/02/24 15:03:30 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/rtv1.h"
+/*
+** Adds an elements to the end of a list.
+*/
 
-void	t_object_del(t_object **objects_head, t_object *object)
+#include "../../inc/rtv1.h"
+
+void	input_pushback(t_input **input, t_input *n)
 {
-	//if the first elemet in objects_head matched object, free and adjust obj_head
-	//iterate through objects_head until objects_head->next is the object to remove.
-	//store pointer to object to free
-	//adjust objects_head->next
-	//free stored pointer
+	t_input	*ptr;
+
+	ptr = *input;
+	if (n)
+	{
+		if (!*input)
+			*input = n;
+		else
+		{
+			while (ptr->next)
+				ptr = ptr->next;
+			ptr->next = n;
+		}
+	}
 }

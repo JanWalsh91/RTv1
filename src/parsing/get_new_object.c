@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/12 14:11:16 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/24 14:24:31 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	get_type(char *type);
 
 t_object	*get_new_object(char *scene_name, char *name, char *type)
 {
-	printf("GET_NEW_OBJECT: [%s]\n", name);
+	// printf("GET_NEW_OBJECT: [%s]\n", name);
 	t_object 	*new_object;
 	static int	i = 1;
 	static char	*current_scene_name = NULL;
@@ -34,10 +34,10 @@ t_object	*get_new_object(char *scene_name, char *name, char *type)
 	ft_bzero(new_object, sizeof(t_object));
 	if (!name)
 	{
-		printf("no name given\n");
+		// printf("no name given\n");
 		if (!current_scene_name) //if first scene ...
 		{
-			printf("update current_scene_name\n");
+			// printf("update current_scene_name\n");
 			current_scene_name = scene_name;
 		}
 		else if (ft_strcmp(current_scene_name, scene_name)) //if on new scene
@@ -49,10 +49,10 @@ t_object	*get_new_object(char *scene_name, char *name, char *type)
 		new_object->name = ft_strdup(name);
 	new_object->type = get_type(type);
 	//printf("end get_new_object\n");
-	printf("current_scene_name: [%s]", current_scene_name);
-	printf("	scene_name: [%s]\n", scene_name);
-	printf("end get_new_object: object name: [%s]\n", new_object->name);
-	printf("\n");
+	// printf("current_scene_name: [%s]", current_scene_name);
+	// printf("	scene_name: [%s]\n", scene_name);
+	// printf("end get_new_object: object name: [%s]\n", new_object->name);
+	// printf("\n");
 	return (new_object);
 }
 

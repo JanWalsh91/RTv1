@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/09 11:25:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/21 14:45:38 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/24 10:59:44 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 int	set_line_count(t_list **input)
 {
-	P("SET_LINE_COUNT\n")
+	// P("SET_LINE_COUNT\n")
 	static int	i = 0;
 	t_list *ptr;
 

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 13:50:57 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/22 14:33:39 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/24 14:27:58 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	set_vec_to_nan(t_vec3 *v);
 
 int	reset_attributes(t_attributes *att)
 {
-	printf("RESET_ATTRIBUTES\n");
+	// printf("RESET_ATTRIBUTES\n");
 	(*att).res.x = INT_MAX;
 	(*att).res.y = INT_MAX;
 	(*att).ray_depth = INT_MAX;
@@ -34,7 +34,7 @@ int	reset_attributes(t_attributes *att)
 	(*att).angle = NAN;
 	(*att).height = NAN;
 	(*att).intensity = NAN;
-	print_attributes(*att);
+	// print_attributes(*att);
 	return(1);
 }
 

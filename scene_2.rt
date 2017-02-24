@@ -27,3 +27,5 @@ scene: scene1
 		look at: 0, 0, 0
 	}
 }
+
+add file: scene_5.rt

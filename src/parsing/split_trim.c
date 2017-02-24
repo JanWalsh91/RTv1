@@ -1,30 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_attributes.c                                  :+:      :+:    :+:   */
+/*   split_trim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/30 15:30:40 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/06 16:12:28 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/30 15:22:02 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/02/24 14:26:33 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/rtv1.h"
 
 /*
-** Initializes global, scene and element attributes.
+** Splits and trims lines from the input file.
+** Puts the first string (type) in lowercase.
 */
 
-int	init_attributes(t_attributes **att)
+char 	**split_trim(char *s, char c)
 {
-	int	i;
-
-	printf("INIT_ATTRIBUTES\n");
-	if (!(*att = (t_attributes *)ft_memalloc(sizeof(t_attributes) * 3)))
-		ft_error_exit("Malloc error");
+	char	**result;
+	int		i;
+	
 	i = -1;
-	while (++i < 3)
-		reset_attributes(&((*att)[i]));
-	return (1);
+	result = ft_strsplit(s, c);
+	free(s);
+	while (result && result[++i])
+		result[i] = ft_strtrim(result[i]);
+	ft_strtolower(result[0]);
+	return (result);
 }

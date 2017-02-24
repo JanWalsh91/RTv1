@@ -1,36 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_trim.c                                       :+:      :+:    :+:   */
+/*   main.1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/30 15:22:02 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/12 14:16:31 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/27 15:57:15 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/02/24 16:37:51 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/rtv1.h"
 
 /*
-** Splits and trims lines from the input file.
-** Puts the first string (type) in lowercase.
+** Checks arg count, parses and prepares data, and send data to rtv1.
 */
 
-char 	**split_trim(char *s, char c)
+int	main(int ac, char **av)
 {
-	char	**result;
+	t_input	*input;
+	t_scene	*scenes;
 	int		i;
-	
-	i = -1;
-	//printf("split_trim: [%s] [%c]\n", s, c);
-	result = ft_strsplit(s, c);
-	free(s);
-	while (result && result[++i])
+
+	input = NULL;
+	scenes = NULL;
+	ac < 2 ? ft_display_usage_exit("usage") : 0;
+	i = 0;
+	while (++i < ac)
+		get_file(av[i], &input);
+	i = 0;
+	while (++i < ac)
 	{
-		result[i] = ft_strtrim(result[i]);
-		ft_strtolower(result[i]);
+		parse_input(&scenes, &input);
+		//check_data;
 	}
-	//printf("split trim result: [%s] and [%s]\n", result[0], result[1]);
-	return (result);
+	//free input.
+	print_scenes(scenes);
+	rtv1(&scenes);
+	return (0);
 }

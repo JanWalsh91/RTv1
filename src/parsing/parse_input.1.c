@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_input.c                                      :+:      :+:    :+:   */
+/*   parse_input.1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/29 12:25:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/21 17:03:46 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/24 16:37:59 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,12 @@ static void parse_attribute(char **s, t_attributes *att, size_t line);
 ** Updates the t_list scenes.
 */
 
-int	parse_input(t_scene **scenes_head, t_list **input)
+int	parse_input(t_scene **scenes_head, t_input **input)
 {
     t_attributes	*att;
 	char			**s1;
 	
-	printf("PARSE_INPUT\n");
-	//print_input(input);
+	// printf("PARSE_INPUT\n");
 	att = NULL;
 	if (!(init_attributes(&att)))
 		ft_error_exit("Malloc error");
@@ -35,52 +34,46 @@ int	parse_input(t_scene **scenes_head, t_list **input)
 	{
 		if (ft_strchr((*input)->content, ':'))
 		{
-			printf("found ':': [%s]\n", (*input)->content);
+			// printf("found ':': [%s]\n", (*input)->content);
 			s1 = split_trim((*input)->content, ':');
-			!ft_strcmp(s1[0], "scene") ? 
-			parse_scene(scenes_head, s1, input, &att) : parse_attribute(s1, &(att[0]), (*input)->content_size);
-			print_scenes(*scenes_head);
+			(!ft_strcmp(s1[0], "scene")) ? 
+			parse_scene(scenes_head, s1, input, &att) :
+			parse_attribute(s1, &(att[0]), (*input)->content_size);
+			// print_scenes(*scenes_head);
 		}
 		*input = (*input)->next;
 	}
-	printf("\n");
 	return (1);
 }
 
 static void parse_scene(t_scene **scenes_head, char **s1, t_list **input, t_attributes **att)
 {
-	printf("\nPARSE_SCENE\n");
+	// printf("\nPARSE_SCENE\n");
 	char	**s2;
 	t_scene	*new_scene;
 
 	new_scene = get_new_scene(s1[1]);
 	push_scene(scenes_head, new_scene);
 	*input = (*input)->next;
-	(*input)->content ? printf("next_line: [%s]\n", (*input)->content) : 0;
 	if (!ft_strchr((*input)->content, '{'))
 		error_line_exit("Formatting error: missing '{'", (*input)->content_size);
 	while (*input && (*input)->content && !ft_strchr(((*input)->content), '}'))
 	{
 		if (ft_strchr(((*input)->content), ':'))
 		{
-			printf("found ':': [%s]\n", (*input)->content);			
+			// printf("found ':': [%s]\n", (*input)->content);			
 			s2 = split_trim((*input)->content, ':');
-			//*input = (*input)->next;
-			//(*input)->content ? printf("next_line: [%s]\n", (*input)->content) : 0;
 			ft_strstr(OBJECTS, s2[0]) ? 
-			parse_object(new_scene, s2, input, att) : parse_attribute(s2, &((*att)[1]), (*input)->content_size);
-			// print_scenes(*scenes_head);
+			parse_object(new_scene, s2, input, att) :
+			parse_attribute(s2, &((*att)[1]), (*input)->content_size);
 		}
-		*input = (*input)->next; //if no ':' is found, ignore the line.
-		(*input) ? printf("next_line: [%s]\n", (*input)->content) : 0;
+		*input = (*input)->next;
 	}
 	if (!*input || !ft_strchr((*input)->content, '}'))
 			error_line_exit("Formatting error: missing '{'", (*input)->content_size);
-	print_attributes(**att);
 	set_attributes_scene(*att, new_scene); 
 	reset_attributes(&((*att)[1]));
-	// print_scenes(*scenes_head);
-	printf("\n");
+	// printf("\n");
 }
 
 /*
@@ -99,26 +92,26 @@ static void parse_object(t_scene *scene, char **s2, t_list **input, t_attributes
 	//printf("name of new object: [%s]\n", new_object->name);
 	push_object(&scene->objects, new_object);
 	*input = (*input)->next;
-	(*input)->content ? printf("next_line: [%s]\n", (*input)->content) : 0;
+	// (*input)->content ? printf("next_line: [%s]\n", (*input)->content) : 0;
 	if (!ft_strchr((*input)->content, '{'))
 			error_line_exit("Formatting error: missing '{'", (*input)->content_size);
     while (*input && !ft_strchr(((*input)->content), '}'))
 	{
-		printf("found ':': [%s]\n", (*input)->content);			
+		// printf("found ':': [%s]\n", (*input)->content);			
 		if (ft_strchr(((*input)->content), ':'))
 		{
 			s3 = split_trim((*input)->content, ':');
 			parse_attribute(s3, &((*att)[2]), (*input)->content_size);
 		}
 		*input = (*input)->next;
-		(*input)->content ? printf("next_line: [%s]\n", (*input)->content) : 0;
+		// (*input)->content ? printf("next_line: [%s]\n", (*input)->content) : 0;
 	}
 	if (!*input || !ft_strchr(((*input)->content), '}'))
 		error_line_exit("Formatting error: missing '}'", (*input)->content_size);
 	set_attributes_object(*att, new_object);
 	reset_attributes(&((*att)[2]));
-	printf("END_PARSE_OBJECT\n");
-	printf("\n");
+	// printf("END_PARSE_OBJECT\n");
+	// printf("\n");
 }
 
 /*
