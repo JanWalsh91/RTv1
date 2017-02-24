@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:11:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/22 17:26:52 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/24 10:31:29 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@
 int		get_intersection(t_ray *ray, t_object *obj)
 {
 	obj->dir = v_norm(obj->dir);
-	static int i = 1;
-	if (i)
-	{
-		printf("get_intersection\n");
-		i--;
-	}
+	// static int i = 1000;
+	// if (i)
+	// {
+	// 	printf("get_intersection with [%s]\n", obj->name);
+	// 	i--;
+	// }
 	if (obj->type == SPHERE)
 		return (get_sphere_intersection(ray, obj));
 	else if (obj->type == PLANE)
@@ -53,6 +53,7 @@ int	get_plane_intersection(t_ray *ray, t_object *obj)
 {
     double	denom;
 	t_vec3	p;
+	double	r;
 
 	denom = v_dot(obj->dir, ray->dir);
 	if (denom < 0) //only for double-sided polygons.
@@ -63,8 +64,10 @@ int	get_plane_intersection(t_ray *ray, t_object *obj)
     if (denom > 1e-6)
 	{ 
 		p = v_sub(obj->pos, ray->origin); //switch?
-		if ((ray->t = v_dot(p, obj->dir) / denom) < 0)
+		r = v_dot(p, obj->dir) / denom;
+		if (r < 0)
 			return (0);
+		ray->t = r;
 		ray->hit_type = PLANE;
 		return (1);
     }
@@ -85,9 +88,7 @@ int		get_sphere_intersection(t_ray *ray, t_object *obj)
 	i.q.z = v_dot(i.v1, i.v1) - pow(obj->rad, 2);
  	if (!solve_quadratic(i.q, &i.r1, &i.r2))
 		return (0);
-	obj->height > 0 ? get_finite_cylinder_intersection(ray, obj, &i) : 0;
 	(i.r2 < i.r1) ? ft_swapd(&i.r1, &i.r2) : 0;
-	obj->height > 0 ? get_cyclinder_caps_intersection(ray, obj, &i) : 0;
 	(i.r1 < 0) ? i.r1 = i.r2 : 0;
 	if (i.r1 < 0)
 		return (0);

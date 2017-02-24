@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 14:07:26 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/05 15:27:00 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/23 14:28:15 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int			init_sdl(t_scene *scene, t_env *env)
 
 static int	init_window(t_scene *scene, t_env *env)
 {
-	env->win = SDL_CreateWindow("TEST", 100, 100, scene->res.x, scene->res.y, SDL_WINDOW_SHOWN);
+	env->win = SDL_CreateWindow("TEST", 1300, 100, scene->res.x, scene->res.y, SDL_WINDOW_SHOWN);
 	if (!env->win)
 	{
 		printf("SDL window ceartion error");
