@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/02/24 14:26:52 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/02/25 12:43:05 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,15 +47,20 @@ SRC = main \
 			rtv1 \
 			solve_quadratic \
 			debug
+			
+LIST = input_new \
+			input_pushback
 
 OBJ_DIR = obj
 
 EXT = .c
 
 SRC_PARSING = $(addsuffix $(EXT), $(PARSING))
+SRC_LST = $(addsuffix $(EXT), $(LST))
 SRC_SRC = $(addsuffix $(EXT), $(SRC))
 
 OBJ_SRC = $(addprefix $(OBJ_DIR)/, $(SRC_SRC:.c=.o))
+OBJ_LST = $(addprefix $(OBJ_DIR)/, $(SRC_LST:.c=.o))
 OBJ_PARSING = $(addprefix $(OBJ_DIR)/, $(SRC_PARSING:.c=.o))
 
 CC	= gcc
@@ -78,7 +83,7 @@ ECHO = echo
 
 all: $(NAME)
 
-$(NAME): $(OBJ_SRC) $(OBJ_PARSING)
+$(NAME): $(OBJ_SRC) $(OBJ_PARSING) $(OBJ_LST)
 	@make -C $(LIB_PATH)
 	@make -C $(LIBMATH_PATH)
 	@$(CC) $(FLG) $(SDL) -g $(LIB_PATH)$(LIBFT_NAME) $(LIBMATH_PATH)$(LIBMATHFT_NAME) $(OBJ_PARSING) $(OBJ_SRC) -o $(NAME)
@@ -89,6 +94,10 @@ $(OBJ_DIR)/%.o : ./src/%.c
 	@$(CC) $(CFLAGS) -I./inc -c -o $@ $<
 
 $(OBJ_DIR)/%.o : ./src/parsing/%.c
+	@/bin/mkdir -p $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -I./inc -c -o $@ $<
+
+$(OBJ_DIR)/%.o : ./src/list/%.c
 	@/bin/mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -I./inc -c -o $@ $<
 

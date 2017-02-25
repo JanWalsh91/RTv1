@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/24 16:22:09 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/25 16:41:03 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,36 @@ typedef enum		e_token
 	T_READ_OBJ_FILE, 
 	T_READ_TEXTURE_FILE,
 	T_READ_MATERIAL_FILE,
+	T_INVALID_TOKEN,
 	T_COUNT
 }					t_token;
+
+// structure for each link conainting into about the input file(s)
+typedef	struct		s_input
+{
+	int				token;
+	char			*value;
+	char			*file_name;
+	size_t			line_number;
+	struct s_input	*next;
+}					t_input;
+
+typedef t_vec3			t_color;
+
+typedef struct		s_attributes
+{
+	t_pt2		res;
+	int			ray_depth;
+	t_vec3		pos;
+	t_vec3		dir;
+	t_vec3		look_at;
+	t_color		col;
+	double		fov;
+	double		rad;
+	double		angle;
+	double		height;
+	double		intensity;
+}					t_attributes;
 
 
 //Keep in same order.
@@ -121,44 +149,18 @@ typedef enum		e_type
 	CONE = 6
 }					t_type;
 
-typedef t_vec3			t_color;
-
 typedef	struct		s_ray
 {
 	t_vec3		origin; //point of origin
 	t_vec3		dir; //must be normalized
 	double		root1;
 	double		root2;
-	// t_vec3		origin2;
-	// t_vec3		dir2;
 	double		t; // closest valid intersection
 	t_vec3		hit; // interection points in World View
 	t_type		hit_type;
 	t_vec3		nhit; //normal at intersection point
 	t_color		col; // color found
 }					t_ray;
-
-typedef	struct		s_shading
-{
-}					t_shading;
-
-typedef struct		s_attributes
-{
-//	char		*name;
-	t_pt2		res;
-	int			ray_depth;
-	t_vec3		pos;
-	t_vec3		dir;
-	t_vec3		look_at;
-	t_color		col;
-	t_shading	shading;// ???
-	double		fov;
-	double		rad;
-	double		angle;
-	double		height;
-	double		intensity;
-}					t_attributes;
-
 
 
 typedef struct	s_object
@@ -171,64 +173,69 @@ typedef struct	s_object
     void			*t;
     t_vec3			pos;
     t_vec3			dir;
+	t_vec3			rot;
 	t_vec3			look_at;
     t_color			col;
-	double			intensity;
-    t_shading		shading;
-	t_color			**pixel_map;
-	t_matrix		ctw; //camera to world matrix (only for cameras)
-	// t_matrix		mtw; //model to world matrix (only for objects in scene)
-	// t_matrix		wtm; //world to model matrix (only for objects in scene)
-	float			scale;
-	float			fov;
 	struct s_object	*next;
 }				t_object;
 
+typedef struct	s_light
+{
+    char			*name;
+    void			*t;
+    t_vec3			pos;
+    t_vec3			dir;
+	t_vec3			look_at;
+    t_color			col;
+	double			intensity;
+	struct s_light	*next;
+}				t_light;
+
+typedef struct	s_camera
+{
+    char			*name;
+    void			*t;
+    t_vec3			pos;
+    t_vec3			dir;
+	t_vec3			look_at;
+	t_color			**pixel_map;
+	t_matrix		ctw; //camera to world matrix (only for cameras)
+	float			scale;
+	float			fov;
+	struct s_camera	*next;
+}				t_camera;
+
 typedef struct	s_scene
 {
-    t_pt2			res;
+    t_pt2			res; //resolution
     char			*name;
     int				ray_depth;
-    t_object		*cameras;
-    t_object		*lights;
+    t_camera		*cameras;
+    t_light			*lights;
     t_object		*objects;
 	double			image_aspect_ratio;
-
     struct s_scene	*next;
 }				t_scene;
-
-typedef	struct		s_input
-{
-	int				token;
-	char			*value;
-	char			*file_name;
-	size_t			line_number;
-	struct s_input	*next;
-}					t_input;
 
 typedef struct		s_parse_tools
 {
 	bool			in_scene;
 	bool			in_object;
-	t_list			**input;
+	t_input			*input;
+	t_input			*input_head; //pointer to input.
+	t_scene			*scenes;
+	t_scene			*current_scene;
+	t_object		*current_object;
+	t_camera		*current_camera;
+	t_light			*current_light;
+	t_type			current_type;
 	int				fd;
 	char			*file_name;
 	t_attributes 	**att;
-	char 			*key;
-	char			*value;
 	char			*types;
 	char			*objects;
-
+	void			(**f)(void *);
 }					t_parse_tools;
-
-typedef struct		s_incr
-{
-	int				c_1;
-	int				c_2;
-	float			r;
-	float			g;
-	float			b;
-}					t_incr;
 
 typedef struct		s_intersection_tools
 {
@@ -244,35 +251,14 @@ typedef struct		s_intersection_tools
 	double			d2; //extra tmp doubles.
 }					t_intersection_tools;
 
-typedef struct		s_draw_tools
-{
-	int				bpp;
-	int				size_line;
-	int				endian;
-	char			*image;
-}					t_draw_tools;
-
 typedef struct		s_env
 {
-	t_draw_tools	draw;
 	SDL_Window		*win;
 	SDL_Renderer	*ren;
 	SDL_Event		e;
 	int				h;
 	int				w;
 }					t_env;
-
-typedef struct		s_r
-{
-	t_env			e;
-	char			*title;
-}					t_r;
-
-typedef struct		s_th
-{
-	t_r				*f;
-	int				i;
-}					t_th;
 
 /*
 ** Main
@@ -310,6 +296,15 @@ int			extract_cameras_lights(t_scene *scene);
 int			init_cameras(t_scene *scene);
 int			update_camera_scale(t_object *camers);
 int			update_camera_ctw(t_object *camers);
+
+//new functions:
+void	parse_close_bracket(t_parse_tools *t);
+void	parse_open_bracket(t_parse_tools *t);
+void	parse_scene(void *v);
+void	parse_camera(t_parse_tools *t);
+void	parse_light(t_parse_tools *t);
+void	rt_file_error_exit(t_parse_tools *t, char *msg);
+void	rt_file_warning(t_parse_tools *t, char *msg);
 
 /*
 ** Ray Tracing Functions
