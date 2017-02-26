@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 15:04:42 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/24 16:37:08 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/26 14:30:08 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ t_input		*input_new(char *line, char *file_name, int fd, t_input **input)
 		current_fd = fd;
 		line_number = 0;
 	}
-	//if key-value line
 	key_value = split_trim(line, ':');
 	new_input->token = get_token(key_value[0]);
 	new_input->line_number = ++line_number;
@@ -44,7 +43,8 @@ t_input		*input_new(char *line, char *file_name, int fd, t_input **input)
 	{
 		if (line && T_READ_RT_FILE == new_input->token)
 		{
-			get_file(key_value[1], input);
+			//check if value exists.
+			key_value[1] ? get_file(key_value[1], input) : 0 ;
 			current_fd = fd;
 			line_number = new_input->line_number;
 			// free(key_value[0]);
@@ -52,7 +52,8 @@ t_input		*input_new(char *line, char *file_name, int fd, t_input **input)
 			// free(key_value);
 			return (NULL);
 		}
-		new_input->value = ft_strdup(key_value[1]);
+		if (key_value[1])
+			new_input->value = ft_strdup(key_value[1]);
 	}
 	//free
 	new_input->file_name = file_name;

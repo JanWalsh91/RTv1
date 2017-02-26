@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:57:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/25 14:42:28 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/26 12:55:14 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@ int	main(int ac, char **av)
 	while (++i < ac)
 		get_file(av[i], &t.input);
 	i = 0;
+	scenes = t.scenes;
 	while (++i < ac)
 	{
-		parse_input(&scenes, &t.input);
+		parse_input(&t);
 		//check_data;
 	}
 	//free input.

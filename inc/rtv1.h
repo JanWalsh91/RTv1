@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/25 16:41:03 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/26 16:55:54 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,6 @@
 # define INSTRUCTIONS_W 600
 # define LINE_0 "RTv1 instructions:"
 
-# define TYPES "{,},scene,camera,light,plane,sphere,cylinder,cone,resolution,\
-ray depth,background color,position,direction,rotation,look_at,color,radius,\
-height,refraction,reflection,specular,transparency,fov,intensity,import,read"
 typedef enum		e_token
 {
 	T_OPEN_BRACKET,
@@ -108,6 +105,12 @@ typedef enum		e_token
 	T_COUNT
 }					t_token;
 
+# define TOKENS (const char *[T_COUNT]){"{","}","scene","camera","light","plane",\
+"sphere","cylinder","cone","resolution","ray depth","background color","position",\
+"direction","rotation","look at","color","radius","height","refraction","reflection",\
+"specular","transparency","fov","intensity","import","read rt file","read obj file",\
+"read texture file","read material file","invalid token"}
+
 // structure for each link conainting into about the input file(s)
 typedef	struct		s_input
 {
@@ -122,17 +125,25 @@ typedef t_vec3			t_color;
 
 typedef struct		s_attributes
 {
+	//scene
 	t_pt2		res;
 	int			ray_depth;
-	t_vec3		pos;
-	t_vec3		dir;
-	t_vec3		look_at;
-	t_color		col;
-	double		fov;
-	double		rad;
-	double		angle;
-	double		height;
+	//light
 	double		intensity;
+	//camera
+	double		fov;
+	//objects
+	t_vec3		pos;
+	t_vec3		dir; //not sphere
+	t_vec3		rot; //not sphere
+	t_vec3		look_at; //not sphere
+	t_color		col; 
+	double		rad; //cone, cylinder, sphere
+	double		height; //cone, cylinder
+	double		refraction; //not light, cam
+	double		reflection; //not light, cam
+	double		specular; // ""
+	double		transparency; // ""
 }					t_attributes;
 
 
@@ -168,7 +179,6 @@ typedef struct	s_object
 	t_type			type;
     char			*name;
 	double			rad; //radius for sphere, or cylinder, or cone.
-	double			angle; //angle of cone.
 	double			height; //height of cone/cylinder
     void			*t;
     t_vec3			pos;
@@ -176,6 +186,10 @@ typedef struct	s_object
 	t_vec3			rot;
 	t_vec3			look_at;
     t_color			col;
+	double			refraction;
+	double			reflection;
+	double			specular;
+	double			transparency;
 	struct s_object	*next;
 }				t_object;
 
@@ -185,6 +199,7 @@ typedef struct	s_light
     void			*t;
     t_vec3			pos;
     t_vec3			dir;
+	t_vec3			rot;
 	t_vec3			look_at;
     t_color			col;
 	double			intensity;
@@ -197,6 +212,7 @@ typedef struct	s_camera
     void			*t;
     t_vec3			pos;
     t_vec3			dir;
+	t_vec3			rot;
 	t_vec3			look_at;
 	t_color			**pixel_map;
 	t_matrix		ctw; //camera to world matrix (only for cameras)
@@ -209,6 +225,7 @@ typedef struct	s_scene
 {
     t_pt2			res; //resolution
     char			*name;
+	t_color			background_color;
     int				ray_depth;
     t_camera		*cameras;
     t_light			*lights;
@@ -221,20 +238,19 @@ typedef struct		s_parse_tools
 {
 	bool			in_scene;
 	bool			in_object;
-	t_input			*input;
+	t_input			*input; //pointer to current link
 	t_input			*input_head; //pointer to input.
 	t_scene			*scenes;
 	t_scene			*current_scene;
 	t_object		*current_object;
 	t_camera		*current_camera;
 	t_light			*current_light;
-	t_type			current_type;
-	int				fd;
-	char			*file_name;
-	t_attributes 	**att;
-	char			*types;
-	char			*objects;
-	void			(**f)(void *);
+	t_token			current_type;
+	int				fd;  // ?
+	char			*file_name;  // ?
+	t_attributes 	*global_attributes;
+	t_attributes	*scene_attributes;
+	void			(**parse)(s_parse_tools *);
 }					t_parse_tools;
 
 typedef struct		s_intersection_tools
@@ -269,28 +285,38 @@ typedef struct		s_env
 */
 
 // int			get_file(char *file_name, t_list **input);
-int			get_file(char *file_name, t_input **input);
+void		get_file(char *file_name, t_input **input);
 int			get_token(char *key);
-int			set_line_count(t_list **input);
-int			parse_input(t_scene **scenes, t_list **input);
-int			init_attributes(t_attributes **att);
-int			parse_resolution(t_pt2 *res, char *s, size_t line);
-int			parse_ray_depth(int *ray_dpeth, char *s, size_t line);
-int			parse_position(t_vec3 *pos, char *s, size_t line);
-int			parse_direction(t_vec3 *dir, char *s, size_t line);
-int			parse_look_at(t_vec3 *dir, char *s, size_t line);
-int			parse_color(t_color *col, char *s, size_t line);
-int			parse_radius(double *rad, char *s, size_t line);
-int			parse_angle(double *angle, char *s, size_t line);
-int			parse_height(double *height, char *s, size_t line);
-int			parse_intensity(double *intensity, char *s, size_t line);
+void		parse_input(t_parse_tools *t);
+// int			set_line_count(t_list **input);
+// int			parse_input(t_scene **scenes, t_list **input);
+// int			init_attributes(t_attributes **att);
+// int			parse_resolution(t_pt2 *res, char *s, size_t line);
+// int			parse_ray_depth(int *ray_dpeth, char *s, size_t line);
+// int			parse_position(t_vec3 *pos, char *s, size_t line);
+// int			parse_direction(t_vec3 *dir, char *s, size_t line);
+// int			parse_look_at(t_vec3 *dir, char *s, size_t line);
+// int			parse_color(t_color *col, char *s, size_t line);
+// int			parse_radius(double *rad, char *s, size_t line);
+// int			parse_angle(double *angle, char *s, size_t line);
+// int			parse_height(double *height, char *s, size_t line);
+// int			parse_intensity(double *intensity, char *s, size_t line);
 char 		**split_trim(char *s, char c);
-t_scene		*get_new_scene(char *name);
-t_object	*get_new_object(char *scene_name, char *name, char *type);
+// t_scene		*get_new_scene(char *name);
+t_scene			*get_new_scene(t_parse_tools *t);
+// t_object	*get_new_object(char *scene_name, char *name, char *type);
+t_object 	*get_new_object(t_parse_tools *t);
+t_light 	*get_new_light(t_parse_tools *t);
+t_camera 	*get_new_camera(t_parse_tools *t);
 void		push_scene(t_scene **scenes, t_scene *new_scene);
 void		push_object(t_object **objects, t_object *new_object);
-int			set_attributes_scene(t_attributes *att, t_scene *scene);
-int			set_attributes_object(t_attributes *att, t_object *object);
+void		push_light(t_light **lights_head, t_light *new_light);
+void		push_camera(t_camera **cameras_head, t_camera *new_camera);
+
+void		set_attributes(t_parse_tools *t, t_attributes *a);
+
+// int			set_attributes_scene(t_attributes *att, t_scene *scene);
+// int			set_attributes_object(t_attributes *att, t_object *object);
 int			reset_attributes(t_attributes *att);
 int			extract_cameras_lights(t_scene *scene);
 int			init_cameras(t_scene *scene);
@@ -298,11 +324,38 @@ int			update_camera_scale(t_object *camers);
 int			update_camera_ctw(t_object *camers);
 
 //new functions:
+void	init_parse_tools(t_parse_tools *t);
 void	parse_close_bracket(t_parse_tools *t);
 void	parse_open_bracket(t_parse_tools *t);
-void	parse_scene(void *v);
+void	parse_scene(t_parse_tools *t);
 void	parse_camera(t_parse_tools *t);
 void	parse_light(t_parse_tools *t);
+void	parse_plane(t_parse_tools *t);
+void	parse_sphere(t_parse_tools *t);
+void	parse_cylinder(t_parse_tools *t);
+void	parse_cone(t_parse_tools *t);
+void	parse_resolution(t_parse_tools *t);
+void	parse_ray_depth(t_parse_tools *t);
+void	parse_background_color(t_parse_tools *t);
+void	parse_position(t_parse_tools *t);
+void	parse_direction(t_parse_tools *t);
+void	parse_rotation(t_parse_tools *t);
+void	parse_look_at(t_parse_tools *t);
+void	parse_color(t_parse_tools *t);
+void	parse_radius(t_parse_tools *t);
+void	parse_height(t_parse_tools *t);
+void	parse_refraction(t_parse_tools *t);
+void	parse_reflection(t_parse_tools *t);
+void	parse_specular(t_parse_tools *t);
+void	parse_transparency(t_parse_tools *t);
+void	parse_fov(t_parse_tools *t);
+void	parse_intensity(t_parse_tools *t);
+void	import_rt_file(t_parse_tools *t);
+void	read_rt_file(t_parse_tools *t);
+void	read_obj_file(t_parse_tools *t);
+void	read_texture_file(t_parse_tools *t);
+void	read_material_file(t_parse_tools *t);
+void	invalid_token(t_parse_tools *t);
 void	rt_file_error_exit(t_parse_tools *t, char *msg);
 void	rt_file_warning(t_parse_tools *t, char *msg);
 

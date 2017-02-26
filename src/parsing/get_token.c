@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 15:37:10 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/24 15:45:23 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/26 14:22:44 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,17 @@
 
 int	get_token(char *key)
 {
-	char	**list;
 	int		i;
 
-	i = 0;	
-	list = ft_strsplit(TYPES, ',');
-	while (i < OBJECT_COUNT && ft_strcmp(list[i], key))
+	i = 0;
+	while (i < (T_COUNT - 1) && ft_strcmp(TOKENS[i], key))
 		++i;
-	if (i < OBJECT_COUNT)
+	if (i < T_COUNT)
 	{
 		//free list.
 		return (i);
 	}
+	else
+		return (T_INVALID_TOKEN);
 	//free list.
-	ft_error_exit("Formatting error in .rt file: invalid key");
-	return (0); //ERROR: INVALID OBJECT key
 }
