@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 15:37:10 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/26 14:22:44 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/28 12:25:13 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	get_token(char *key)
 	int		i;
 
 	i = 0;
+	if (ft_strchr(key, '#'))
+		return (T_HASHTAG);
 	while (i < (T_COUNT - 1) && ft_strcmp(TOKENS[i], key))
 		++i;
 	if (i < T_COUNT)

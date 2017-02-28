@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:43:48 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/26 14:53:58 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/28 12:30:02 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	init_parse_tools(t_parse_tools *t)
 {
 	reset_attributes(t->global_attributes);
 	reset_attributes(t->scene_attributes);
+	reset_attributes(t->object_attributes);
 	if (!(t->parse = malloc(sizeof(t->parse) * T_COUNT)))
 		ft_errno_exit();
 	t->parse[T_CLOSE_BRACKET] = &parse_close_bracket;
@@ -48,5 +49,6 @@ void	init_parse_tools(t_parse_tools *t)
 	t->parse[T_READ_OBJ_FILE] = &read_obj_file;
 	t->parse[T_READ_TEXTURE_FILE] = &read_texture_file;
 	t->parse[T_READ_MATERIAL_FILE] = &read_material_file;
+	t->parse[T_HASHTAG] = &hashtag;
 	t->parse[T_INVALID_TOKEN] = &invalid_token;
 }

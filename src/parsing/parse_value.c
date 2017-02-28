@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:35:28 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/26 17:05:31 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/28 15:03:05 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,28 @@
 ** Contains functions for parsing each value based on token.
 */
 
-static int	can_add_new_scene(t_parse_tools *t);
-static int	can_add_new_object(t_parse_tools *t);
+static int		can_add_new_scene(t_parse_tools *t);
+static int		can_add_new_object(t_parse_tools *t);
+static t_vec3	look_at_object(t_parse_tools *t, char *value);
 
 void	parse_close_bracket(t_parse_tools *t)
 {
 	if (t->in_object)
+	{
+		set_attributes(t, t->object_attributes);
 		t->in_object = 0;
+	}
 	else if (t->in_scene)
 		t->in_scene = 0;
 	else
-		rt_file_error_exit(t, "Extraneous '}'");
+		rt_file_error_exit(t, "Extraneous '}'.");
 }
 
 void	parse_open_bracket(t_parse_tools *t)
 {
-	// ? maynot be nessesary
+	rt_file_warning(t, "Extraneous '{'. Ignore.");
+	// ? may not be nessesary
+	// if parsed using this function, means that there is an extra open bracket where there shouldnt be
 }
 
 void	parse_scene(t_parse_tools *t)
@@ -152,17 +158,20 @@ void	parse_ray_depth(t_parse_tools *t)
 
 void	parse_background_color(t_parse_tools *t)
 {
-	t_vec3	new_color;
+	t_vec3	new_col;
 
-	if (!v_isnan(new_color = get_color(t->input->value)))
+	if (v_isnan(new_col = get_color(t->input->value)))
 	{
 		rt_file_warning(t, "Background color formatting error.");
 		return ;
 	}
+	if (new_col.x < 0 || new_col.y < 0 || new_col.z < 0 ||
+		new_col.x > 255 || new_col.y > 255 || new_col.z > 255)
+		rt_file_warning(t, "Color clamped to [0 - 255].");
 	if (!t->in_scene)
-		t->global_attributes->col = new_color;
+		t->global_attributes->col = new_col;
 	else if (!t->in_object)
-		t->current_scene->background_color = new_color;
+		t->current_scene->background_color = new_col;
 	else if (t->in_object)
 		rt_file_warning(t, "Skip background_color attribute...");
 }
@@ -171,7 +180,7 @@ void	parse_position(t_parse_tools *t)
 {
 	t_vec3	new_pos;
 
-	if (!v_isnan(new_pos = parse_vec3(t->input->value)))
+	if (v_isnan(new_pos = parse_vector(t->input->value)))
 	{
 		rt_file_warning(t, "Position formatting error.");
 		return ;
@@ -181,147 +190,248 @@ void	parse_position(t_parse_tools *t)
 	else if (!t->in_object)
 		t->scene_attributes->pos = new_pos;
 	else if (t->in_object)
-		//check current_type
-		//put position in current_object/light/camera
+		t->object_attributes->pos = new_pos;
 }
 
 void	parse_direction(t_parse_tools *t)
 {
+	t_vec3	new_dir;
+
+	if (v_isnan(new_dir = parse_vector(t->input->value)))
+	{
+		rt_file_warning(t, "Direction formatting error.");
+		return ;
+	}
 	if (!t->in_scene)
-		//put direction in global attributes
-	else if (!in_object)
-		//put direction in scene attributes
-	else if (in_object)
-		//check current_type
-		//put direction in current_object/light/camera
+		t->global_attributes->dir = new_dir;
+	else if (!t->in_object)
+		t->scene_attributes->dir = new_dir;
+	else if (t->in_object)
+		t->object_attributes->dir = new_dir;
 }
 
 //rotation in degrees around axes x, y, z
 void	parse_rotation(t_parse_tools *t)
 {
+	t_vec3	new_rot;
+
+	if (v_isnan(new_rot = parse_vector(t->input->value)))
+	{
+		rt_file_warning(t, "Rotation formatting error.");
+		return ;
+	}
 	if (!t->in_scene)
-		//put rotation in global attributes
-	else if (!in_object)
-		//put rotation in scene attributes
-	else if (in_object)
-		//check current_type
-		//put rotation in current_object/light/camera
-	//update direction based on rotation.
+		t->global_attributes->rot = new_rot;
+	else if (!t->in_object)
+		t->scene_attributes->rot = new_rot;
+	else if (t->in_object)
+		t->object_attributes->rot = new_rot;
 }
 
 void	parse_look_at(t_parse_tools *t)
 {
+	t_vec3	new_look_at;
+
+	if (v_isnan(new_look_at = parse_vector(t->input->value))
+		&& v_isnan(new_look_at = look_at_object(t, t->input->value)))
+	{
+		rt_file_warning(t, "Look_at formatting error.");
+		return ;
+	}
 	if (!t->in_scene)
-		//put loot_at in global attributes
-	else if (!in_object)
-		//put loot_at in scene attributes
-	else if (in_object)
-		//check current_type
-		//put loot_at in current_object/light/camera
-	//update direction based on loot_at.
+		t->global_attributes->look_at = new_look_at;
+	else if (!t->in_object)
+		t->scene_attributes->look_at = new_look_at;
+	else if (t->in_object)
+		t->object_attributes->look_at = new_look_at;
 }
 
 void	parse_color(t_parse_tools *t)
 {
+	t_vec3	new_col;
+
+	if (v_isnan(new_col = get_color(t->input->value)))
+	{
+		rt_file_warning(t, "Color formatting error.");
+		return ;
+	}
+	if (new_col.x < 0 || new_col.y < 0 || new_col.z < 0 ||
+		new_col.x > 255 || new_col.y > 255 || new_col.z > 255)
+		rt_file_warning(t, "Color clamped to [0 - 255].");
 	if (!t->in_scene)
-		//put color` in global attributes
-	else if (!in_object)
-		//put loot_at in scene attributes
-	else if (in_object)
-		//check current_type
-		//put color` in current_object/light/camera
-	//check color format:
-	// 1. r, b, g
-	// 2. hexadecimal
-	// 3. name of color
+		t->global_attributes->col = new_col;
+	else if (!t->in_object)
+		t->scene_attributes->col = new_col;
+	else if (t->in_object)
+		t->object_attributes->col = new_col;
 }
 
 void	parse_radius(t_parse_tools *t)
 {
+	double	new_radius;
+
+	new_radius = NAN;
+	if (isnan(new_radius = parse_double(t->input->value)) ||
+		new_radius < 0)
+	{
+		rt_file_warning(t, "Radius formatting error.");
+		return ;
+	}
 	if (!t->in_scene)
-		//put radius` in global attributes
-	else if (!in_object)
-		//put radius in scene attributes
-	else if (in_object)
-		//check current_type
-		//put radius in current_object if appropriate object
+		t->global_attributes->rad = new_radius;
+	else if (!t->in_object)
+		t->scene_attributes->rad = new_radius;
+	else if (t->in_object)
+		t->object_attributes->rad = new_radius;
+	if (t->current_type != T_CONE && t->current_type != T_CYLINDER)
+		rt_file_warning(t, "Radius attribute only applicable to cones and cylinders. Ignore.");
 }
 
 void	parse_height(t_parse_tools *t)
 {
+	double	new_height;
+
+	new_height = NAN;
+	if (isnan(new_height = parse_double(t->input->value)) || 
+		new_height < 0)
+	{
+		rt_file_warning(t, "Height formatting error.");
+		return ;
+	}
 	if (!t->in_scene)
-		//put height in global attributes
-	else if (!in_object)
-		//put height in scene attributes
-	else if (in_object)
-		//check current_type
-		//put height in current_object if appropriate object
+		t->global_attributes->height = new_height;
+	else if (!t->in_object)
+		t->scene_attributes->height = new_height;
+	else if (t->in_object)
+		t->object_attributes->height = new_height;
+	if (t->current_type != T_CONE && t->current_type != T_CYLINDER)
+		rt_file_warning(t, "Height attribute only applicable to cones and cylinders. Ignore.");
 }
 
 void	parse_refraction(t_parse_tools *t)
 {
+	double	new_refraction;
+
+	new_refraction = NAN;
+	if (isnan(new_refraction = parse_double(t->input->value)) || 
+		new_refraction < 0 || new_refraction > 0)
+	{
+		rt_file_warning(t, "Refraction formatting error.");
+		return ;
+	}
 	if (!t->in_scene)
-		//put refraction in global attributes
-	else if (!in_object)
-		//put refraction in scene attributes
-	else if (in_object)
-		//check current_type
-		//put refraction in current_object
+		t->global_attributes->refraction = new_refraction;
+	else if (!t->in_object)
+		t->scene_attributes->refraction = new_refraction;
+	else if (t->in_object)
+		t->object_attributes->refraction = new_refraction;
+	if (t->current_type == T_CAMERA || t->current_type == T_LIGHT)
+		rt_file_warning(t, "Cannot apply refraction to lights or cameras. Ignore.");
 }
 
 void	parse_reflection(t_parse_tools *t)
 {
+	double	new_reflection;
+
+	new_reflection = NAN;
+	if (isnan(new_reflection = parse_double(t->input->value)) || 
+		new_reflection < 0 || new_reflection > 0)
+	{
+		rt_file_warning(t, "Reflection formatting error.");
+		return ;
+	}
 	if (!t->in_scene)
-		//put reflection in global attributes
-	else if (!in_object)
-		//put reflection in scene attributes
-	else if (in_object)
-		//check current_type
-		//put reflection in current_object	
+		t->global_attributes->reflection = new_reflection;
+	else if (!t->in_object)
+		t->scene_attributes->reflection = new_reflection;
+	else if (t->in_object)
+		t->object_attributes->reflection = new_reflection;
+	if (t->current_type == T_CAMERA || t->current_type == T_LIGHT)
+		rt_file_warning(t, "Cannot apply reflection to lights or cameras. Ignore.");
 }
 
 void	parse_specular(t_parse_tools *t)
 {
+	double	new_specular;
+
+	new_specular = NAN;
+	if (isnan(new_specular = parse_double(t->input->value)) || 
+		new_specular < 0 || new_specular > 0)
+	{
+		rt_file_warning(t, "Specular index formatting error. Ignore.");
+		return ;
+	}
 	if (!t->in_scene)
-		//put specular in global attributes
-	else if (!in_object)
-		//put specular in scene attributes
-	else if (in_object)
-		//check current_type
-		//put specular in current_object	
+		t->global_attributes->specular = new_specular;
+	else if (!t->in_object)
+		t->scene_attributes->specular = new_specular;
+	else if (t->in_object)
+		t->object_attributes->specular = new_specular;
+	if (t->current_type == T_CAMERA || t->current_type == T_LIGHT)
+		rt_file_warning(t, "Cannot apply specular effect to lights or cameras. Ignore.");
 }
 
 void	parse_transparency(t_parse_tools *t)
 {
+	double	new_transparency;
+
+	new_transparency = NAN;
+	if (isnan(new_transparency = parse_double(t->input->value)) || 
+		new_transparency < 0 || new_transparency > 0)
+	{
+		rt_file_warning(t, "Transparency index formatting error.");
+		return ;
+	}
 	if (!t->in_scene)
-		//put transparency in global attributes
-	else if (!in_object)
-		//put transparency in scene attributes
-	else if (in_object)
-		//check current_type
-		//put transparency in current_object	
+		t->global_attributes->transparency = new_transparency;
+	else if (!t->in_object)
+		t->scene_attributes->transparency = new_transparency;
+	else if (t->in_object)
+		t->object_attributes->transparency = new_transparency;
+	if (t->current_type == T_CAMERA || t->current_type == T_LIGHT)
+		rt_file_warning(t, "Cannot apply transparency effect to lights or cameras. Ignore.");	
 }
 
 void	parse_fov(t_parse_tools *t)
 {
+	double	new_fov;
+
+	new_fov = NAN;
+	if (isnan(new_fov = parse_double(t->input->value)) || 
+		new_fov < 0 || new_fov > 180)
+	{
+		rt_file_warning(t, "Fov index formatting error.");
+		return ;
+	}
 	if (!t->in_scene)
-		//put fov in global attributes
-	else if (!in_object)
-		//put fov in scene attributes
-	else if (in_object)
-		//check current_type
-		//put fov in current_camera	
+		t->global_attributes->fov = new_fov;
+	else if (!t->in_object)
+		t->scene_attributes->fov = new_fov;
+	else if (t->in_object)
+		t->object_attributes->fov = new_fov;
+	if (t->current_type != T_CAMERA)
+		rt_file_warning(t, "Can only modify the fov of cameras. Ignore.");
 }
 
 void	parse_intensity(t_parse_tools *t)
 {
+	double	new_intensity;
+
+	new_intensity = NAN;
+	if (isnan(new_intensity = parse_double(t->input->value)) || 
+		new_intensity < 0)
+	{
+		rt_file_warning(t, "Intensity index formatting error.");
+		return ;
+	}
 	if (!t->in_scene)
-		//put fov in global attributes
-	else if (!in_object)
-		//put fov in scene attributes
-	else if (in_object)
-		//check current_type
-		//put fov in current_light
+		t->global_attributes->intensity = new_intensity;
+	else if (!t->in_object)
+		t->scene_attributes->intensity = new_intensity;
+	else if (t->in_object)
+		t->object_attributes->intensity = new_intensity;
+	if (t->current_type != T_LIGHT)
+		rt_file_warning(t, "Can only modify the fov of lights. Ignore.");
 }
 
 void	import_rt_file(t_parse_tools *t)
@@ -347,6 +457,11 @@ void	read_texture_file(t_parse_tools *t)
 void	read_material_file(t_parse_tools *t)
 {
 	rt_file_warning(t, "read material file: feature not yet available.");
+}
+
+void	hashtag(t_parse_tools *t)
+{
+	rt_file_warning(t, "Ingore line.");
 }
 
 void	invalid_token(t_parse_tools *t)
@@ -382,4 +497,62 @@ static int	can_add_new_object(t_parse_tools *t)
 		rt_file_error_exit(t, "New object ust be followed by open bracket");
 	}
 	return (1);
+}
+
+//add verification for non digit values
+t_vec3	parse_vector(char *value)
+{
+	t_vec3	new_vec;
+	char	**split_value;
+
+	new_vec = v_new(NAN, NAN, NAN);
+	if (ft_charcount(value, ',') != 2)
+		return (new_vec);
+	split_value = split_trim(value, ',');
+	new_vec.x = ft_atod(split_value[0]);
+	new_vec.y = ft_atod(split_value[1]);
+	new_vec.z = ft_atod(split_value[2]);
+	return (new_vec);
+}
+
+//add verification for non digit values
+double	parse_double(char *value)
+{
+	double	new_d;
+
+	new_d = NAN;
+	if (ft_charcount(value, ','))
+		return (new_d);
+	new_d = ft_atod(value);
+	return (new_d);
+}
+
+static t_vec3	look_at_object(t_parse_tools *t, char *value)
+{
+	t_object	*o_ptr;
+	t_light		*l_ptr;
+	t_camera	*c_ptr;
+
+	o_ptr = t->scenes->objects;
+	while (o_ptr)
+	{
+		if (!ft_strcmp(value, o_ptr->name))
+			return (o_ptr->pos);
+		o_ptr = o_ptr->next;
+	}
+	l_ptr = t->scenes->lights;
+	while (l_ptr)
+	{
+		if (!ft_strcmp(value, l_ptr->name))
+			return (l_ptr->pos);
+		l_ptr = l_ptr->next;
+	}
+	c_ptr = t->scenes->cameras;
+	while (c_ptr)
+	{
+		if (!ft_strcmp(value, c_ptr->name))
+			return (c_ptr->pos);
+		c_ptr = c_ptr->next;
+	}
+	return (v_new(NAN, NAN, NAN));
 }

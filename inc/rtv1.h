@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/26 16:55:54 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/28 15:28:42 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,12 @@ typedef enum		e_token
 	T_READ_OBJ_FILE, 
 	T_READ_TEXTURE_FILE,
 	T_READ_MATERIAL_FILE,
+	T_HASHTAG,
 	T_INVALID_TOKEN,
 	T_COUNT
 }					t_token;
 
-# define TOKENS (const char *[T_COUNT]){"{","}","scene","camera","light","plane",\
+# define TOKENS (static const char *[T_COUNT]){"{","}","scene","camera","light","plane",\
 "sphere","cylinder","cone","resolution","ray depth","background color","position",\
 "direction","rotation","look at","color","radius","height","refraction","reflection",\
 "specular","transparency","fov","intensity","import","read rt file","read obj file",\
@@ -250,6 +251,7 @@ typedef struct		s_parse_tools
 	char			*file_name;  // ?
 	t_attributes 	*global_attributes;
 	t_attributes	*scene_attributes;
+	t_attributes	*object_attributes;
 	void			(**parse)(s_parse_tools *);
 }					t_parse_tools;
 
@@ -288,6 +290,8 @@ typedef struct		s_env
 void		get_file(char *file_name, t_input **input);
 int			get_token(char *key);
 void		parse_input(t_parse_tools *t);
+t_vec3		parse_vector(char *value);
+double		parse_double(char *value);
 // int			set_line_count(t_list **input);
 // int			parse_input(t_scene **scenes, t_list **input);
 // int			init_attributes(t_attributes **att);
@@ -355,9 +359,14 @@ void	read_rt_file(t_parse_tools *t);
 void	read_obj_file(t_parse_tools *t);
 void	read_texture_file(t_parse_tools *t);
 void	read_material_file(t_parse_tools *t);
+void	hashtag(t_parse_tools *t);
 void	invalid_token(t_parse_tools *t);
 void	rt_file_error_exit(t_parse_tools *t, char *msg);
 void	rt_file_warning(t_parse_tools *t, char *msg);
+t_vec3	get_color(char *value);
+t_vec3	parse_rgb(char *value);
+t_vec3	parse_hexadecimal(char *value);
+t_vec3	parse_color_name(char *value);
 
 /*
 ** Ray Tracing Functions
