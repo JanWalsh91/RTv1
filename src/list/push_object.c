@@ -1,35 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_pushback.c                                   :+:      :+:    :+:   */
+/*   push_object.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/24 15:02:03 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/24 15:03:30 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/30 11:53:17 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/03/01 16:07:28 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
-** Adds an elements to the end of a list.
-*/
-
 #include "../../inc/rtv1.h"
 
-void	input_pushback(t_input **input, t_input *n)
-{
-	t_input	*ptr;
+/*
+** Adds a new object to the end of list t_objects.
+*/
 
-	ptr = *input;
-	if (n)
+void	push_object(t_object **objects_head, t_object *new_object)
+{
+	t_object	*obj_ptr;
+
+	// printf("push_object: [%s]\n", new_object->name);
+	if (new_object)
 	{
-		if (!*input)
-			*input = n;
+		if (!(*objects_head))
+			*objects_head = new_object;
 		else
 		{
-			while (ptr->next)
-				ptr = ptr->next;
-			ptr->next = n;
+			obj_ptr = *objects_head;
+			while (obj_ptr->next)
+				obj_ptr = obj_ptr->next;
+			obj_ptr->next = new_object;
 		}
+		new_object->next = NULL;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/28 15:28:42 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/02 17:27:03 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,10 @@
 # define DEFAULT_dir_Y 1
 # define DEFAULT_dir_Z 0
 # define DEFAULT_FOV 45
-# define DEFAULT_
+# define DEFAULT_INTENSITY 10000
 # define CAM_IMG_PANE_DIST 1
 # define BIAS 0.01
+# define COLORS_PATH "res/colors.txt"
 
 /*
 ** Instructions
@@ -64,6 +65,7 @@ typedef enum		e_token
 {
 	T_OPEN_BRACKET,
 	T_CLOSE_BRACKET,
+	T_EMPTY_LINE,
 	//scene
 	T_SCENE,
 	//objects
@@ -106,7 +108,7 @@ typedef enum		e_token
 	T_COUNT
 }					t_token;
 
-# define TOKENS (static const char *[T_COUNT]){"{","}","scene","camera","light","plane",\
+# define TOKENS (const char *[T_COUNT]){"{","}","","scene","camera","light","plane",\
 "sphere","cylinder","cone","resolution","ray depth","background color","position",\
 "direction","rotation","look at","color","radius","height","refraction","reflection",\
 "specular","transparency","fov","intensity","import","read rt file","read obj file",\
@@ -123,6 +125,13 @@ typedef	struct		s_input
 }					t_input;
 
 typedef t_vec3			t_color;
+
+typedef struct			s_color_list
+{
+	t_color				value;
+	char				*name;
+	struct s_color_list	*next;
+}						t_color_list;
 
 typedef struct		s_attributes
 {
@@ -177,16 +186,16 @@ typedef	struct		s_ray
 
 typedef struct	s_object
 {
-	t_type			type;
+	t_token			type;
     char			*name;
-	double			rad; //radius for sphere, or cylinder, or cone.
-	double			height; //height of cone/cylinder
     void			*t;
     t_vec3			pos;
     t_vec3			dir;
 	t_vec3			rot;
 	t_vec3			look_at;
     t_color			col;
+	double			rad; //radius for sphere, or cylinder, or cone.
+	double			height; //height of cone/cylinder
 	double			refraction;
 	double			reflection;
 	double			specular;
@@ -200,8 +209,8 @@ typedef struct	s_light
     void			*t;
     t_vec3			pos;
     t_vec3			dir;
-	t_vec3			rot;
-	t_vec3			look_at;
+	t_vec3			rot; //?
+	t_vec3			look_at; //?
     t_color			col;
 	double			intensity;
 	struct s_light	*next;
@@ -252,7 +261,8 @@ typedef struct		s_parse_tools
 	t_attributes 	*global_attributes;
 	t_attributes	*scene_attributes;
 	t_attributes	*object_attributes;
-	void			(**parse)(s_parse_tools *);
+	t_color_list	*colors;
+	void			(**parse)(struct s_parse_tools *);
 }					t_parse_tools;
 
 typedef struct		s_intersection_tools
@@ -329,8 +339,9 @@ int			update_camera_ctw(t_object *camers);
 
 //new functions:
 void	init_parse_tools(t_parse_tools *t);
-void	parse_close_bracket(t_parse_tools *t);
 void	parse_open_bracket(t_parse_tools *t);
+void	parse_close_bracket(t_parse_tools *t);
+void	parse_empty_line(t_parse_tools *t);
 void	parse_scene(t_parse_tools *t);
 void	parse_camera(t_parse_tools *t);
 void	parse_light(t_parse_tools *t);
@@ -361,13 +372,25 @@ void	read_texture_file(t_parse_tools *t);
 void	read_material_file(t_parse_tools *t);
 void	hashtag(t_parse_tools *t);
 void	invalid_token(t_parse_tools *t);
-void	rt_file_error_exit(t_parse_tools *t, char *msg);
-void	rt_file_warning(t_parse_tools *t, char *msg);
-t_vec3	get_color(char *value);
-t_vec3	parse_rgb(char *value);
-t_vec3	parse_hexadecimal(char *value);
-t_vec3	parse_color_name(char *value);
+t_vec3	get_color(t_parse_tools *t, char *value);
+t_vec3	parse_rgb(t_parse_tools *t, char *value);
+t_vec3	parse_hexadecimal(t_parse_tools *t, char *value);
+t_vec3	parse_color_name(t_parse_tools *t, char *value);
 
+/*
+** Data Checking Functions
+*/
+
+int		check_data(t_scene *scenes);
+void	set_default_resolution(t_scene *scene);
+void	set_default_ray_depth(t_scene *scene);
+void	check_cameras(t_scene *scene, t_camera *cameras);
+void	check_lights(t_scene *scene, t_light *lights);
+void	check_objects(t_scene *scene, t_object *objects);
+void	set_default_pos(t_scene *scene, int type, void *obj, t_vec3 *pos);
+void	set_default_col(t_scene *scene, int type, void *obj, t_vec3 *col);
+void	set_default_intensity(t_scene *scene, int type, void *obj, double *intensity);
+t_vec3	get_direction(t_vec3 *dir, t_vec3 *rot, t_vec3 *look_at, t_vec3 *pos);
 /*
 ** Ray Tracing Functions
 */
@@ -410,14 +433,22 @@ int			solve_quadratic(t_vec3 q, double *r1, double *r2);
 ** List management Functions
 */
 
-void		input_pushback(t_input **input, t_input *n);
-t_input		*input_new(char *line, char *file_name, int fd, t_input **input);
-
+void			input_pushback(t_input **input, t_input *n);
+t_input			*input_new(char *line, char *file_name, int fd, t_input **input);
+int				init_color_list(t_color_list **colors);
+void			color_pushback(t_color_list **colors, t_color_list *new_color);
+t_color_list	*color_new(char *next_line);
+bool			find_color_value(t_color_list *colors, char *value, t_vec3 *new_col);
+int				get_hex_value(char c);
 /*
 ** Error Functions
 */
 
 void	error_line_exit(const char *msg, size_t line);
+void	rt_file_error_exit(t_parse_tools *t, char *msg);
+void	rt_file_warning(t_parse_tools *t, char *msg);
+void	data_error_exit(t_scene *scene, int type, void *object, char *msg);
+void	data_warning(t_scene *scene, int type, void *object, char *msg);
 
 /*
 ** Debug functions

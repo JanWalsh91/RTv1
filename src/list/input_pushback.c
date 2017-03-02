@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_camera.c                                      :+:      :+:    :+:   */
+/*   input_pushback.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/26 14:44:59 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/26 14:45:51 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/02/24 15:02:03 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/03/01 15:08:25 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/rtv1.h"
-
 /*
-** Adds a new camera to the end of list t_cameras.
+** Adds an elements to the end of a list.
 */
 
-void	push_camera(t_camera **cameras_head, t_camera *new_camera)
-{
-	t_camera	*cam_ptr;
+#include "../../inc/rtv1.h"
 
-	printf("push_camera: [%s]\n", new_camera->name);
-	if (new_camera)
+void	input_pushback(t_input **input, t_input *n)
+{
+	t_input	*ptr;
+
+	// printf("input_pushback\n");
+	if (n)
 	{
-		if (!(*cameras_head))
-			*cameras_head = new_camera;
+		if (!(*input))
+			*input = n;
 		else
 		{
-			cam_ptr = *cameras_head;
-			while (cam_ptr->next)
-				cam_ptr = cam_ptr->next;
-			cam_ptr->next = new_camera;
+			ptr = *input;
+			while (ptr->next)
+				ptr = ptr->next;
+			ptr->next = n;
 		}
-		new_camera->next = NULL;
+		n->next = NULL;
 	}
 }

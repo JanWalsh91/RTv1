@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:43:48 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/28 12:30:02 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/02 14:41:41 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,38 @@
 
 void	init_parse_tools(t_parse_tools *t)
 {
+	// printf("init_parse_tools\n");
+	t->in_scene = false;
+	t->in_object = false;
+	t->input = NULL;
+	t->input_head = NULL;
+	t->scenes = NULL;
+	t->current_scene = NULL;
+	t->current_object = NULL;
+	t->current_camera = NULL;
+	t->current_light = NULL;
+	t->current_type = T_INVALID_TOKEN;
+	t->fd = -1;
+	t->file_name = NULL;
+	t->global_attributes = NULL;
+	t->scene_attributes = NULL;
+	t->object_attributes = NULL;
+	t->colors = NULL;
+	if (!(t->global_attributes = (t_attributes *)malloc(sizeof(t_attributes))))
+			ft_errno_exit();
+	if (!(t->scene_attributes = (t_attributes *)malloc(sizeof(t_attributes))))
+		ft_errno_exit();
+	if (!(t->object_attributes = (t_attributes *)malloc(sizeof(t_attributes))))
+		ft_errno_exit();
 	reset_attributes(t->global_attributes);
 	reset_attributes(t->scene_attributes);
 	reset_attributes(t->object_attributes);
+	//init parse function pointer list:
 	if (!(t->parse = malloc(sizeof(t->parse) * T_COUNT)))
 		ft_errno_exit();
 	t->parse[T_CLOSE_BRACKET] = &parse_close_bracket;
 	t->parse[T_OPEN_BRACKET] = &parse_open_bracket;
+	t->parse[T_EMPTY_LINE] = &parse_empty_line;
 	t->parse[T_SCENE] = &parse_scene;
 	t->parse[T_CAMERA] = &parse_camera;
 	t->parse[T_LIGHT] = &parse_light;

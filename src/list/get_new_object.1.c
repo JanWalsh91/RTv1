@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/26 14:38:55 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/02 16:56:45 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_object 	*get_new_object(t_parse_tools *t)
 	}
 	else
 		new_object->name = ft_strdup(t->input->value);
+	new_object->type = t->input->token;
 	//printf("end get_new_object\n");
 	// printf("current_scene_name: [%s]", current_scene_name);
 	// printf("	scene_name: [%s]\n", scene_name);

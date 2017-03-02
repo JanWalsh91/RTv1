@@ -1,5 +1,6 @@
-resolution: 1000, 500
-scene: scene1
+resolution: 1000, 600
+ray depth: -2
+scene: test
 {
 	sphere: blue sphere
 	{
@@ -35,7 +36,12 @@ scene: scene1
 	}
 	camera: cam1
 	{
-		pos: 0, 0, -80
+		position: 0, 0, -80
 		look at: 0, 0, 0
+	}
+	light: l1
+	{
+		position: 0, 0, 0
+		intensity: 1000
 	}
 }

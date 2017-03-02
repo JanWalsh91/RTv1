@@ -6,11 +6,11 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:22:02 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/24 14:26:33 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/01 15:57:38 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/rtv1.h"
+#include "../../inc/rtv1.h"
 
 /*
 ** Splits and trims lines from the input file.
@@ -24,7 +24,6 @@ char 	**split_trim(char *s, char c)
 	
 	i = -1;
 	result = ft_strsplit(s, c);
-	free(s);
 	while (result && result[++i])
 		result[i] = ft_strtrim(result[i]);
 	ft_strtolower(result[0]);

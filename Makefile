@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/02/25 12:43:05 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/03/02 16:57:18 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,44 +19,41 @@ INC_PATH = inc/
 LIB_PATH = Libft/
 LIBMATH_PATH = Libmathft/
 
-PARSING = error_line_exit \
-			extract_cameras_lights \
-			get_file \
-			get_new_object \
-			get_new_scene \
+PARSING = 	check_data \
+			error_line_exit \
+			get_color \
+			get_file.1 \
+			get_token \
+			init_parse_tools \
+			parse_input.1 \
+			parse_value \
+			reset_attributes.1 \
+			set_default \
+			rt_error \
+			set_attributes.1 \
 			split_trim \
-			init_attributes \
-			init_camera_ray \
-			init_cameras \
-			parse_attributes_1 \
-			parse_input \
-			push_object \
-			push_scene \
-			set_attributes \
-			set_line_count \
-			reset_attributes
 
-SRC = main \
-			cast_camera_ray \
-			cast_shadow_ray \
-			draw_image \
-			get_normal \
-			get_intersection \
-			handle_sdl_events \
-			init_sdl \
-			rtv1 \
-			solve_quadratic \
-			debug
+SRC = 		main.1 \
+			debug.1
 			
-LIST = input_new \
-			input_pushback
+LIST = 		get_new_camera \
+			get_new_light \
+			get_new_object.1 \
+			get_new_scene.1 \
+			init_color_list \
+			input_new \
+			input_pushback \
+			push_camera \
+			push_light \
+			push_object \
+			push_scene 
 
 OBJ_DIR = obj
 
 EXT = .c
 
 SRC_PARSING = $(addsuffix $(EXT), $(PARSING))
-SRC_LST = $(addsuffix $(EXT), $(LST))
+SRC_LST = $(addsuffix $(EXT), $(LIST))
 SRC_SRC = $(addsuffix $(EXT), $(SRC))
 
 OBJ_SRC = $(addprefix $(OBJ_DIR)/, $(SRC_SRC:.c=.o))
@@ -86,20 +83,20 @@ all: $(NAME)
 $(NAME): $(OBJ_SRC) $(OBJ_PARSING) $(OBJ_LST)
 	@make -C $(LIB_PATH)
 	@make -C $(LIBMATH_PATH)
-	@$(CC) $(FLG) $(SDL) -g $(LIB_PATH)$(LIBFT_NAME) $(LIBMATH_PATH)$(LIBMATHFT_NAME) $(OBJ_PARSING) $(OBJ_SRC) -o $(NAME)
+	@$(CC) $(FLG) $(SDL) -g $(LIB_PATH)$(LIBFT_NAME) $(LIBMATH_PATH)$(LIBMATHFT_NAME) $(OBJ_PARSING) $(OBJ_SRC) $(OBJ_LST) -o $(NAME)
 	@$(ECHO) "$(C_GREEN)RTv1 compilation done.$(C_NONE)"
 
 $(OBJ_DIR)/%.o : ./src/%.c
 	@/bin/mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -I./inc -c -o $@ $<
+	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
 
 $(OBJ_DIR)/%.o : ./src/parsing/%.c
 	@/bin/mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -I./inc -c -o $@ $<
+	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
 
 $(OBJ_DIR)/%.o : ./src/list/%.c
 	@/bin/mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -I./inc -c -o $@ $<
+	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
 
 clean:
 	@/bin/rm -Rf $(OBJ_DIR)

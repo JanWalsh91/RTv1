@@ -1,37 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_object.c                                      :+:      :+:    :+:   */
+/*   push_scene.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 11:53:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/13 14:35:29 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/01 16:09:15 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/rtv1.h"
-
 /*
-** Adds a new object to the end of list t_objects.
+** Adds a new scene to the end of list t_scene.
+** If the list of scenes is empty, makes scene_head point to the first scene.
+** Else, iterates to the end of the list and adds new scene there.
 */
 
-void	push_object(t_object **objects_head, t_object *new_object)
-{
-	t_object	*obj_ptr;
+#include "../inc/rtv1.h"
 
-	printf("push_object: [%s] type: [%i]\n", new_object->name, new_object->type);
-	if (new_object)
+void	push_scene(t_scene **scenes_head, t_scene *new_scene)
+{
+	t_scene	*scene_ptr;
+
+	// printf("PUSH_SCENE\n");
+	if (new_scene)
 	{
-		if (!(*objects_head))
-			*objects_head = new_object;
+		if (!*scenes_head)
+		{
+			*scenes_head = new_scene;
+		}
 		else
 		{
-			obj_ptr = *objects_head;
-			while (obj_ptr->next)
-				obj_ptr = obj_ptr->next;
-			obj_ptr->next = new_object;
+			scene_ptr = *scenes_head;
+			while (scene_ptr->next)
+				scene_ptr = scene_ptr->next;
+			scene_ptr->next = new_scene;
 		}
-		new_object->next = NULL;
 	}
+	printf("\n");
 }

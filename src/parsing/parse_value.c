@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:35:28 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/28 15:03:05 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/02 15:43:04 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,6 @@ static int		can_add_new_scene(t_parse_tools *t);
 static int		can_add_new_object(t_parse_tools *t);
 static t_vec3	look_at_object(t_parse_tools *t, char *value);
 
-void	parse_close_bracket(t_parse_tools *t)
-{
-	if (t->in_object)
-	{
-		set_attributes(t, t->object_attributes);
-		t->in_object = 0;
-	}
-	else if (t->in_scene)
-		t->in_scene = 0;
-	else
-		rt_file_error_exit(t, "Extraneous '}'.");
-}
-
 void	parse_open_bracket(t_parse_tools *t)
 {
 	rt_file_warning(t, "Extraneous '{'. Ignore.");
@@ -40,8 +27,33 @@ void	parse_open_bracket(t_parse_tools *t)
 	// if parsed using this function, means that there is an extra open bracket where there shouldnt be
 }
 
+void	parse_close_bracket(t_parse_tools *t)
+{
+	// printf("parse_close_bracket\n");
+	if (t->in_object)
+	{
+		set_attributes(t, t->object_attributes);
+		reset_attributes(t->object_attributes);
+		// printf("exit object\n");
+		t->in_object = 0;
+	}
+	else if (t->in_scene)
+	{
+		t->in_scene = 0;
+		// printf("exit scene\n");
+	}
+	else
+		rt_file_error_exit(t, "Extraneous '}'.");
+}
+
+void	parse_empty_line(t_parse_tools *t)
+{
+	// printf("parse_empty_line\n");
+}
+
 void	parse_scene(t_parse_tools *t)
 {
+	// printf("parse_scene\n");
 	can_add_new_scene(t);
 	t->current_scene = get_new_scene(t);
 	push_scene(&t->scenes, t->current_scene);
@@ -50,6 +62,7 @@ void	parse_scene(t_parse_tools *t)
 		t->current_scene->res = t->global_attributes->res;
 	if (t->global_attributes->ray_depth != -1)
 		t->current_scene->ray_depth = t->global_attributes->ray_depth;
+	t->input = t->input->next;
 	//no default values. Default values given later when checking. 
 }
 
@@ -58,9 +71,10 @@ void	parse_camera(t_parse_tools *t)
 	can_add_new_object(t);
 	t->current_type = T_CAMERA;
 	t->current_camera = get_new_camera(t);
-	push_camera(&t->scenes->cameras, t->current_camera);
+	push_camera(&t->current_scene->cameras, t->current_camera);
 	set_attributes(t, t->global_attributes);
 	set_attributes(t, t->scene_attributes);
+	t->input = t->input->next;
 }
 
 void	parse_light(t_parse_tools *t)
@@ -68,9 +82,10 @@ void	parse_light(t_parse_tools *t)
 	can_add_new_object(t);
 	t->current_type = T_LIGHT;
 	t->current_light = get_new_light(t);
-	push_light(&t->scenes->lights, t->current_light);
+	push_light(&t->current_scene->lights, t->current_light);
 	set_attributes(t, t->global_attributes);
 	set_attributes(t, t->scene_attributes);
+	t->input = t->input->next;
 }
 
 void	parse_plane(t_parse_tools *t)
@@ -78,19 +93,22 @@ void	parse_plane(t_parse_tools *t)
 	can_add_new_object(t);
 	t->current_type = T_PLANE;
 	t->current_object = get_new_object(t);
-	push_object(&t->scenes->objects, t->current_object);
+	push_object(&t->current_scene->objects, t->current_object);
 	set_attributes(t, t->global_attributes);
 	set_attributes(t, t->scene_attributes);
+	t->input = t->input->next;
 }
 
 void	parse_sphere(t_parse_tools *t)
 {
+	// printf("parse_sphere\n");
 	can_add_new_object(t);
 	t->current_object = get_new_object(t);
 	t->current_type = T_SPHERE;
-	push_object(&t->scenes->objects, t->current_object);
+	push_object(&t->current_scene->objects, t->current_object);
 	set_attributes(t, t->global_attributes);
 	set_attributes(t, t->scene_attributes);
+	t->input = t->input->next;
 }
 
 void	parse_cylinder(t_parse_tools *t)
@@ -98,9 +116,10 @@ void	parse_cylinder(t_parse_tools *t)
 	can_add_new_object(t);
 	t->current_object = get_new_object(t);
 	t->current_type = T_CYLINDER;
-	push_object(&t->scenes->objects, t->current_object);
+	push_object(&t->current_scene->objects, t->current_object);
 	set_attributes(t, t->global_attributes);
 	set_attributes(t, t->scene_attributes);
+	t->input = t->input->next;
 }
 
 void	parse_cone(t_parse_tools *t)
@@ -108,9 +127,10 @@ void	parse_cone(t_parse_tools *t)
 	can_add_new_object(t);
 	t->current_object = get_new_object(t);
 	t->current_type = T_CONE;
-	push_object(&t->scenes->objects, t->current_object);
+	push_object(&t->current_scene->objects, t->current_object);
 	set_attributes(t, t->global_attributes);
 	set_attributes(t, t->scene_attributes);
+	t->input = t->input->next;
 }
 
 void	parse_resolution(t_parse_tools *t)
@@ -118,6 +138,7 @@ void	parse_resolution(t_parse_tools *t)
 	char 	**s2;
 	t_pt2	new_res;
 
+	// printf("parse_resolution\n");
 	if (ft_charcount(t->input->value, ',') != 1)
 	{
 		rt_file_warning(t, "Resolution formatting error.");
@@ -138,6 +159,7 @@ void	parse_resolution(t_parse_tools *t)
 	else if (!t->in_object)
 		rt_file_warning(t, "Skip resolution attribute in object...");
 }
+
 void	parse_ray_depth(t_parse_tools *t)
 {
 	int	new_ray_depth;
@@ -148,6 +170,11 @@ void	parse_ray_depth(t_parse_tools *t)
 		return ;
 	}
 	new_ray_depth = ft_atoi(t->input->value);
+	if (new_ray_depth < 1)
+	{
+		rt_file_warning(t, "Ray depth must be positive and non-zero.");
+		return ;
+	}
 	if (!t->in_scene)
 		t->global_attributes->ray_depth = new_ray_depth;
 	else if (!t->in_object)
@@ -160,14 +187,17 @@ void	parse_background_color(t_parse_tools *t)
 {
 	t_vec3	new_col;
 
-	if (v_isnan(new_col = get_color(t->input->value)))
+	if (v_isnan(new_col = get_color(t, t->input->value)))
 	{
 		rt_file_warning(t, "Background color formatting error.");
 		return ;
 	}
 	if (new_col.x < 0 || new_col.y < 0 || new_col.z < 0 ||
 		new_col.x > 255 || new_col.y > 255 || new_col.z > 255)
+	{
+		new_col = v_clamp(new_col, 0, 255);
 		rt_file_warning(t, "Color clamped to [0 - 255].");
+	}
 	if (!t->in_scene)
 		t->global_attributes->col = new_col;
 	else if (!t->in_object)
@@ -211,6 +241,7 @@ void	parse_direction(t_parse_tools *t)
 }
 
 //rotation in degrees around axes x, y, z
+//no value limit
 void	parse_rotation(t_parse_tools *t)
 {
 	t_vec3	new_rot;
@@ -250,14 +281,17 @@ void	parse_color(t_parse_tools *t)
 {
 	t_vec3	new_col;
 
-	if (v_isnan(new_col = get_color(t->input->value)))
+	if (v_isnan(new_col = get_color(t, t->input->value)))
 	{
 		rt_file_warning(t, "Color formatting error.");
 		return ;
 	}
 	if (new_col.x < 0 || new_col.y < 0 || new_col.z < 0 ||
 		new_col.x > 255 || new_col.y > 255 || new_col.z > 255)
+	{
+		new_col = v_clamp(new_col, 0, 255);
 		rt_file_warning(t, "Color clamped to [0 - 255].");
+	}
 	if (!t->in_scene)
 		t->global_attributes->col = new_col;
 	else if (!t->in_object)
@@ -283,8 +317,9 @@ void	parse_radius(t_parse_tools *t)
 		t->scene_attributes->rad = new_radius;
 	else if (t->in_object)
 		t->object_attributes->rad = new_radius;
-	if (t->current_type != T_CONE && t->current_type != T_CYLINDER)
-		rt_file_warning(t, "Radius attribute only applicable to cones and cylinders. Ignore.");
+	if (t->current_type != T_CONE && t->current_type != T_CYLINDER &&
+		t->current_type != T_SPHERE)
+		rt_file_warning(t, "Radius attribute only applicable to spheres, cones and cylinders. Ignore.");
 }
 
 void	parse_height(t_parse_tools *t)
@@ -472,7 +507,7 @@ void	invalid_token(t_parse_tools *t)
 static int	can_add_new_scene(t_parse_tools *t)
 {
 	if (!t->in_scene)
-		t->in_scene = 1;
+		t->in_scene = true;
 	else
 		rt_file_error_exit(t, "Cannot add new scene within a scene.");
 	if (t->input->next->token != T_OPEN_BRACKET)
@@ -494,7 +529,7 @@ static int	can_add_new_object(t_parse_tools *t)
 	if (t->input->next->token != T_OPEN_BRACKET)
 	{
 		t->input = t->input->next;
-		rt_file_error_exit(t, "New object ust be followed by open bracket");
+		rt_file_error_exit(t, "New object must be followed by open bracket");
 	}
 	return (1);
 }
@@ -527,6 +562,8 @@ double	parse_double(char *value)
 	return (new_d);
 }
 
+
+//perhaps calculate dir from look at after scene has been generated. (in check data)
 static t_vec3	look_at_object(t_parse_tools *t, char *value)
 {
 	t_object	*o_ptr;
@@ -554,5 +591,7 @@ static t_vec3	look_at_object(t_parse_tools *t, char *value)
 			return (c_ptr->pos);
 		c_ptr = c_ptr->next;
 	}
+	rt_file_warning(t, "Object to look at not found.\n\
+(Make sure to declare the object before the look_at call.)");
 	return (v_new(NAN, NAN, NAN));
 }

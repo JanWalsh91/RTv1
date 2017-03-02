@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug.c                                            :+:      :+:    :+:   */
+/*   debug.1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 17:13:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/01 14:18:20 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/02 15:55:14 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ void	print_scenes(t_scene *scenes_head)
 {
 	t_scene		*s_ptr;
 	t_object	*o_ptr;
-	t_object	*l_ptr;
-	t_object	*c_ptr;
+	t_light		*l_ptr;
+	t_camera	*c_ptr;
 
 	ft_printf("%{u}%{red}print_scenes%{}\n");
 	s_ptr = scenes_head;
 	while (s_ptr)
 	{
 		printf("scene: %s\n", s_ptr->name);
-		printf("	res: [%i, %i]\n", s_ptr->res.x, s_ptr->res.x);
+		printf("	res: [%i, %i]\n", s_ptr->res.x, s_ptr->res.y);
 		printf("	ray_depth: [%i]\n", s_ptr->ray_depth);
 		o_ptr = s_ptr->objects;
 		printf("	objects:\n");
@@ -37,12 +37,10 @@ void	print_scenes(t_scene *scenes_head)
 			printf("		object type: [%i]\n", o_ptr->type);
 			printf("		object pos: [%f] [%f] [%f]\n", o_ptr->pos.x, o_ptr->pos.y, o_ptr->pos.z);
 			printf("		object col: [%f] [%f] [%f]\n", o_ptr->col.x, o_ptr->col.y, o_ptr->col.z);
+			printf("		object lookat: [%f] [%f] [%f]\n", o_ptr->look_at.x, o_ptr->look_at.y, o_ptr->look_at.z);
 			printf("		object dir: [%f] [%f] [%f]\n", o_ptr->dir.x, o_ptr->dir.y, o_ptr->dir.z);
-			if (o_ptr->type == SPHERE)
-				printf("		object rad: [%f]\n", o_ptr->rad);
-			if (o_ptr->type == CYLINDER || o_ptr->type == CONE)
-				// if (!isnan(o_ptr->height))
-					printf("		object height: [%f]\n", o_ptr->height);
+			printf("		object rad: [%f]\n", o_ptr->rad);
+			printf("		object height: [%f]\n", o_ptr->height);
 			o_ptr = o_ptr->next;
 		}
 		c_ptr = s_ptr->cameras;
@@ -50,8 +48,9 @@ void	print_scenes(t_scene *scenes_head)
 		while (c_ptr)
 		{
 			printf("	camera name: [%s]\n", c_ptr->name);
-			printf("		object type: [%i]\n", c_ptr->type);
 			printf("		camera pos: [%f] [%f] [%f]\n", c_ptr->pos.x, c_ptr->pos.y, c_ptr->pos.z);
+			printf("		camera dir: [%f] [%f] [%f]\n", c_ptr->dir.x, c_ptr->dir.y, c_ptr->dir.z);
+			printf("		camera look at: [%f] [%f] [%f]\n", c_ptr->look_at.x, c_ptr->look_at.y, c_ptr->look_at.z);
 			printf("		camera scale: [%f]\n", c_ptr->scale);
 			printf("		camera fov: [%f]\n", c_ptr->fov);
 			c_ptr = c_ptr->next;
@@ -61,8 +60,8 @@ void	print_scenes(t_scene *scenes_head)
 		while (l_ptr)
 		{
 			printf("	light name: [%s]\n", l_ptr->name);
-			printf("		object type: [%i]\n", l_ptr->type);
 			printf("		light pos: [%f] [%f] [%f]\n", l_ptr->pos.x, l_ptr->pos.y, l_ptr->pos.z);
+			printf("		light intensity: [%f]\n", l_ptr->intensity);
 			l_ptr = l_ptr->next;
 		}
 		s_ptr = s_ptr->next;

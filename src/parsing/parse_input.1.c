@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/29 12:25:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/26 12:58:09 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/02 14:18:59 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 void		parse_input(t_parse_tools *t)
 {
+	// printf("parse_input\n");
 	while (t->input)
 	{
+		// printf("next token: [%i]\n", t->input->token);
 		t->parse[t->input->token](t);
+		// printf("t->input = t->input->next\n");
 		t->input = t->input->next;
 	}
 }
