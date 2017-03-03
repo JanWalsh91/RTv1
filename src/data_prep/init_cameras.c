@@ -6,57 +6,48 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 15:36:08 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/21 14:42:00 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/03 15:56:16 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/rtv1.h"
+#include "../../inc/rtv1.h"
 
 /*
-** Initiliazes each camera, allocating memory.
+** Initiliaze camera, allocating memory.
 */
 
-int	init_cameras(t_scene *scene)
+void	init_camera(t_scene *scene, t_camera *cam)
 {
-	t_object	*c_ptr;
 	int	x;
 
-	printf("INIT_CAMERAS\n");
-	c_ptr = scene->cameras;
-	while (c_ptr)
-	{
-		printf("init camera: [%s] [%i x %i]\n", c_ptr->name, scene->res.y, scene->res.x);
-		if (!(c_ptr->pixel_map = (t_color **)ft_memalloc(scene->res.y * sizeof(t_color *))))
+	cam->pixel_map = NULL;
+	if (!(cam->pixel_map = (t_color **)ft_memalloc(scene->res.y * sizeof(t_color *))))
+		ft_error_exit("Malloc error");
+	x = -1;
+	while (++x < scene->res.y)
+		if (!(cam->pixel_map[x] = (t_color *)ft_memalloc(scene->res.x * sizeof(t_color))))
 			ft_error_exit("Malloc error");
-		x = -1;
-		while (++x < scene->res.y)
-			if (!(c_ptr->pixel_map[x] = (t_color *)ft_memalloc(scene->res.x * sizeof(t_color))))
-				ft_error_exit("Malloc error");
-		c_ptr->ctw = m_new_identity();
-		update_camera_scale(c_ptr);
-		update_camera_ctw(c_ptr);
-		c_ptr = c_ptr->next;
-	}
-	return (1);
+	cam->ctw = m_new_identity();
+	update_camera_scale(cam);
+	update_camera_ctw(cam);
 }
 
 /*
 ** Calculates scale. 
 */
 
-int	update_camera_scale(t_object *camera)
+void	update_camera_scale(t_camera *camera)
 {
 	camera->scale = tan(to_radian(camera->fov * 0.5));
-	printf("fov: [%f]\n", camera->fov);
-	printf("scale: [%f]\n", camera->scale);
-	return (1);
+	// printf("fov: [%f]\n", camera->fov);
+	// printf("scale: [%f]\n", camera->scale);
 }
 
 /*
 ** Updates the camera to world matrix.
 */
 
-int	update_camera_ctw(t_object *camera)
+void	update_camera_ctw(t_camera *camera)
 {
 	t_vec3 tmp;
 	
@@ -67,5 +58,4 @@ int	update_camera_ctw(t_object *camera)
 	camera->ctw[0][3] = camera->pos.x;
 	camera->ctw[1][3] = camera->pos.y;
 	camera->ctw[2][3] = camera->pos.z;
-	return (1);
 }

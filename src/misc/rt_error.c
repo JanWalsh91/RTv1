@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 15:39:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/02 16:23:09 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/03 15:28:29 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 void	rt_file_error_exit(t_parse_tools *t, char *msg)
 {
-	ft_printf("%{red}ERROR in file \"%{i}%s%{}%{red}\" on line %{i}%lu%{}%{red}:\n%s\n%{}",
+	if (t)
+		ft_printf("%{red}ERROR in file \"%{i}%s%{}%{red}\" on line %{i}%lu%{}%{red}:\n%s\n%{}",
 	t->input->file_name, t->input->line_number, (char *)msg);
+	else
+		ft_printf("%{red}ERROR: %s\n", msg);
 	// printf("token: [%i]\n", t->input->token);
 	// printf("value: [%s]\n", t->input->value);
 	exit(0);

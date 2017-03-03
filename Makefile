@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/03/02 16:57:18 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/03/03 16:47:11 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,27 +19,28 @@ INC_PATH = inc/
 LIB_PATH = Libft/
 LIBMATH_PATH = Libmathft/
 
-PARSING = 	check_data \
-			error_line_exit \
-			get_color \
-			get_file.1 \
+SRC = 		main \
+			handle_sdl_events \
+			init_sdl
+
+PARSING = 	get_color \
+			get_file \
 			get_token \
 			init_parse_tools \
-			parse_input.1 \
+			parse_input \
 			parse_value \
-			reset_attributes.1 \
-			set_default \
-			rt_error \
-			set_attributes.1 \
+			reset_attributes \
+			set_attributes \
 			split_trim \
 
-SRC = 		main.1 \
-			debug.1
-			
+DATA_PREP = check_data \
+			init_cameras \
+			set_default
+
 LIST = 		get_new_camera \
 			get_new_light \
-			get_new_object.1 \
-			get_new_scene.1 \
+			get_new_object \
+			get_new_scene \
 			init_color_list \
 			input_new \
 			input_pushback \
@@ -48,17 +49,37 @@ LIST = 		get_new_camera \
 			push_object \
 			push_scene 
 
+RAY_TRACING = cast_camera_ray \
+			cast_shadow_ray \
+			draw_image \
+			get_intersection \
+			get_normal \
+			init_camera_ray \
+			rtv1 \
+			solve_quadratic
+
+MISC = 		debug \
+			error_line_exit \
+			free \
+			rt_error
+
 OBJ_DIR = obj
 
 EXT = .c
 
-SRC_PARSING = $(addsuffix $(EXT), $(PARSING))
-SRC_LST = $(addsuffix $(EXT), $(LIST))
 SRC_SRC = $(addsuffix $(EXT), $(SRC))
+SRC_PARSING = $(addsuffix $(EXT), $(PARSING))
+SRC_DATA = $(addsuffix $(EXT), $(DATA_PREP))
+SRC_RT = $(addsuffix $(EXT), $(RAY_TRACING))
+SRC_LST = $(addsuffix $(EXT), $(LIST))
+SRC_MISC = $(addsuffix $(EXT), $(MISC))
 
 OBJ_SRC = $(addprefix $(OBJ_DIR)/, $(SRC_SRC:.c=.o))
-OBJ_LST = $(addprefix $(OBJ_DIR)/, $(SRC_LST:.c=.o))
 OBJ_PARSING = $(addprefix $(OBJ_DIR)/, $(SRC_PARSING:.c=.o))
+OBJ_DATA = $(addprefix $(OBJ_DIR)/, $(SRC_DATA:.c=.o))
+OBJ_RT = $(addprefix $(OBJ_DIR)/, $(SRC_RT:.c=.o))
+OBJ_LST = $(addprefix $(OBJ_DIR)/, $(SRC_LST:.c=.o))
+OBJ_MISC = $(addprefix $(OBJ_DIR)/, $(SRC_MISC:.c=.o))
 
 CC	= gcc
 FLG = -Werror -Wextra -Wall
@@ -80,10 +101,10 @@ ECHO = echo
 
 all: $(NAME)
 
-$(NAME): $(OBJ_SRC) $(OBJ_PARSING) $(OBJ_LST)
+$(NAME): $(OBJ_SRC) $(OBJ_PARSING) $(OBJ_LST) $(OBJ_DATA) $(OBJ_RT) $(OBJ_MISC)
 	@make -C $(LIB_PATH)
 	@make -C $(LIBMATH_PATH)
-	@$(CC) $(FLG) $(SDL) -g $(LIB_PATH)$(LIBFT_NAME) $(LIBMATH_PATH)$(LIBMATHFT_NAME) $(OBJ_PARSING) $(OBJ_SRC) $(OBJ_LST) -o $(NAME)
+	@$(CC) $(FLG) $(SDL) -g $(LIB_PATH)$(LIBFT_NAME) $(LIBMATH_PATH)$(LIBMATHFT_NAME) $(OBJ_PARSING) $(OBJ_SRC) $(OBJ_LST) $(OBJ_DATA) $(OBJ_RT) $(OBJ_MISC) -o $(NAME)
 	@$(ECHO) "$(C_GREEN)RTv1 compilation done.$(C_NONE)"
 
 $(OBJ_DIR)/%.o : ./src/%.c
@@ -95,6 +116,18 @@ $(OBJ_DIR)/%.o : ./src/parsing/%.c
 	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
 
 $(OBJ_DIR)/%.o : ./src/list/%.c
+	@/bin/mkdir -p $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
+
+$(OBJ_DIR)/%.o : ./src/data_prep/%.c
+	@/bin/mkdir -p $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
+
+$(OBJ_DIR)/%.o : ./src/ray_tracing/%.c
+	@/bin/mkdir -p $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
+
+$(OBJ_DIR)/%.o : ./src/misc/%.c
 	@/bin/mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
 

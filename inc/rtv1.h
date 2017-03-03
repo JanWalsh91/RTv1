@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/02 17:27:03 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/03 17:02:12 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,17 @@
 # define DEFAULT_POS_Z 1
 # define DEFAULT_DIR_X 0
 # define DEFAULT_DIR_Y 0
-# define DEFAULT_DIR_Z 1
+# define DEFAULT_DIR_Z 0
 # define DEFAULT_COL_R 0xAA
 # define DEFAULT_COL_G 0xAA
 # define DEFAULT_COL_B 0xFF
-# define DEFAULT_dir_X 0
-# define DEFAULT_dir_Y 1
-# define DEFAULT_dir_Z 0
+# define DEFAULT_CAM_DIR_X 0
+# define DEFAULT_CAM_DIR_Y 0
+# define DEFAULT_CAM_DIR_Z 1
 # define DEFAULT_FOV 45
 # define DEFAULT_INTENSITY 10000
+# define DEFAULT_RADIUS 1
+# define DEFAULT_HEIGHT 1
 # define CAM_IMG_PANE_DIST 1
 # define BIAS 0.01
 # define COLORS_PATH "res/colors.txt"
@@ -158,17 +160,17 @@ typedef struct		s_attributes
 
 
 //Keep in same order.
-# define OBJECTS "camera,light,plane,sphere,cylinder,cone"
-# define OBJECT_COUNT 6
-typedef enum		e_type
-{
-	CAMERA = 1,
-	LIGHT = 2,
-	PLANE = 3,
-	SPHERE = 4,
-	CYLINDER = 5,
-	CONE = 6
-}					t_type;
+// # define OBJECTS "camera,light,plane,sphere,cylinder,cone"
+// # define OBJECT_COUNT 6
+// typedef enum		e_type
+// {
+// 	CAMERA = 1,
+// 	LIGHT = 2,
+// 	PLANE = 3,
+// 	SPHERE = 4,
+// 	CYLINDER = 5,
+// 	CONE = 6
+// }					t_type;
 
 typedef	struct		s_ray
 {
@@ -178,7 +180,7 @@ typedef	struct		s_ray
 	double		root2;
 	double		t; // closest valid intersection
 	t_vec3		hit; // interection points in World View
-	t_type		hit_type;
+	t_token		hit_type;
 	t_vec3		nhit; //normal at intersection point
 	t_color		col; // color found
 }					t_ray;
@@ -209,8 +211,8 @@ typedef struct	s_light
     void			*t;
     t_vec3			pos;
     t_vec3			dir;
-	t_vec3			rot; //?
-	t_vec3			look_at; //?
+	t_vec3			rot;
+	t_vec3			look_at;
     t_color			col;
 	double			intensity;
 	struct s_light	*next;
@@ -226,8 +228,8 @@ typedef struct	s_camera
 	t_vec3			look_at;
 	t_color			**pixel_map;
 	t_matrix		ctw; //camera to world matrix (only for cameras)
-	float			scale;
-	float			fov;
+	double			scale;
+	double			fov;
 	struct s_camera	*next;
 }				t_camera;
 
@@ -333,9 +335,9 @@ void		set_attributes(t_parse_tools *t, t_attributes *a);
 // int			set_attributes_object(t_attributes *att, t_object *object);
 int			reset_attributes(t_attributes *att);
 int			extract_cameras_lights(t_scene *scene);
-int			init_cameras(t_scene *scene);
-int			update_camera_scale(t_object *camers);
-int			update_camera_ctw(t_object *camers);
+// int			init_cameras(t_scene *scene);
+// int			update_camera_scale(t_object *camers);
+// int			update_camera_ctw(t_object *camers);
 
 //new functions:
 void	init_parse_tools(t_parse_tools *t);
@@ -390,7 +392,17 @@ void	check_objects(t_scene *scene, t_object *objects);
 void	set_default_pos(t_scene *scene, int type, void *obj, t_vec3 *pos);
 void	set_default_col(t_scene *scene, int type, void *obj, t_vec3 *col);
 void	set_default_intensity(t_scene *scene, int type, void *obj, double *intensity);
-t_vec3	get_direction(t_vec3 *dir, t_vec3 *rot, t_vec3 *look_at, t_vec3 *pos);
+void	set_default_radius(t_scene *scene, int type, void *obj, double *radius);
+void	set_default_height(t_scene *scene, int type, void *obj, double *height);
+void	set_default_cam_dir(t_scene *scene, int type, void *cam, t_vec3 *dir);
+void	set_default_obj_dir(t_scene *scene, int type, void *obj, t_vec3 *dir);
+void	set_default_fov(t_scene *scene, int type, void *obj, double *fov);
+void	get_obj_direction(t_scene *scene, t_object *obj);
+void	get_cam_direction(t_scene *scene, t_camera *cam);
+void	init_camera(t_scene *scene, t_camera *cam);
+void	update_camera_scale(t_camera *camera);
+void	update_camera_ctw(t_camera *camera);
+
 /*
 ** Ray Tracing Functions
 */
@@ -428,6 +440,8 @@ int			solve_quadratic(t_vec3 q, double *r1, double *r2);
 /*
 ** Free Functions
 */
+
+void		free_matrix(t_matrix *m);
 
 /*
 ** List management Functions

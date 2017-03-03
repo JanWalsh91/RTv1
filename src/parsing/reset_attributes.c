@@ -1,46 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reset_attributes.c                                 :+:      :+:    :+:   */
+/*   reset_attributes.1.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/01 13:50:57 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/24 14:27:58 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/02/26 15:41:22 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/03/03 13:49:07 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/rtv1.h"
+#include "../../inc/rtv1.h"
 
 /*
 ** Resets the attributes.
 */
 
-static void	set_vec_to_nan(t_vec3 *v);
-
 int	reset_attributes(t_attributes *att)
 {
 	// printf("RESET_ATTRIBUTES\n");
-	(*att).res.x = INT_MAX;
-	(*att).res.y = INT_MAX;
-	(*att).ray_depth = INT_MAX;
-	set_vec_to_nan(&(*att).pos);
-	set_vec_to_nan(&(*att).dir);
-	set_vec_to_nan(&(*att).look_at);
-	(*att).col.x = INT_MAX;
-	(*att).col.y = INT_MAX;
-	(*att).col.z = INT_MAX;
-	(*att).rad = NAN;
-	(*att).angle = NAN;
-	(*att).height = NAN;
-	(*att).intensity = NAN;
+	//scene
+	att->res.x = -1;
+	att->res.y = -1;
+	att->ray_depth = -1;
+	//light
+	att->intensity = NAN;
+	//camera
+	att->fov = NAN;
+	//objects
+	att->pos = v_new(NAN, NAN, NAN);
+	att->dir = v_new(NAN, NAN, NAN);
+	att->rot = v_new(NAN, NAN, NAN);
+	att->look_at = v_new(NAN, NAN, NAN);
+	att->col = v_new(NAN, NAN, NAN);
+	att->rad = NAN;
+	att->height = NAN;
+	att->refraction = NAN;
+	att->reflection = NAN;
+	att->specular = NAN;
+	att->transparency = NAN;
 	// print_attributes(*att);
 	return(1);
-}
-
-static void	set_vec_to_nan(t_vec3 *v)
-{
-	v->x = NAN;
-	v->y = NAN;
-	v->z = NAN;
 }

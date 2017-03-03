@@ -6,11 +6,11 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 10:57:18 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/24 10:33:50 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/03 17:12:00 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/rtv1.h"
+#include "../../inc/rtv1.h"
 
 /*
 ** Returns the color of a pixel.
@@ -41,8 +41,10 @@ t_color	cast_camera_ray(t_ray *cam_ray, t_scene *scene)
 		obj = (obj)->next;
 	}
 	if (t != INFINITY)
-		cast_shadow_ray(cam_ray, hitobj, scene);
+		cam_ray->col = hitobj->col;
+	// 	cast_shadow_ray(cam_ray, hitobj, scene);
 	// If no intersection is found, return background color. 
+	print_vec(cam_ray->col);
 	return (cam_ray->col);
 }
 

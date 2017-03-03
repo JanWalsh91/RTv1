@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/02 16:56:45 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/03 14:58:04 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,17 @@ t_object 	*get_new_object(t_parse_tools *t)
 		ft_error_exit("Malloc error");
 	new_object->next = NULL;
 	ft_bzero(new_object, sizeof(t_object));
+	new_object->pos = v_new(NAN, NAN, NAN);
+	new_object->dir = v_new(NAN, NAN, NAN);
+	new_object->rot = v_new(NAN, NAN, NAN);
+	new_object->look_at = v_new(NAN, NAN, NAN);
+	new_object->col = v_new(NAN, NAN, NAN);
+	new_object->rad = -1;
+	new_object->height = -1;
+	new_object->refraction = -1;
+	new_object->reflection = -1;
+	new_object->specular = -1;
+	new_object->transparency = -1;
 	if (!t->input->value)
 	{
 		// printf("no name given\n");

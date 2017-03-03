@@ -28,7 +28,7 @@ scene: scene1
 	light: blue
 	{
 		position: -25, 10, 10
-		intensity: 1000
+		intensity: 10000000
 		color: 20, 20, 250
 	}
 	light: cyan

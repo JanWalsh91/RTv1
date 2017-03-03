@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.1.c                                           :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:57:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/02 15:57:35 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/02/19 12:28:30 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,22 @@
 
 int	main(int ac, char **av)
 {
-	t_parse_tools	t;
-	// t_input	*input;
+	t_list	*input;
+	t_scene	*scenes;
 	int		i;
 
-	// input = NULL;
+	input = NULL;
+	scenes = NULL;
 	ac < 2 ? ft_display_usage_exit("usage") : 0;
 	i = 0;
-	init_parse_tools(&t);
 	while (++i < ac)
-		get_file(av[i], &t.input);
-	i = 0;
-	while (++i < ac)
-		parse_input(&t);
-	//check_data;
+		if (!get_file(av[i], &input) ||
+		!set_line_count(&input) ||
+		!parse_input(&scenes, &input))
+			//!check_data(&scenes))
+			return (0);
 	//free input.
-	print_scenes(t.scenes);
-	// rtv1(&scenes);
+	print_scenes(scenes);
+	rtv1(&scenes);
 	return (0);
 }

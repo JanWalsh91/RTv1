@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 14:42:55 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/26 14:43:55 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/03 15:53:05 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ t_camera 	*get_new_camera(t_parse_tools *t)
 		ft_error_exit("Malloc error");
 	new_camera->next = NULL;
 	ft_bzero(new_camera, sizeof(t_camera));
+	new_camera->pos = v_new(NAN, NAN, NAN);
+	new_camera->dir = v_new(NAN, NAN, NAN);
+	new_camera->rot = v_new(NAN, NAN, NAN);
+	new_camera->look_at = v_new(NAN, NAN, NAN);
+	new_camera->fov = NAN;
 	if (!t->input->value)
 	{
 		// printf("no name given\n");

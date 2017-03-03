@@ -6,11 +6,11 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:11:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/24 10:31:29 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/03 17:02:41 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/rtv1.h"
+#include "../../inc/rtv1.h"
 
 /*
 ** Returns 1 if an intersection was found. 0 if an intersection was not found.
@@ -27,13 +27,13 @@ int		get_intersection(t_ray *ray, t_object *obj)
 	// 	printf("get_intersection with [%s]\n", obj->name);
 	// 	i--;
 	// }
-	if (obj->type == SPHERE)
+	if (obj->type == T_SPHERE)
 		return (get_sphere_intersection(ray, obj));
-	else if (obj->type == PLANE)
+	else if (obj->type == T_PLANE)
 		return (get_plane_intersection(ray, obj));
-	else if (obj->type == CYLINDER)
+	else if (obj->type == T_CYLINDER)
 		return (get_cylinder_intersection(ray, obj));
-	else if (obj->type == CONE)
+	else if (obj->type == T_CONE)
 		return (get_cone_intersection(ray, obj));
 	return (0); //error ? (should never get here)
 }
@@ -68,7 +68,7 @@ int	get_plane_intersection(t_ray *ray, t_object *obj)
 		if (r < 0)
 			return (0);
 		ray->t = r;
-		ray->hit_type = PLANE;
+		ray->hit_type = T_PLANE;
 		return (1);
     }
 	return (0);
@@ -93,7 +93,7 @@ int		get_sphere_intersection(t_ray *ray, t_object *obj)
 	if (i.r1 < 0)
 		return (0);
 	ray->t = i.r1;
-	ray->hit_type = SPHERE;
+	ray->hit_type = T_SPHERE;
 	return (1);
 }
 

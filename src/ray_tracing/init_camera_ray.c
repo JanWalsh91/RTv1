@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:05:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/21 14:40:51 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/03 16:44:52 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 t_ray	init_camera_ray(t_pt2 i, t_scene *scene)
 {
 	t_ray		cam_ray;
-	t_object 	*cam;
+	t_camera 	*cam;
 	t_vec3 pix;
 
 	cam = scene->cameras; //fix to find current camera (not first in list)

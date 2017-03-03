@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_new_scene.1.c                                  :+:      :+:    :+:   */
+/*   get_new_scene.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/02 14:12:42 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/03 17:06:55 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ t_scene		*get_new_scene(t_parse_tools *t)
 		new_scene->name = ft_strdup(ft_strjoin("Scene ", ft_itoa(++i)));
 	else
 		new_scene->name = ft_strdup(t->input->value);
+	new_scene->res.x = -1;
+	new_scene->res.y = -1;
+	new_scene->ray_depth = -1;
 	new_scene->objects = NULL;
 	new_scene->cameras = NULL;
 	new_scene->lights = NULL;

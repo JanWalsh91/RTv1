@@ -5,12 +5,17 @@ scene: scene1
 	{
 		position: 25, 1, 10
 		radius: 2
-		color: 300, 300, 300
+		color: 150, 150, 150
 	}
 	camera: cam1
 	{
 		position: 0, 0, -50
-		look at: sphere1
+		rotation: 50,50,0
+		fov: 50
+	}
+	light: my light
+	{
+		intensity: -100
 	}
 	sphere: sphere2
 	{
@@ -18,4 +23,4 @@ scene: scene1
 		radius: 2
 		color: 300, 300, 300
 	}
-}
+}                        

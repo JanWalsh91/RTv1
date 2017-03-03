@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 17:13:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/02 15:55:14 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/03 15:17:37 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	print_scenes(t_scene *scenes_head)
 			printf("	camera name: [%s]\n", c_ptr->name);
 			printf("		camera pos: [%f] [%f] [%f]\n", c_ptr->pos.x, c_ptr->pos.y, c_ptr->pos.z);
 			printf("		camera dir: [%f] [%f] [%f]\n", c_ptr->dir.x, c_ptr->dir.y, c_ptr->dir.z);
+			printf("		camera rot: [%f] [%f] [%f]\n", c_ptr->rot.x, c_ptr->rot.y, c_ptr->rot.z);
 			printf("		camera look at: [%f] [%f] [%f]\n", c_ptr->look_at.x, c_ptr->look_at.y, c_ptr->look_at.z);
 			printf("		camera scale: [%f]\n", c_ptr->scale);
 			printf("		camera fov: [%f]\n", c_ptr->fov);
@@ -61,6 +62,7 @@ void	print_scenes(t_scene *scenes_head)
 		{
 			printf("	light name: [%s]\n", l_ptr->name);
 			printf("		light pos: [%f] [%f] [%f]\n", l_ptr->pos.x, l_ptr->pos.y, l_ptr->pos.z);
+			printf("		light col: [%f] [%f] [%f]\n", l_ptr->col.x, l_ptr->col.y, l_ptr->col.z);
 			printf("		light intensity: [%f]\n", l_ptr->intensity);
 			l_ptr = l_ptr->next;
 		}

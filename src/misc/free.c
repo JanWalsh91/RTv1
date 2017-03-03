@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_input.1.c                                    :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/29 12:25:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/02 14:18:59 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/03/03 13:27:22 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/03/03 13:28:03 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/rtv1.h"
+#include "../inc/rtv1.h"
 
-void		parse_input(t_parse_tools *t)
+void	free_matrix(t_matrix *m)
 {
-	// printf("parse_input\n");
-	while (t->input)
-	{
-		// printf("next token: [%i]\n", t->input->token);
-		t->parse[t->input->token](t);
-		// printf("t->input = t->input->next\n");
-		t->input = t->input->next;
-	}
+	int	y;
+
+	y = -1;
+	while (++y < 4)
+			free((*m)[y]);
+	free(*m);
+	*m = NULL;
 }
