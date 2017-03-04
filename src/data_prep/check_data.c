@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 10:39:37 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/03 16:15:08 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/04 16:07:06 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	check_data(t_scene *scenes)
 		(!s_ptr->lights) ? data_error_exit(s_ptr, 0, NULL, "No light provided.") : 0;
 		(!s_ptr->objects) ? data_error_exit(s_ptr, 0, NULL, "No objects provided.") : 0;
 		(s_ptr->res.x == -1) ? set_default_resolution(s_ptr) : 0;
+		s_ptr->image_aspect_ratio = (double)s_ptr->res.x / (double)s_ptr->res.y;
 		(s_ptr->ray_depth == -1) ? set_default_ray_depth(s_ptr) : 0;
 		check_cameras(s_ptr, s_ptr->cameras);
 		check_lights(s_ptr, s_ptr->lights);

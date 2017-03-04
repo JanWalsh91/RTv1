@@ -6,11 +6,11 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/21 16:05:39 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/24 10:33:07 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/04 17:06:45 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/rtv1.h"
+#include "../../inc/rtv1.h"
 
 static t_vec3	get_sphere_normal(t_ray *ray, t_object *obj, t_vec3 *n);
 static t_vec3	get_plane_normal(t_ray *ray, t_object *obj, t_vec3 *n);
@@ -24,13 +24,13 @@ t_vec3	get_normal(t_ray *ray, t_object *obj)
 	n.x = 0;
 	n.y = 0;
 	n.z = 0;
-	if (ray->hit_type == SPHERE)
+	if (ray->hit_type == T_SPHERE)
 		return (get_sphere_normal(ray, obj, &n));
-	if (ray->hit_type == PLANE)
+	if (ray->hit_type == T_PLANE)
 		return (get_plane_normal(ray, obj, &n));
-	if (obj->type == CYLINDER)
+	if (obj->type == T_CYLINDER)
 		return (get_cylinder_normal(ray, obj, &n));
-	if (obj->type == CONE)
+	if (obj->type == T_CONE)
 		return (get_cone_normal(ray, obj, &n));
 	return (n);
 }

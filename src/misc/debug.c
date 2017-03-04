@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug.1.c                                          :+:      :+:    :+:   */
+/*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 17:13:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/03 15:17:37 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/04 15:52:48 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	print_scenes(t_scene *scenes_head)
 		printf("scene: %s\n", s_ptr->name);
 		printf("	res: [%i, %i]\n", s_ptr->res.x, s_ptr->res.y);
 		printf("	ray_depth: [%i]\n", s_ptr->ray_depth);
+		printf("	image aspect ratio: [%f]\n", s_ptr->image_aspect_ratio);
 		o_ptr = s_ptr->objects;
 		printf("	objects:\n");
 		while (o_ptr)

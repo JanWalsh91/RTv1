@@ -1,37 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw_image.c                                       :+:      :+:    :+:   */
+/*   init_raytracing_tools.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/30 10:59:22 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/17 12:32:12 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/03/04 14:16:37 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/03/04 14:20:12 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/rtv1.h"
 
 /*
-** Updates the image
+** Sets all options on. 
 */
 
-int draw_image(t_scene *scene)
+void	init_raytracing_tools(t_raytracing_tools *r)
 {
-    t_pt2   i;
-	t_ray	cam_ray;
-
-	printf("DRAW_IMAGE\n");
-    i.y = -1;
-    while (++i.y < scene->res.y)
-	{
-		i.x = -1;
-		while (++i.x < scene->res.x)
-		{
-			//printf("pix: [%i][%i]\n", i.y, i.x);
-			cam_ray = init_camera_ray(i, scene);
-			scene->cameras->pixel_map[i.y][i.x] = cast_camera_ray(&cam_ray, scene);
-		}
-	}
-    return(1);
+	r->options.shadows = 1;
+	r->options.diffuse = 1;
+	r->options.specular = 1;
+	r->options.reflection = 1;
+	r->options.refraction = 1;
+	r->options.ambient = 1;
+	r->options.antialiasing = 1;
+	r->options.textures = 1;
+	r->options.bump_mapping = 1;
+	r->options.normal_mapping = 1;
+	r->options.filters = 1;
 }

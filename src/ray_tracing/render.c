@@ -1,38 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_camera.c                                      :+:      :+:    :+:   */
+/*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/26 14:44:59 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 13:18:47 by jwalsh           ###   ########.fr       */
+/*   Created: 2017/01/30 10:59:22 by jwalsh            #+#    #+#             */
+/*   Updated: 2017/03/04 15:25:28 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-** Adds a new camera to the end of list t_cameras.
+** Updates the image
 */
 
-void	push_camera(t_camera **cameras_head, t_camera *new_camera)
+void	render(t_raytracing_tools *r)
 {
-	t_camera	*cam_ptr;
+	t_ray	cam_ray;
 
-	// printf("push_camera: [%s]\n", new_camera->name);
-	if (new_camera)
+	printf("RENDER\n");
+    r->pix.y = -1;
+    while (++r->pix.y < r->scenes->res.y)
 	{
-		if (!(*cameras_head))
-			*cameras_head = new_camera;
-		else
+		r->pix.x = -1;
+		while (++r->pix.x < r->scenes->res.x)
 		{
-			cam_ptr = *cameras_head;
-			while (cam_ptr->next)
-				cam_ptr = cam_ptr->next;
-			cam_ptr->next = new_camera;
-			new_camera->prev = cam_ptr;
+			// printf("pix: [%i][%i]\n", r->pix.y, r->pix.x);
+			cam_ray = init_camera_ray(r->pix, r->scenes);
+			// cam_ray.cast(r, &cam_ray);
+			r->scenes->cameras->pixel_map[r->pix.y][r->pix.x] = cast_camera_ray(&cam_ray, r->scenes);
 		}
-		new_camera->next = NULL;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 11:53:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/01 16:09:15 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/04 13:02:03 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Else, iterates to the end of the list and adds new scene there.
 */
 
-#include "../inc/rtv1.h"
+#include "../../inc/rtv1.h"
 
 void	push_scene(t_scene **scenes_head, t_scene *new_scene)
 {
@@ -26,16 +26,16 @@ void	push_scene(t_scene **scenes_head, t_scene *new_scene)
 	if (new_scene)
 	{
 		if (!*scenes_head)
-		{
 			*scenes_head = new_scene;
-		}
 		else
 		{
 			scene_ptr = *scenes_head;
 			while (scene_ptr->next)
 				scene_ptr = scene_ptr->next;
 			scene_ptr->next = new_scene;
+			printf("adding prev scene:\n");
+			new_scene->prev = scene_ptr;
+			printf("added prev scene\n");
 		}
 	}
-	printf("\n");
 }

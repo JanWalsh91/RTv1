@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 10:57:18 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/03 17:12:00 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/04 17:09:27 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,23 @@ t_color	cast_camera_ray(t_ray *cam_ray, t_scene *scene)
 	t = INFINITY;
 	obj = scene->objects;
 	// iterate over all objects and update the closest intersection.
-	cam_ray->col = v_new(0, 0, 0);//background color
+	cam_ray->col = scene->background_color; //background color
 	while (obj)
 	{
-		// Tranform ray origin and direction to model space.
-		// cam_ray->dir2 = v_norm(vec3_matrix4_product(cam_ray->dir, obj->wtm));
-		// cam_ray->origin2 = pvec3_matrix4_product(cam_ray->origin, obj->wtm);
 		if (get_intersection(cam_ray, obj) && cam_ray->t < t)
 		{
+			t = cam_ray->t;
 			hitobj = obj;
 			update_ray(cam_ray, obj, &t);
 		}
 		obj = (obj)->next;
 	}
+	//if an intersection has been found, t is the distance to closest one.
 	if (t != INFINITY)
-		cam_ray->col = hitobj->col;
-	// 	cast_shadow_ray(cam_ray, hitobj, scene);
-	// If no intersection is found, return background color. 
-	print_vec(cam_ray->col);
+	{
+		// cam_ray->col = hitobj->col;
+		cast_shadow_ray(cam_ray, hitobj, scene);
+	}
 	return (cam_ray->col);
 }
 

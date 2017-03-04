@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/03 17:06:55 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/04 13:00:01 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,17 @@ t_scene		*get_new_scene(t_parse_tools *t)
 	if (!(new_scene = (t_scene *)ft_memalloc(sizeof(t_scene))))
 		ft_error_exit("Malloc error");
 	new_scene->next = NULL;
-	//printf("---new_scene->name#:		[%p]---\n", &(new_scene->name));
-	if (!t->input->value)
-		new_scene->name = ft_strdup(ft_strjoin("Scene ", ft_itoa(++i)));
-	else
-		new_scene->name = ft_strdup(t->input->value);
+	new_scene->prev = NULL;
+	new_scene->name = (!t->input->value) ?
+		ft_strdup(ft_strjoin("Scene ", ft_itoa(++i))) :
+		ft_strdup(t->input->value);
 	new_scene->res.x = -1;
 	new_scene->res.y = -1;
 	new_scene->ray_depth = -1;
 	new_scene->objects = NULL;
 	new_scene->cameras = NULL;
 	new_scene->lights = NULL;
-	// printf("new scene name: [%s]\n", new_scene->name);
-	// printf("\n");
+	new_scene->background_color = v_new(NAN, NAN, NAN);
+	new_scene->image_aspect_ratio = NAN;
 	return (new_scene);
 }

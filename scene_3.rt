@@ -1,20 +1,33 @@
-resolution: 50, 50
+resolution: 500, 500
 scene: scene1
 {
+	background color: black
 	sphere: sphere
 	{
-		position: 0, 0, 0
-		radius: 2
-		color: 150, 150, 200
+		position: 10, 0, 0
+		radius: 11
+		color: white
 	}
 	light: mylight
 	{
-		position: 10, 20, -10
-		intensity: 1000000000
+		position: -20, -5, -20
+		intensity: 2500
+		color: red
+	}
+	light: mylight
+	{
+		position: 20, -5, -20
+		intensity: 2500
+		color: yellow
+	}
+	plane
+	{
+		position; 0, 0, 20
+		direction: 0, 0, 1
 	}
 	camera: cam1
 	{
-		pos: 0, 0, -200
-		look at: sphere
+		position: 0, 0, -100
+		direction: 0, 0, 1
 	}
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_new_object.1.c                                 :+:      :+:    :+:   */
+/*   get_new_object.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/03 14:58:04 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/04 15:19:12 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,39 @@
 ** Creates a new object.
 */
 
+static void	set_non_values(t_object *new_object);
+static void set_function_pointers(t_object *new_object);
+
 t_object 	*get_new_object(t_parse_tools *t)
 {
-	// printf("GET_NEW_OBJECT: [%s]\n", name);
+	// printf("GET_NEW_OBJECT\n");
 	t_object 	*new_object;
 	static int	i = 1;
 	static char	*current_scene_name = NULL;
 
-	//printf("current_scene_name: [%s]", current_scene_name);
-	//printf("	scene_name: [%s]", scene_name);
-	//printf("	object_name: [%s]\n", name);
 	if (!(new_object = (t_object *)ft_memalloc(sizeof(t_object))))
 		ft_error_exit("Malloc error");
-	new_object->next = NULL;
+	set_non_values(new_object);
+	if (!t->input->value)
+	{
+		if (!current_scene_name)
+			current_scene_name = t->current_scene->name;
+		else if (ft_strcmp(current_scene_name, t->current_scene->name)) //if on new scene
+			i = 1;
+		new_object->name = ft_strdup(ft_strsjoin(3, TOKENS[t->input->token], " ", ft_itoa(i)));
+		++i;
+	}
+	else
+		new_object->name = ft_strdup(t->input->value);
+	new_object->type = t->input->token;
+	set_function_pointers(new_object);
+	return (new_object);
+}
+
+static void	set_non_values(t_object *new_object)
+{
 	ft_bzero(new_object, sizeof(t_object));
+	new_object->next = NULL;
 	new_object->pos = v_new(NAN, NAN, NAN);
 	new_object->dir = v_new(NAN, NAN, NAN);
 	new_object->rot = v_new(NAN, NAN, NAN);
@@ -41,23 +60,9 @@ t_object 	*get_new_object(t_parse_tools *t)
 	new_object->reflection = -1;
 	new_object->specular = -1;
 	new_object->transparency = -1;
-	if (!t->input->value)
-	{
-		// printf("no name given\n");
-		if (!current_scene_name)
-			current_scene_name = t->current_scene->name;
-		else if (ft_strcmp(current_scene_name, t->current_scene->name)) //if on new scene
-			i = 1;
-		new_object->name = ft_strdup(ft_strsjoin(3, TOKENS[t->input->token], " ", ft_itoa(i)));
-		++i;
-	}
-	else
-		new_object->name = ft_strdup(t->input->value);
-	new_object->type = t->input->token;
-	//printf("end get_new_object\n");
-	// printf("current_scene_name: [%s]", current_scene_name);
-	// printf("	scene_name: [%s]\n", scene_name);
-	// printf("end get_new_object: object name: [%s]\n", new_object->name);
-	// printf("\n");
-	return (new_object);
+}
+
+static void set_function_pointers(t_object *new_object)
+{
+	//
 }

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/03 17:02:12 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/04 16:17:26 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,16 +172,28 @@ typedef struct		s_attributes
 // 	CONE = 6
 // }					t_type;
 
+typedef enum		e_ray_type
+{
+	R_CAMERA,
+	R_SHADOW,
+	R_DIFFUSE,
+	R_SPECULAR,
+	R_REFLECTION,
+	R_REFRACTION,
+	R_AMBIENT
+}					t_ray_type;
+
 typedef	struct		s_ray
 {
-	t_vec3		origin; //point of origin
-	t_vec3		dir; //must be normalized
+	t_ray_type	type;
+	t_vec3		origin; // ray origin
+	t_vec3		dir; // ray direction: must be normalized
 	double		root1;
 	double		root2;
-	double		t; // closest valid intersection
+	double		t; // distance of closest valid intersection
 	t_vec3		hit; // interection points in World View
 	t_token		hit_type;
-	t_vec3		nhit; //normal at intersection point
+	t_vec3		nhit; //normal at hit poitn point
 	t_color		col; // color found
 }					t_ray;
 
@@ -230,6 +242,7 @@ typedef struct	s_camera
 	t_matrix		ctw; //camera to world matrix (only for cameras)
 	double			scale;
 	double			fov;
+	struct s_camera	*prev;
 	struct s_camera	*next;
 }				t_camera;
 
@@ -237,12 +250,13 @@ typedef struct	s_scene
 {
     t_pt2			res; //resolution
     char			*name;
-	t_color			background_color;
     int				ray_depth;
+	t_color			background_color;
+	double			image_aspect_ratio;
     t_camera		*cameras;
     t_light			*lights;
     t_object		*objects;
-	double			image_aspect_ratio;
+	struct s_scene	*prev;
     struct s_scene	*next;
 }				t_scene;
 
@@ -251,7 +265,7 @@ typedef struct		s_parse_tools
 	bool			in_scene;
 	bool			in_object;
 	t_input			*input; //pointer to current link
-	t_input			*input_head; //pointer to input.
+	t_input			*input_head; //pointer to input. // used?
 	t_scene			*scenes;
 	t_scene			*current_scene;
 	t_object		*current_object;
@@ -264,7 +278,7 @@ typedef struct		s_parse_tools
 	t_attributes	*scene_attributes;
 	t_attributes	*object_attributes;
 	t_color_list	*colors;
-	void			(**parse)(struct s_parse_tools *);
+	void			(**parse)(struct s_parse_tools *); //list of funtion ptrs for each token
 }					t_parse_tools;
 
 typedef struct		s_intersection_tools
@@ -281,6 +295,28 @@ typedef struct		s_intersection_tools
 	double			d2; //extra tmp doubles.
 }					t_intersection_tools;
 
+typedef struct		s_options
+{
+	bool			shadows;
+	bool			diffuse;
+	bool			specular;
+	bool			reflection;
+	bool			refraction;
+	bool			ambient;
+	bool			antialiasing;
+	bool			textures;
+	bool			bump_mapping;
+	bool			normal_mapping;
+	bool			filters;
+}					t_options;
+
+typedef struct		s_raytracing_tools
+{
+	t_scene			*scenes;
+	t_options		options;
+	t_pt2			pix;
+}					t_raytracing_tools;
+
 typedef struct		s_env
 {
 	SDL_Window		*win;
@@ -294,33 +330,20 @@ typedef struct		s_env
 ** Main
 */
 
+void	init_raytracing_tools(t_raytracing_tools *r);
+
 /*
 ** File Parsing Functions
 */
 
-// int			get_file(char *file_name, t_list **input);
+void		set_options(char *arg, t_options *options);
 void		get_file(char *file_name, t_input **input);
 int			get_token(char *key);
 void		parse_input(t_parse_tools *t);
 t_vec3		parse_vector(char *value);
 double		parse_double(char *value);
-// int			set_line_count(t_list **input);
-// int			parse_input(t_scene **scenes, t_list **input);
-// int			init_attributes(t_attributes **att);
-// int			parse_resolution(t_pt2 *res, char *s, size_t line);
-// int			parse_ray_depth(int *ray_dpeth, char *s, size_t line);
-// int			parse_position(t_vec3 *pos, char *s, size_t line);
-// int			parse_direction(t_vec3 *dir, char *s, size_t line);
-// int			parse_look_at(t_vec3 *dir, char *s, size_t line);
-// int			parse_color(t_color *col, char *s, size_t line);
-// int			parse_radius(double *rad, char *s, size_t line);
-// int			parse_angle(double *angle, char *s, size_t line);
-// int			parse_height(double *height, char *s, size_t line);
-// int			parse_intensity(double *intensity, char *s, size_t line);
 char 		**split_trim(char *s, char c);
-// t_scene		*get_new_scene(char *name);
-t_scene			*get_new_scene(t_parse_tools *t);
-// t_object	*get_new_object(char *scene_name, char *name, char *type);
+t_scene		*get_new_scene(t_parse_tools *t);
 t_object 	*get_new_object(t_parse_tools *t);
 t_light 	*get_new_light(t_parse_tools *t);
 t_camera 	*get_new_camera(t_parse_tools *t);
@@ -328,18 +351,9 @@ void		push_scene(t_scene **scenes, t_scene *new_scene);
 void		push_object(t_object **objects, t_object *new_object);
 void		push_light(t_light **lights_head, t_light *new_light);
 void		push_camera(t_camera **cameras_head, t_camera *new_camera);
-
 void		set_attributes(t_parse_tools *t, t_attributes *a);
-
-// int			set_attributes_scene(t_attributes *att, t_scene *scene);
-// int			set_attributes_object(t_attributes *att, t_object *object);
 int			reset_attributes(t_attributes *att);
-int			extract_cameras_lights(t_scene *scene);
-// int			init_cameras(t_scene *scene);
-// int			update_camera_scale(t_object *camers);
-// int			update_camera_ctw(t_object *camers);
 
-//new functions:
 void	init_parse_tools(t_parse_tools *t);
 void	parse_open_bracket(t_parse_tools *t);
 void	parse_close_bracket(t_parse_tools *t);
@@ -407,8 +421,8 @@ void	update_camera_ctw(t_camera *camera);
 ** Ray Tracing Functions
 */
 
-int			rtv1(t_scene **scenes);
-int		 	draw_image(t_scene *scene);
+int 		rtv1(t_raytracing_tools *r);
+void	 	render(t_raytracing_tools *r);
 t_ray		init_camera_ray(t_pt2 i, t_scene *scene);
 t_color		cast_camera_ray(t_ray *cam_ray, t_scene *scene);
 void		update_ray(t_ray *ray, t_object *obj, double *t);
