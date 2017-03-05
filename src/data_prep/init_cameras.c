@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 15:36:08 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 16:05:18 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/05 11:30:13 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,7 @@ void	update_camera_scale(t_camera *camera)
 
 void	update_camera_ctw(t_camera *camera)
 {
-	t_vec3 tmp;
-	
-	tmp.x = 0;
-	tmp.y = 0;
-	tmp.z = 1;
-	camera->ctw = m_new_rodriguez(camera->dir, tmp);
+	camera->ctw = m_new_rodriguez(camera->dir, v_new(0, 0, 1)); //default direction for camera
 	camera->ctw[0][3] = camera->pos.x;
 	camera->ctw[1][3] = camera->pos.y;
 	camera->ctw[2][3] = camera->pos.z;

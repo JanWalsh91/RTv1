@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 10:59:22 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 15:25:28 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/05 12:39:21 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	render(t_raytracing_tools *r)
 			// printf("pix: [%i][%i]\n", r->pix.y, r->pix.x);
 			cam_ray = init_camera_ray(r->pix, r->scenes);
 			// cam_ray.cast(r, &cam_ray);
-			r->scenes->cameras->pixel_map[r->pix.y][r->pix.x] = cast_camera_ray(&cam_ray, r->scenes);
+			r->scenes->cameras->pixel_map[r->pix.y][r->pix.x] = cast_primary_ray(r, &cam_ray);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:05:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 16:04:08 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/05 12:34:44 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ t_ray	init_camera_ray(t_pt2 i, t_scene *scene)
 	cam_ray.origin = m_p_mult(cam_ray.origin, cam->ctw);
 	cam_ray.dir = m_v_mult(cam_ray.dir, cam->ctw);
 	cam_ray.dir = v_norm(cam_ray.dir);
+	cam_ray.type = R_PRIMARY;
 	// if (i.x == 0 && i.y == 0)
 	// {
 	// 	printf("---after ctw matrix:\ncam origin: ");

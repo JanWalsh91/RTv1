@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 16:17:26 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/05 15:33:29 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ typedef struct		s_attributes
 
 typedef enum		e_ray_type
 {
-	R_CAMERA,
+	R_PRIMARY,
 	R_SHADOW,
 	R_DIFFUSE,
 	R_SPECULAR,
@@ -185,15 +185,17 @@ typedef enum		e_ray_type
 
 typedef	struct		s_ray
 {
-	t_ray_type	type;
+	t_ray_type	type; //ray type
 	t_vec3		origin; // ray origin
 	t_vec3		dir; // ray direction: must be normalized
 	double		root1;
 	double		root2;
-	double		t; // distance of closest valid intersection
-	t_vec3		hit; // interection points in World View
-	t_token		hit_type;
-	t_vec3		nhit; //normal at hit poitn point
+	double		t; // distance of intersection
+	struct s_object	*hit_obj; //pointer to object hit at intersection point
+	t_vec3		hit; // intersection point in World View
+	t_token		hit_type; // type of object hit
+	int			n_dir; //normal at intersetion point
+	t_vec3		nhit; //normal at hit point point
 	t_color		col; // color found
 }					t_ray;
 
@@ -315,6 +317,7 @@ typedef struct		s_raytracing_tools
 	t_scene			*scenes;
 	t_options		options;
 	t_pt2			pix;
+	double			t; //closets intersection distance
 }					t_raytracing_tools;
 
 typedef struct		s_env
@@ -424,10 +427,14 @@ void	update_camera_ctw(t_camera *camera);
 int 		rtv1(t_raytracing_tools *r);
 void	 	render(t_raytracing_tools *r);
 t_ray		init_camera_ray(t_pt2 i, t_scene *scene);
-t_color		cast_camera_ray(t_ray *cam_ray, t_scene *scene);
+t_color		cast_primary_ray(t_raytracing_tools *r, t_ray *ray);
+// t_color		cast_camera_ray(t_ray *cam_ray, t_scene *scene);
 void		update_ray(t_ray *ray, t_object *obj, double *t);
-t_vec3		get_normal(t_ray *ray, t_object *obj);
-void		cast_shadow_ray(t_ray *cam_ray, t_object *obj, t_scene *scene);
+// t_vec3		get_normal(t_ray *ray, t_object *obj);
+void		get_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj);
+// void		cast_shadow_ray(t_ray *cam_ray, t_object *obj, t_scene *scene);
+bool	in_shadow(t_raytracing_tools *r, t_ray *primary_ray, t_ray *shadow_ray, t_light *light);
+t_color	get_diffuse(t_raytracing_tools *r, t_ray *primary_ray, t_ray *shadow_ray, t_light *light);
 
 /*
 ** SDL2 Functions
@@ -440,15 +447,18 @@ int			handle_sdl_events(t_scene *scenes, t_env *env);
 ** Intersection functions.
 */
 
-int			get_intersection(t_ray *ray, t_object *obj);
-int			get_sphere_intersection(t_ray *ray, t_object *obj);
-int			get_plane_intersection(t_ray *ray, t_object *obj);
-int			get_cylinder_intersection(t_ray *ray, t_object *obj);
-int			get_finite_cylinder_intersection(t_ray *ray, t_object *obj, t_intersection_tools *i);
-int			get_cyclinder_caps_intersection(t_ray *ray, t_object *obj, t_intersection_tools *i);
-int			get_cone_intersection(t_ray *ray, t_object *obj);
-int			get_caps_intersection(t_ray *ray, t_object *obj, double *t);
-int			get_disc_intersection(t_ray *ray, t_object *disc);
+// int			get_intersection(t_ray *ray, t_object *obj);
+// int			get_sphere_intersection(t_ray *ray, t_object *obj);
+// int			get_plane_intersection(t_ray *ray, t_object *obj);
+// int			get_cylinder_intersection(t_ray *ray, t_object *obj);
+// int			get_finite_cylinder_intersection(t_ray *ray, t_object *obj, t_intersection_tools *i);
+// int			get_cyclinder_caps_intersection(t_ray *ray, t_object *obj, t_intersection_tools *i);
+// int			get_cone_intersection(t_ray *ray, t_object *obj);
+// int			get_caps_intersection(t_ray *ray, t_object *obj, double *t);
+// int			get_disc_intersection(t_ray *ray, t_object *disc);
+bool		intersects(t_raytracing_tools *r, t_ray *ray, t_object *obj);
+bool		get_plane_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj);
+bool		get_sphere_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 int			solve_quadratic(t_vec3 q, double *r1, double *r2);
 
 /*

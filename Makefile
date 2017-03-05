@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/03/04 15:18:04 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/03/05 15:21:29 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,14 +51,15 @@ LIST = 		get_new_camera \
 			push_object \
 			push_scene 
 
-RAY_TRACING = cast_camera_ray \
-			cast_shadow_ray \
+RAY_TRACING = cast_primary_ray \
 			render \
-			get_intersection \
-			get_normal \
+			get_normal.1 \
 			init_camera_ray \
 			rtv1 \
-			solve_quadratic
+			solve_quadratic \
+			intersects \
+			in_shadow \
+			get_diffuse
 
 MISC = 		debug \
 			error_line_exit \
