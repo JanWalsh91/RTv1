@@ -1,26 +1,50 @@
 resolution: 700, 500
 scene: scene1
 {
-	sphere: sphere1
-	{
-		position: 25, 1, 10
-		radius: 2
-		color: 150, 150, 150
-	}
 	camera: cam1
 	{
-		position: 0, 0, -50
-		rotation: 50,50,0
+		position: 0, -1, -100
+		direction: 0, 0, 1
 		fov: 50
+	}
+	# disk:
+	# {
+	# 	position: 20, 0, -30
+	# 	radius: 10
+	# 	look at: cam1
+	# 	color: red
+	# }
+	# disk:
+	# {
+	# 	position: 20, 0, -30
+	# 	radius: 8
+	# 	direction: 5, -4, -3
+	# 	color: red4
+	# }
+	cylinder:
+	{
+		position: 10, 0, -30
+		radius: 2
+		height: 20
+		direction: -2, -1, -1
+		color: misty rose
+	}
+	plane: plane
+	{
+		position: 0, 0, 5
+		direction: 0, 0, -1
+		color: white
 	}
 	light: my light
 	{
-		intensity: -100
+		color: white
+		position: 40, 1, -60
+		intensity: 15000
 	}
-	sphere: sphere2
+	light: my light
 	{
-		position: 25, 1, 10
-		radius: 2
-		color: 300, 300, 300
+		color: white
+		position: -40, 1, -60
+		intensity: 15000
 	}
-}                        
+}

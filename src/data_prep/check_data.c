@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 10:39:37 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 16:07:06 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/06 17:01:41 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 **  - No res / no depth ? ->provide default
 **  - 
 */
+
+static t_object	*get_new_disk(t_object *obj, t_vec3 pos);
+void	add_disks(t_scene *scene, t_object *obj);
 
 int	check_data(t_scene *scenes)
 {
@@ -98,6 +101,9 @@ void	check_objects(t_scene *scene, t_object *objects)
 		if ((o_ptr->type == T_CONE || o_ptr->type == T_CYLINDER) &&
 			o_ptr->height == -1)
 			set_default_height(scene, o_ptr->type, o_ptr, &o_ptr->height);
+		if (o_ptr->type == T_CONE || o_ptr->type == T_CYLINDER)
+			add_disks(scene, o_ptr);
+
 		o_ptr = o_ptr->next;
 	}
 }
@@ -169,4 +175,32 @@ void	get_light_direction(t_scene *scene, t_light *light)
 	}
 	if (v_isnan(light->dir))
 		light->dir = v_norm(light->dir);
+}
+
+void	add_disks(t_scene *scene, t_object *obj)
+{
+	t_object		*disk1;
+	//add disk at base.
+	push_object(&scene->objects, get_new_disk(obj, obj->pos));
+	if (obj->type == T_CYLINDER)
+		push_object(&scene->objects, get_new_disk(obj, v_add(obj->pos, v_scale(obj->dir, obj->height))));
+	//if cyinder, add another disk
+}
+
+static t_object	*get_new_disk(t_object *obj, t_vec3 pos)
+{
+	t_object *new_disk;
+	if (!(new_disk = (t_object *)ft_memalloc(sizeof(t_object))))
+		ft_error_exit("Malloc error");
+	set_non_values(new_disk);
+	// ft_memcpy(new_disk, obj, sizeof(obj));
+	// free(new_disk->name);
+	new_disk->type = T_DISK;
+	new_disk->col = obj->col;
+	new_disk->rad = obj->rad;
+	new_disk->dir = obj->dir;
+	new_disk->name = ft_strjoin(obj->name, " cap");
+	new_disk->pos = pos;
+	new_disk->next = NULL;
+	return (new_disk);
 }

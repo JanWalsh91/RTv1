@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 13:13:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/05 16:18:47 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/05 16:44:30 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 bool	in_shadow(t_raytracing_tools *r, t_ray *primary_ray, t_ray *shadow_ray, t_light *light)
 {
-	//create new shadow ray of hitpoint origin
 	t_object	*obj;
 	double		max;
 
@@ -34,6 +33,5 @@ bool	in_shadow(t_raytracing_tools *r, t_ray *primary_ray, t_ray *shadow_ray, t_l
 			return (true);
 		obj = obj->next;
 	}
-	
 	return (false);
 }

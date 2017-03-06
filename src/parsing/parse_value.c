@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:35:28 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 13:11:26 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/06 16:29:27 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,17 @@ void	parse_plane(t_parse_tools *t)
 {
 	can_add_new_object(t);
 	t->current_type = T_PLANE;
+	t->current_object = get_new_object(t);
+	push_object(&t->current_scene->objects, t->current_object);
+	set_attributes(t, t->global_attributes);
+	set_attributes(t, t->scene_attributes);
+	t->input = t->input->next;
+}
+
+void	parse_disk(t_parse_tools *t)
+{
+	can_add_new_object(t);
+	t->current_type = T_DISK;
 	t->current_object = get_new_object(t);
 	push_object(&t->current_scene->objects, t->current_object);
 	set_attributes(t, t->global_attributes);
@@ -318,7 +329,7 @@ void	parse_radius(t_parse_tools *t)
 	else if (t->in_object)
 		t->object_attributes->rad = new_radius;
 	if (t->current_type != T_CONE && t->current_type != T_CYLINDER &&
-		t->current_type != T_SPHERE)
+		t->current_type != T_SPHERE && t->current_type != T_DISK)
 		rt_file_warning(t, "Radius attribute only applicable to spheres, cones and cylinders. Ignore.");
 }
 

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:43:48 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 12:41:46 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/06 16:16:40 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	init_parse_tools(t_parse_tools *t)
 	t->parse[T_CAMERA] = &parse_camera;
 	t->parse[T_LIGHT] = &parse_light;
 	t->parse[T_PLANE] = &parse_plane;
+	t->parse[T_DISK] = &parse_disk;
 	t->parse[T_SPHERE] = &parse_sphere;
 	t->parse[T_CYLINDER] = &parse_cylinder;
 	t->parse[T_CONE] = &parse_cone;

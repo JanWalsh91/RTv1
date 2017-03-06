@@ -1,24 +1,57 @@
-resolution: 500, 500
+resolution: 1000, 700
 scene: scene1
 {
 	background color: grey5
+	radius: 5
+	color: white
 	sphere: white sphere
 	{
 		position: 0, 0, 0
-		radius: 10
-		color: 250, 50, 50
+	}
+	sphere: white sphere
+	{
+		position: 10, 10, 10
+	}
+		sphere: white sphere
+	{
+		position: 20, 20, 20
+	}
+		sphere: white sphere
+	{
+		position: 30, 30, 30
+	}
+		sphere: white sphere
+	{
+		position: 40, 40, 40
+	}
+		sphere: white sphere
+	{
+		position: 50, 50, 50
+	}
+		sphere: white sphere
+	{
+		position: 60, 60, 60
+	}
+		sphere: white sphere
+	{
+		position: 70, 70, 70
 	}
 	plane: TRUMP
 	{
 		position: 0, 0, 100
 		direction: 0, 0, -1
-		color: white
+	}
+	light: light2
+	{
+		position: 20, -10, -50
+		intensity: 150000
+		color: MidnightBlue
 	}
 	light: light
 	{
-		position: 20, 0, -50
-		intensity: 50000
-		color: white
+		position: -20, 50, -50
+		intensity: 150000
+		color: gold
 	}
 	camera: cam1
 	{

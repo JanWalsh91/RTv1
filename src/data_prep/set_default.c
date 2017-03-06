@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 16:31:14 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/03 15:54:59 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/06 16:18:32 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	set_default_pos(t_scene *scene, int type, void *obj, t_vec3 *pos)
 {
 	if (type == T_LIGHT)
 		data_warning(scene, type, ((t_light *)obj), "Providing default position.");
-	else if (type == T_PLANE || type == T_SPHERE || type == T_CONE || type == T_CYLINDER)
+	else if (type == T_PLANE || type == T_DISK || type == T_SPHERE || type == T_CONE || type == T_CYLINDER)
 		data_warning(scene, type, ((t_object *)obj), "Providing default position.");
 	else if (type == T_CAMERA)
 		data_warning(scene, type, ((t_camera *)obj), "Providing default position.");
@@ -40,7 +40,7 @@ void	set_default_col(t_scene *scene, int type, void *obj, t_vec3 *col)
 {
 	if (type == T_LIGHT)
 		data_warning(scene, type, ((t_light *)obj), "Providing default color.");
-	else if (type == T_PLANE || type == T_SPHERE || type == T_CONE || type == T_CYLINDER)
+	else if (type == T_PLANE || type == T_DISK || type == T_SPHERE || type == T_CONE || type == T_CYLINDER)
 		data_warning(scene, type, ((t_object *)obj), "Providing default color.");
 	else if (type == T_CAMERA)
 		data_warning(scene, type, ((t_camera *)obj), "Providing default color.");

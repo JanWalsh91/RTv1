@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:11:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 16:11:34 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/06 15:53:57 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int		get_intersection(t_ray *ray, t_object *obj)
 		return (get_sphere_intersection(ray, obj));
 	else if (obj->type == T_PLANE)
 		return (get_plane_intersection(ray, obj));
+	else if (obj->type == T_DISK)
+		return (get_disk_intersection(ray, obj));
 	else if (obj->type == T_CYLINDER)
 		return (get_cylinder_intersection(ray, obj));
 	else if (obj->type == T_CONE)
@@ -143,7 +145,7 @@ int		get_finite_cylinder_intersection(t_ray *ray, t_object *obj, t_intersection_
 	return (1);
 }
 
-int		get_disc_intersection(t_ray *ray, t_object *disc)
+int		get_disk_intersection(t_ray *ray, t_object *disc)
 {
 	double	denom;
 	t_vec3	tmp;
@@ -176,10 +178,10 @@ int		get_cyclinder_caps_intersection(t_ray *ray, t_object *obj, t_intersection_t
 	disc.rad = obj->rad;
 	disc.pos = obj->pos;
 	disc.dir = obj->dir;
-	if (get_disc_intersection(&ray2, &disc))
+	if (get_disk_intersection(&ray2, &disc))
 		ray2.t < i->r1 || i->r1 == -1 ? i->r1 = ray2.t : 0;
 	disc.pos = v_add(disc.pos, v_scale(obj->dir, obj->height));
-	if (get_disc_intersection(&ray2, &disc))
+	if (get_disk_intersection(&ray2, &disc))
 		ray2.t < i->r1 || i->r1 == -1 ? i->r1 = ray2.t : 0;
 	return (1);
 }

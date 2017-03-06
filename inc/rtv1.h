@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/05 15:33:29 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/06 16:45:56 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef enum		e_token
 	T_CAMERA,
 	T_LIGHT,
 	T_PLANE,
+	T_DISK,
 	T_SPHERE,
 	T_CYLINDER,
 	T_CONE,
@@ -111,7 +112,7 @@ typedef enum		e_token
 }					t_token;
 
 # define TOKENS (const char *[T_COUNT]){"{","}","","scene","camera","light","plane",\
-"sphere","cylinder","cone","resolution","ray depth","background color","position",\
+"disk","sphere","cylinder","cone","resolution","ray depth","background color","position",\
 "direction","rotation","look at","color","radius","height","refraction","reflection",\
 "specular","transparency","fov","intensity","import","read rt file","read obj file",\
 "read texture file","read material file","invalid token"}
@@ -194,8 +195,8 @@ typedef	struct		s_ray
 	struct s_object	*hit_obj; //pointer to object hit at intersection point
 	t_vec3		hit; // intersection point in World View
 	t_token		hit_type; // type of object hit
-	int			n_dir; //normal at intersetion point
-	t_vec3		nhit; //normal at hit point point
+	int			n_dir; //direction of normal at intersetion point
+	t_vec3		nhit; //normal at hit point
 	t_color		col; // color found
 }					t_ray;
 
@@ -348,6 +349,7 @@ double		parse_double(char *value);
 char 		**split_trim(char *s, char c);
 t_scene		*get_new_scene(t_parse_tools *t);
 t_object 	*get_new_object(t_parse_tools *t);
+void		set_non_values(t_object *new_object);
 t_light 	*get_new_light(t_parse_tools *t);
 t_camera 	*get_new_camera(t_parse_tools *t);
 void		push_scene(t_scene **scenes, t_scene *new_scene);
@@ -365,6 +367,7 @@ void	parse_scene(t_parse_tools *t);
 void	parse_camera(t_parse_tools *t);
 void	parse_light(t_parse_tools *t);
 void	parse_plane(t_parse_tools *t);
+void	parse_disk(t_parse_tools *t);
 void	parse_sphere(t_parse_tools *t);
 void	parse_cylinder(t_parse_tools *t);
 void	parse_cone(t_parse_tools *t);
@@ -455,10 +458,14 @@ int			handle_sdl_events(t_scene *scenes, t_env *env);
 // int			get_cyclinder_caps_intersection(t_ray *ray, t_object *obj, t_intersection_tools *i);
 // int			get_cone_intersection(t_ray *ray, t_object *obj);
 // int			get_caps_intersection(t_ray *ray, t_object *obj, double *t);
-// int			get_disc_intersection(t_ray *ray, t_object *disc);
+// int			get_disk_intersection(t_ray *ray, t_object *disk);
 bool		intersects(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 bool		get_plane_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 bool		get_sphere_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj);
+bool		get_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj);
+bool		get_finite_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj, t_intersection_tools *i);
+bool		get_cyclinder_caps_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj, t_intersection_tools *i);
+bool		get_disk_intersection(t_raytracing_tools *r, t_ray *ray, t_object *disk);
 int			solve_quadratic(t_vec3 q, double *r1, double *r2);
 
 /*

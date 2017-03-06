@@ -42,11 +42,12 @@ scene: scene1
 	light: mylight
 	{
 		position; 50, 50, 0
-		color: 255, 255, 255 
+		color: 255, 255, 255
+		intensity: 50000
 	}
 	camera: cam1
 	{
-		pos: 0, 0, -20
+		pos: 0, 0, -200
 		look at: 0, 0, 0
 	}
 }

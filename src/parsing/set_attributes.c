@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_attributes.1.c                                 :+:      :+:    :+:   */
+/*   set_attributes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 15:47:55 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/03 15:23:41 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/06 15:59:10 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	set_attributes(t_parse_tools *t, t_attributes *a)
 	!isnan(a->reflection) ? t->current_object->reflection = a->reflection : 0;
 	!isnan(a->specular) ? t->current_object->specular = a->specular : 0;
 	!isnan(a->transparency) ? t->current_object->transparency = a->transparency : 0;
-	if (t->current_type == T_PLANE)
+	if (t->current_type == T_PLANE || t->current_type == T_DISK)
 		set_attributes_plane(t, a);
 	else if (t->current_type == T_SPHERE)
 		set_attributes_sphere(t, a);
@@ -83,6 +83,8 @@ static void	set_attributes_plane(t_parse_tools *t, t_attributes *a)
 		t->current_object->rot = a->rot;
 	if (!v_isnan(a->look_at))
 		t->current_object->look_at = a->look_at;
+	if (!isnan(a->rad))
+		t->current_object->rad = a->rad;
 }
 
 static void	set_attributes_sphere(t_parse_tools *t, t_attributes *a)

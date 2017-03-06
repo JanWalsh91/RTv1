@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 11:10:43 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/05 15:58:44 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/06 16:04:34 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ t_color		cast_primary_ray(t_raytracing_tools *r, t_ray *ray)
 	obj = r->scenes->objects;
 	while (obj)
 	{
+		if (obj->type == T_DISK)
+		{
+			
+		}
 		// keep the closest one and calulate distance, point of intersection and normal at intersection.
 		if (intersects(r, ray, obj) && r->t > ray->t)
 			r->t = ray->t; //update closest distance
@@ -42,14 +46,10 @@ t_color		cast_primary_ray(t_raytracing_tools *r, t_ray *ray)
 		if (!in_shadow(r, ray, &shadow_ray, light))
 		{
 			color = v_add(color, get_diffuse(r, ray, &shadow_ray, light));
+			color = v_clamp(color, 0, 255);
 		}
-		// else
-		// 	color = v_add(color, v_scale(obj->col, 0.1));
 		light = light->next;
 	}
-	// color = v_add(color, get_diffuse())
-	//color = ray->hit_obj->col;
-	// get color at closest intersection point
 	return (color);
 }
 

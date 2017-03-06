@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 15:39:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/03 15:28:29 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/06 16:18:32 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	data_error_exit(t_scene *scene, int type, void *object, char *msg)
 	else if (type == T_LIGHT)
 		ft_printf("%{red}ERROR in scene \"%s\" in light \"%s\":\n%s%{}\n",
 		scene->name, ((t_light *)object)->name, msg);
-	else if (type == T_SPHERE || type == T_PLANE || type == T_SPHERE ||
+	else if (type == T_SPHERE || type == T_PLANE || type == T_DISK || type == T_SPHERE ||
 		type == T_CONE)
 		ft_printf("%{red}ERROR in scene \"%s\" in object \"%s\":\n%s%{}\n",
 		scene->name, ((t_object *)object)->name, msg);
@@ -57,7 +57,7 @@ void	data_warning(t_scene *scene, int type, void *object, char *msg)
 	else if (type == T_LIGHT)
 		ft_printf("%{yellow}WARNING in scene \"%s\" in light \"%s\":\n%s%{}\n",
 		scene->name, ((t_light *)object)->name, msg);
-	else if (type == T_SPHERE || type == T_PLANE || type == T_SPHERE ||
+	else if (type == T_SPHERE || type == T_PLANE || type == T_DISK || type == T_SPHERE ||
 		type == T_CONE)
 		ft_printf("%{yellow}WARNING in scene \"%s\" in object \"%s\":\n%s%{}\n",
 		scene->name, ((t_object *)object)->name, msg);

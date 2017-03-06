@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 15:04:42 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/03 15:31:33 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/06 15:18:19 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_input		*input_new(char *line, char *file_name, int fd, t_input **input)
 	// if (*line)
 	key_value = split_trim(line, ':');
 	new_input->token = get_token(key_value[0]);
+	new_input->value = NULL;
 	// printf("token: [%i]\n", new_input->token);
 	new_input->line_number = ++line_number;
 	if (ft_strchr(line, ':'))

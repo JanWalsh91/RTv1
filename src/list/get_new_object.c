@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 15:19:12 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/06 16:45:57 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,9 @@
 ** Creates a new object.
 */
 
-static void	set_non_values(t_object *new_object);
-static void set_function_pointers(t_object *new_object);
-
 t_object 	*get_new_object(t_parse_tools *t)
 {
-	// printf("GET_NEW_OBJECT\n");
+	printf("GET_NEW_OBJECT\n");
 	t_object 	*new_object;
 	static int	i = 1;
 	static char	*current_scene_name = NULL;
@@ -41,13 +38,13 @@ t_object 	*get_new_object(t_parse_tools *t)
 	else
 		new_object->name = ft_strdup(t->input->value);
 	new_object->type = t->input->token;
-	set_function_pointers(new_object);
 	return (new_object);
 }
 
-static void	set_non_values(t_object *new_object)
+void	set_non_values(t_object *new_object)
 {
 	ft_bzero(new_object, sizeof(t_object));
+	new_object->name = NULL;
 	new_object->next = NULL;
 	new_object->pos = v_new(NAN, NAN, NAN);
 	new_object->dir = v_new(NAN, NAN, NAN);
@@ -60,9 +57,4 @@ static void	set_non_values(t_object *new_object)
 	new_object->reflection = -1;
 	new_object->specular = -1;
 	new_object->transparency = -1;
-}
-
-static void set_function_pointers(t_object *new_object)
-{
-	//
 }
