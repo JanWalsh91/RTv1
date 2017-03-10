@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 10:39:37 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/06 17:01:41 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/09 16:02:47 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 **  - No res / no depth ? ->provide default
 **  - 
 */
-
+static void		get_cone_angle(t_object *o_ptr);
 static t_object	*get_new_disk(t_object *obj, t_vec3 pos);
-void	add_disks(t_scene *scene, t_object *obj);
+void			add_disks(t_scene *scene, t_object *obj);
 
 int	check_data(t_scene *scenes)
 {
@@ -101,8 +101,10 @@ void	check_objects(t_scene *scene, t_object *objects)
 		if ((o_ptr->type == T_CONE || o_ptr->type == T_CYLINDER) &&
 			o_ptr->height == -1)
 			set_default_height(scene, o_ptr->type, o_ptr, &o_ptr->height);
-		if (o_ptr->type == T_CONE || o_ptr->type == T_CYLINDER)
-			add_disks(scene, o_ptr);
+		if (o_ptr->type == T_CONE)
+			get_cone_angle(o_ptr);
+		// if (o_ptr->type == T_CONE || o_ptr->type == T_CYLINDER)
+		// 	add_disks(scene, o_ptr);
 
 		o_ptr = o_ptr->next;
 	}
@@ -124,7 +126,7 @@ void	get_obj_direction(t_scene *scene, t_object *obj)
 		m = m_mult(m, m_new_rotate(obj->rot.z, 'z'));
 		obj->dir = m_v_mult(obj->dir, m);
 	}
-	else if (v_isnan(obj->dir))
+	if (v_isnan(obj->dir) || (!obj->dir.x && !obj->dir.y && !obj->dir.z))
 		set_default_obj_dir(scene, obj->type, obj, &obj->dir);
 	obj->dir = v_norm(obj->dir);
 }
@@ -149,10 +151,8 @@ void	get_cam_direction(t_scene *scene, t_camera *cam)
 		cam->dir = m_v_mult(cam->dir, m);
 		free_matrix(&m);
 	}
-	else if (v_isnan(cam->dir))
-	{
+	if (v_isnan(cam->dir) || (!cam->dir.x && !cam->dir.y && !cam->dir.z))
 		set_default_cam_dir(scene, T_CAMERA, cam, &cam->dir);
-	}
 	cam->dir = v_norm (cam->dir);
 }
 
@@ -173,17 +173,18 @@ void	get_light_direction(t_scene *scene, t_light *light)
 		light->dir = m_v_mult(light->dir, m);
 		free_matrix(&m);
 	}
-	if (v_isnan(light->dir))
-		light->dir = v_norm(light->dir);
+	if ((!light->dir.x && !light->dir.y && !light->dir.z))
+		set_default_light_dir(scene, T_LIGHT, light, &light->dir);
+	light->dir = v_norm (light->dir);
 }
 
 void	add_disks(t_scene *scene, t_object *obj)
 {
 	t_object		*disk1;
 	//add disk at base.
-	push_object(&scene->objects, get_new_disk(obj, obj->pos));
 	if (obj->type == T_CYLINDER)
-		push_object(&scene->objects, get_new_disk(obj, v_add(obj->pos, v_scale(obj->dir, obj->height))));
+		push_object(&scene->objects, get_new_disk(obj, obj->pos));
+	push_object(&scene->objects, get_new_disk(obj, v_add(obj->pos, v_scale(obj->dir, obj->height))));
 	//if cyinder, add another disk
 }
 
@@ -203,4 +204,10 @@ static t_object	*get_new_disk(t_object *obj, t_vec3 pos)
 	new_disk->pos = pos;
 	new_disk->next = NULL;
 	return (new_disk);
+}
+
+static void	get_cone_angle(t_object *cone)
+{
+	if (cone->height > cone->rad && cone->height)
+		cone->angle = atan(cone->rad / cone->height);
 }

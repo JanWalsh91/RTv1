@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/21 16:22:03 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/05 15:48:02 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/08 16:42:17 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	cast_shadow_ray(t_ray *cam_ray, t_object *hitobj, t_scene *scene)
 	// static int	i = 1000;
 
 	light = scene->lights;
-	ray.origin = v_add(cam_ray->hit, v_scale(cam_ray->nhit, 0.01));
+	ray.origin = v_add(cam_ray->hit, v_scale(cam_ray->nhit, 0.05));
 	// ray.origin = cam_ray->hit;
 	while (light)
 	{

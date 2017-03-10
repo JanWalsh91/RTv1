@@ -1,50 +1,33 @@
-resolution: 700, 500
+resolution: 500, 500
+color: white
+radius: 5
+height: 20
 scene: scene1
 {
-	camera: cam1
+	light: white
 	{
-		position: 0, -1, -100
+		position: 0, -10, -40
+		intensity: 20000
+	}
+	camera: camera1
+	{
+		position: -5, -7	, -40
 		direction: 0, 0, 1
 		fov: 50
 	}
-	# disk:
-	# {
-	# 	position: 20, 0, -30
-	# 	radius: 10
-	# 	look at: cam1
-	# 	color: red
-	# }
-	# disk:
-	# {
-	# 	position: 20, 0, -30
-	# 	radius: 8
-	# 	direction: 5, -4, -3
-	# 	color: red4
-	# }
+	plane: 
+	{
+		position: 0, 0, 0
+		direction: 0, 0, 1
+	}
+	cone:
+	{
+		position: 0, 0, -2.5
+		direction: -5, -8, 0
+	}
 	cylinder:
 	{
-		position: 10, 0, -30
-		radius: 2
-		height: 20
-		direction: -2, -1, -1
-		color: misty rose
-	}
-	plane: plane
-	{
-		position: 0, 0, 5
-		direction: 0, 0, -1
-		color: white
-	}
-	light: my light
-	{
-		color: white
-		position: 40, 1, -60
-		intensity: 15000
-	}
-	light: my light
-	{
-		color: white
-		position: -40, 1, -60
-		intensity: 15000
+		position: 10, 0, 0
+		direction: -5, -8, 0	
 	}
 }

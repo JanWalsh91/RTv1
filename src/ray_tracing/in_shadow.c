@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 13:13:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/05 16:44:30 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/08 16:43:57 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ bool	in_shadow(t_raytracing_tools *r, t_ray *primary_ray, t_ray *shadow_ray, t_l
 	// printf("IN SHADOW? \n");
 	r->t = INFINITY;
 	shadow_ray->type = R_SHADOW;
+	//move origin by the bias following the direction of the normal
 	shadow_ray->origin = v_add(primary_ray->hit, v_scale(primary_ray->nhit, BIAS * primary_ray->n_dir));
 	//set max distance
 	max = v_length(v_sub(light->pos, shadow_ray->origin));

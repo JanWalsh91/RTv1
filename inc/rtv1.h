@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/06 16:45:56 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/10 13:00:17 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,7 @@ typedef struct	s_object
     t_color			col;
 	double			rad; //radius for sphere, or cylinder, or cone.
 	double			height; //height of cone/cylinder
+	double 			angle;
 	double			refraction;
 	double			reflection;
 	double			specular;
@@ -296,6 +297,7 @@ typedef struct		s_intersection_tools
 	t_vec3			v3; //extra tmp vectors.
 	double			d1;
 	double			d2; //extra tmp doubles.
+	int				n_dir;
 }					t_intersection_tools;
 
 typedef struct		s_options
@@ -416,6 +418,7 @@ void	set_default_radius(t_scene *scene, int type, void *obj, double *radius);
 void	set_default_height(t_scene *scene, int type, void *obj, double *height);
 void	set_default_cam_dir(t_scene *scene, int type, void *cam, t_vec3 *dir);
 void	set_default_obj_dir(t_scene *scene, int type, void *obj, t_vec3 *dir);
+void	set_default_light_dir(t_scene *scene, int type, void *obj, t_vec3 *dir);
 void	set_default_fov(t_scene *scene, int type, void *obj, double *fov);
 void	get_obj_direction(t_scene *scene, t_object *obj);
 void	get_cam_direction(t_scene *scene, t_camera *cam);
@@ -464,7 +467,11 @@ bool		get_plane_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 bool		get_sphere_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 bool		get_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 bool		get_finite_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj, t_intersection_tools *i);
+bool		get_finite_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj, t_intersection_tools *i);
+bool		lower_than_min(double r, t_intersection_tools *i, t_object *obj, t_ray *ray);
+bool		higher_than_max(double r, t_intersection_tools *i, t_object *obj, t_ray *ray);
 bool		get_cyclinder_caps_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj, t_intersection_tools *i);
+bool		get_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *cone);
 bool		get_disk_intersection(t_raytracing_tools *r, t_ray *ray, t_object *disk);
 int			solve_quadratic(t_vec3 q, double *r1, double *r2);
 
