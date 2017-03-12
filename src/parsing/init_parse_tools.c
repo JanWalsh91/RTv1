@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:43:48 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/06 16:16:40 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/12 13:50:47 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	init_parse_tools(t_parse_tools *t)
 	t->parse[T_RESOLUTION] = &parse_resolution;
 	t->parse[T_RAY_DEPTH] = &parse_ray_depth;
 	t->parse[T_BACKGROUND_COLOR] = &parse_background_color;
+	t->parse[T_AMBIENT_LIGHT_COLOR] = &parse_ambient_light_color;
+	t->parse[T_AMBIENT_LIGHT_COEF] = &parse_ambient_light_coef;
 	t->parse[T_POSITION] = &parse_position;
 	t->parse[T_DIRECTION] = &parse_direction;
 	t->parse[T_ROTATION] = &parse_rotation;
@@ -64,9 +66,11 @@ void	init_parse_tools(t_parse_tools *t)
 	t->parse[T_COLOR] = &parse_color;
 	t->parse[T_RADIUS] = &parse_radius;
 	t->parse[T_HEIGHT] = &parse_height;
+	t->parse[T_DIFFUSE_COEF] = &parse_diffuse_coef; 
 	t->parse[T_REFRACTION] = &parse_refraction;
 	t->parse[T_REFLECTION] = &parse_reflection;
-	t->parse[T_SPECULAR] = &parse_specular;
+	t->parse[T_SPECULAR_EXPONENT] = &parse_specular_exponent;
+	t->parse[T_SPECULAR_COEF] = &parse_specular_coef;
 	t->parse[T_TRANSPARENCY] = &parse_transparency;
 	t->parse[T_FOV] = &parse_fov;
 	t->parse[T_INTENSITY] = &parse_intensity;

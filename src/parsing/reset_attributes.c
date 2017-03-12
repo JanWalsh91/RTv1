@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reset_attributes.1.c                               :+:      :+:    :+:   */
+/*   reset_attributes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 15:41:22 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/03 13:49:07 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/12 15:38:41 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	reset_attributes(t_attributes *att)
 	att->res.x = -1;
 	att->res.y = -1;
 	att->ray_depth = -1;
+	att->ambient_light_coef = NAN;
+	att->ambient_light_color = v_new(NAN, NAN, NAN);
 	//light
 	att->intensity = NAN;
 	//camera
@@ -37,7 +39,9 @@ int	reset_attributes(t_attributes *att)
 	att->height = NAN;
 	att->refraction = NAN;
 	att->reflection = NAN;
-	att->specular = NAN;
+	att->specular_exp = NAN;
+	att->kd = NAN;
+	att->ks = NAN;
 	att->transparency = NAN;
 	// print_attributes(*att);
 	return(1);

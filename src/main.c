@@ -6,14 +6,14 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:57:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 15:25:13 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/12 16:49:37 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/rtv1.h"
 
 /*
-** Checks arg count, parses and prepares data, and send data to rtv1.
+** Checks arg count, parses and prepares data, and sends data to rtv1.
 */
 
 int	main(int ac, char **av)

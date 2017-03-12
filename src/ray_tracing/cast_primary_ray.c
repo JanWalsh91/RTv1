@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 11:10:43 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/10 15:08:54 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/12 16:44:21 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ t_color		cast_primary_ray(t_raytracing_tools *r, t_ray *ray)
 	obj = r->scenes->objects;
 	while (obj)
 	{
-	if (r->pix.x == 240 && r->pix.y == 260)
-	{
-	
-
-		
-	}
 		// keep the closest one and calulate distance, point of intersection and normal at intersection.
 		if (intersects(r, ray, obj) && r->t > ray->t)
 			r->t = ray->t; //update closest distance
@@ -48,31 +42,13 @@ t_color		cast_primary_ray(t_raytracing_tools *r, t_ray *ray)
 		if (!in_shadow(r, ray, &shadow_ray, light))
 		{
 			color = v_add(color, get_diffuse(r, ray, &shadow_ray, light));
+			color = v_add(color, get_specular(r, ray, &shadow_ray, light));
 			color = v_clamp(color, 0, 255);
 			// color = ray->hit_obj->col;
 		}
 		light = light->next;
 	}
+	color = v_add(color, get_ambient(r));
+	color = v_clamp(color, 0, 255);
 	return (color);
 }
-
-/*
-
-get color: 
-determine the effect of each light on the hit point.
-for each light:
-	if in shade: return black
-	else
-		color += get_diffuse
-		color += get_specular
-return (color)
-
-intersection functions:
-	return true or false if an there is an intersection
-	if the ray type == R_PRIMARY (or reflection/refraction), updates intersection point, and normal at intersection
-
-
-
-*/
-
-

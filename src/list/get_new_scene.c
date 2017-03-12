@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 13:00:01 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/12 13:54:31 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ t_scene		*get_new_scene(t_parse_tools *t)
 	new_scene->cameras = NULL;
 	new_scene->lights = NULL;
 	new_scene->background_color = v_new(NAN, NAN, NAN);
+	new_scene->ambient_light_color = v_new(NAN, NAN, NAN);
+	new_scene->ambient_light_coef = NAN;
 	new_scene->image_aspect_ratio = NAN;
 	return (new_scene);
 }

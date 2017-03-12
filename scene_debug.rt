@@ -1,33 +1,5 @@
-resolution: 500, 500
-color: white
-radius: 5
-height: 20
+resolution: 50, 50
 scene: scene1
 {
-	light: white
-	{
-		position: 0, -10, -40
-		intensity: 20000
-	}
-	camera: camera1
-	{
-		position: -5, -7	, -40
-		direction: 0, 0, 1
-		fov: 50
-	}
-	plane: 
-	{
-		position: 0, 0, 0
-		direction: 0, 0, 1
-	}
-	cone:
-	{
-		position: 0, 0, -2.5
-		direction: -5, -8, 0
-	}
-	cylinder:
-	{
-		position: 10, 0, 0
-		direction: -5, -8, 0	
-	}
+	test
 }

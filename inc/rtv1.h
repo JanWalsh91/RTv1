@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/10 13:00:17 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/12 17:48:29 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@
 # define DEFAULT_RES_H 500
 # define DEFAULT_RES_W 700
 # define DEFAULT_RAY_DEPTH 5
+# define DEFAULT_AMBIENT_LIGHT_COEF 0.1
+# define DEFAULT_AMBIENT_LIGHT_COLOR_R 255
+# define DEFAULT_AMBIENT_LIGHT_COLOR_G 255
+# define DEFAULT_AMBIENT_LIGHT_COLOR_B 255
 # define DEFAULT_POS_X 1
 # define DEFAULT_POS_Y 1
 # define DEFAULT_POS_Z 1
@@ -51,6 +55,9 @@
 # define DEFAULT_INTENSITY 10000
 # define DEFAULT_RADIUS 1
 # define DEFAULT_HEIGHT 1
+# define DEFAULT_KS 0.1
+# define DEFAULT_KD 1
+# define DEFAULT_SPECULAR_EXP 200
 # define CAM_IMG_PANE_DIST 1
 # define BIAS 0.01
 # define COLORS_PATH "res/colors.txt"
@@ -80,11 +87,13 @@ typedef enum		e_token
 	T_CONE,
 	// T_TORUS,
 	// T_CUBE, 
-	//attributes scene
+	//scene attributes
 	T_RESOLUTION,
 	T_RAY_DEPTH,
 	T_BACKGROUND_COLOR,
-	//attributes objects
+	T_AMBIENT_LIGHT_COEF,
+	T_AMBIENT_LIGHT_COLOR,
+	//object attributes
 	T_POSITION,
 	T_DIRECTION,
 	T_ROTATION,
@@ -92,13 +101,15 @@ typedef enum		e_token
 	T_COLOR,
 	T_RADIUS,
 	T_HEIGHT,
+	T_DIFFUSE_COEF,
 	T_REFRACTION, //angle of refraction
 	T_REFLECTION, //0 does not reflect, 1 perfectly reflects. Reflection for objects
-	T_SPECULAR, //reflection for lights. 0 - 1
+	T_SPECULAR_EXPONENT, //specular exponent
+	T_SPECULAR_COEF, 
 	T_TRANSPARENCY,
-	//attribtues camera
+	//acamera attributes
 	T_FOV,
-	//attribtues light
+	//light attribtues
 	T_INTENSITY,
 	//io
 	T_IMPORT_RT_FILE,
@@ -112,9 +123,9 @@ typedef enum		e_token
 }					t_token;
 
 # define TOKENS (const char *[T_COUNT]){"{","}","","scene","camera","light","plane",\
-"disk","sphere","cylinder","cone","resolution","ray depth","background color","position",\
-"direction","rotation","look at","color","radius","height","refraction","reflection",\
-"specular","transparency","fov","intensity","import","read rt file","read obj file",\
+"disk","sphere","cylinder","cone","resolution","ray depth","background color","ambient light coefficient","ambient light color","position",\
+"direction","rotation","look at","color","radius","height","kd","refraction","reflection",\
+"specular exponent","ks","transparency","fov","intensity","import","read rt file","read obj file",\
 "read texture file","read material file","invalid token"}
 
 // structure for each link conainting into about the input file(s)
@@ -141,6 +152,8 @@ typedef struct		s_attributes
 	//scene
 	t_pt2		res;
 	int			ray_depth;
+	t_color		ambient_light_color;
+	double		ambient_light_coef;
 	//light
 	double		intensity;
 	//camera
@@ -153,9 +166,11 @@ typedef struct		s_attributes
 	t_color		col; 
 	double		rad; //cone, cylinder, sphere
 	double		height; //cone, cylinder
+	double		ks;
+	double		kd;
 	double		refraction; //not light, cam
 	double		reflection; //not light, cam
-	double		specular; // ""
+	double		specular_exp; // ""
 	double		transparency; // ""
 }					t_attributes;
 
@@ -214,9 +229,11 @@ typedef struct	s_object
 	double			rad; //radius for sphere, or cylinder, or cone.
 	double			height; //height of cone/cylinder
 	double 			angle;
+	double			kd; //diffuse coefficient
+	double			ks; //specular coefficient
 	double			refraction;
 	double			reflection;
-	double			specular;
+	double			specular_exp; //
 	double			transparency;
 	struct s_object	*next;
 }				t_object;
@@ -252,10 +269,12 @@ typedef struct	s_camera
 
 typedef struct	s_scene
 {
-    t_pt2			res; //resolution
+    t_pt2			res;
     char			*name;
     int				ray_depth;
 	t_color			background_color;
+	t_color			ambient_light_color;
+	double			ambient_light_coef;
 	double			image_aspect_ratio;
     t_camera		*cameras;
     t_light			*lights;
@@ -346,8 +365,6 @@ void		set_options(char *arg, t_options *options);
 void		get_file(char *file_name, t_input **input);
 int			get_token(char *key);
 void		parse_input(t_parse_tools *t);
-t_vec3		parse_vector(char *value);
-double		parse_double(char *value);
 char 		**split_trim(char *s, char c);
 t_scene		*get_new_scene(t_parse_tools *t);
 t_object 	*get_new_object(t_parse_tools *t);
@@ -376,6 +393,8 @@ void	parse_cone(t_parse_tools *t);
 void	parse_resolution(t_parse_tools *t);
 void	parse_ray_depth(t_parse_tools *t);
 void	parse_background_color(t_parse_tools *t);
+void	parse_ambient_light_color(t_parse_tools *t);
+void	parse_ambient_light_coef(t_parse_tools *t);
 void	parse_position(t_parse_tools *t);
 void	parse_direction(t_parse_tools *t);
 void	parse_rotation(t_parse_tools *t);
@@ -385,7 +404,9 @@ void	parse_radius(t_parse_tools *t);
 void	parse_height(t_parse_tools *t);
 void	parse_refraction(t_parse_tools *t);
 void	parse_reflection(t_parse_tools *t);
-void	parse_specular(t_parse_tools *t);
+void	parse_diffuse_coef(t_parse_tools *t);
+void	parse_specular_coef(t_parse_tools *t);
+void	parse_specular_exponent(t_parse_tools *t);
 void	parse_transparency(t_parse_tools *t);
 void	parse_fov(t_parse_tools *t);
 void	parse_intensity(t_parse_tools *t);
@@ -397,9 +418,11 @@ void	read_material_file(t_parse_tools *t);
 void	hashtag(t_parse_tools *t);
 void	invalid_token(t_parse_tools *t);
 t_vec3	get_color(t_parse_tools *t, char *value);
-t_vec3	parse_rgb(t_parse_tools *t, char *value);
-t_vec3	parse_hexadecimal(t_parse_tools *t, char *value);
+t_vec3	parse_rgb(char *value);
+t_vec3	parse_hexadecimal(char *value);
 t_vec3	parse_color_name(t_parse_tools *t, char *value);
+t_vec3	parse_vector(char *value);
+double	parse_double(char *value);
 
 /*
 ** Data Checking Functions
@@ -408,6 +431,8 @@ t_vec3	parse_color_name(t_parse_tools *t, char *value);
 int		check_data(t_scene *scenes);
 void	set_default_resolution(t_scene *scene);
 void	set_default_ray_depth(t_scene *scene);
+void	set_default_ambient_light_coef(t_scene *scene);
+void	set_default_ambient_light_color(t_scene *scene);
 void	check_cameras(t_scene *scene, t_camera *cameras);
 void	check_lights(t_scene *scene, t_light *lights);
 void	check_objects(t_scene *scene, t_object *objects);
@@ -420,6 +445,9 @@ void	set_default_cam_dir(t_scene *scene, int type, void *cam, t_vec3 *dir);
 void	set_default_obj_dir(t_scene *scene, int type, void *obj, t_vec3 *dir);
 void	set_default_light_dir(t_scene *scene, int type, void *obj, t_vec3 *dir);
 void	set_default_fov(t_scene *scene, int type, void *obj, double *fov);
+void	set_default_ks(t_scene *scene, int type, void *obj, double *ks);
+void	set_default_kd(t_scene *scene, int type, void *obj, double *kd);
+void	set_default_specular_exp(t_scene *scene, int type, void *obj, double *specular_exp);
 void	get_obj_direction(t_scene *scene, t_object *obj);
 void	get_cam_direction(t_scene *scene, t_camera *cam);
 void	init_camera(t_scene *scene, t_camera *cam);
@@ -441,6 +469,9 @@ void		get_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 // void		cast_shadow_ray(t_ray *cam_ray, t_object *obj, t_scene *scene);
 bool	in_shadow(t_raytracing_tools *r, t_ray *primary_ray, t_ray *shadow_ray, t_light *light);
 t_color	get_diffuse(t_raytracing_tools *r, t_ray *primary_ray, t_ray *shadow_ray, t_light *light);
+t_color	get_specular(t_raytracing_tools *r, t_ray *primary_ray, t_ray *shadow_ray, t_light *light);
+t_color	get_ambient(t_raytracing_tools *r);
+t_vec3	reflect(t_vec3 ray_dir, t_vec3 nhit);
 
 /*
 ** SDL2 Functions

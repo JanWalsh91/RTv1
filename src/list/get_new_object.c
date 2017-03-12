@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/06 16:45:57 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/12 16:40:33 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 t_object 	*get_new_object(t_parse_tools *t)
 {
-	printf("GET_NEW_OBJECT\n");
+	// printf("GET_NEW_OBJECT\n");
 	t_object 	*new_object;
 	static int	i = 1;
 	static char	*current_scene_name = NULL;
@@ -55,6 +55,8 @@ void	set_non_values(t_object *new_object)
 	new_object->height = -1;
 	new_object->refraction = -1;
 	new_object->reflection = -1;
-	new_object->specular = -1;
+	new_object->specular_exp = NAN;
+	new_object->ks = NAN;
+	new_object->kd = NAN;
 	new_object->transparency = -1;
 }

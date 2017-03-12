@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/03/05 15:21:29 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/03/12 14:05:57 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,10 @@ RAY_TRACING = cast_primary_ray \
 			solve_quadratic \
 			intersects \
 			in_shadow \
-			get_diffuse
+			get_diffuse \
+			get_specular \
+			get_ambient \
+			reflect
 
 MISC = 		debug \
 			error_line_exit \

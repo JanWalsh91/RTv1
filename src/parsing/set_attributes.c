@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 15:47:55 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/06 15:59:10 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/11 15:58:31 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ void	set_attributes(t_parse_tools *t, t_attributes *a)
 		t->current_object->col = a->col;
 	!isnan(a->refraction) ? t->current_object->refraction = a->refraction : 0;
 	!isnan(a->reflection) ? t->current_object->reflection = a->reflection : 0;
-	!isnan(a->specular) ? t->current_object->specular = a->specular : 0;
+	!isnan(a->specular_exp) ? t->current_object->specular_exp = a->specular_exp : 0;
+	!isnan(a->ks) ? t->current_object->ks = a->ks : 0;
+	!isnan(a->kd) ? t->current_object->kd = a->kd : 0;
 	!isnan(a->transparency) ? t->current_object->transparency = a->transparency : 0;
 	if (t->current_type == T_PLANE || t->current_type == T_DISK)
 		set_attributes_plane(t, a);

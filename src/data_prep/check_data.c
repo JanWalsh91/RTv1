@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 10:39:37 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/09 16:02:47 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/12 16:17:34 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	check_data(t_scene *scenes)
 		(!s_ptr->lights) ? data_error_exit(s_ptr, 0, NULL, "No light provided.") : 0;
 		(!s_ptr->objects) ? data_error_exit(s_ptr, 0, NULL, "No objects provided.") : 0;
 		(s_ptr->res.x == -1) ? set_default_resolution(s_ptr) : 0;
+		isnan(s_ptr->ambient_light_coef) ? set_default_ambient_light_coef(s_ptr) : 0;
+		v_isnan(s_ptr->ambient_light_color) ? set_default_ambient_light_color(s_ptr) : 0;
 		s_ptr->image_aspect_ratio = (double)s_ptr->res.x / (double)s_ptr->res.y;
 		(s_ptr->ray_depth == -1) ? set_default_ray_depth(s_ptr) : 0;
 		check_cameras(s_ptr, s_ptr->cameras);
@@ -76,10 +78,14 @@ void	check_lights(t_scene *scene, t_light *lights)
 			data_warning(scene, T_LIGHT, l_ptr, "Lights can either have position or direction. Setting direction to NAN.");
 			l_ptr->dir = v_new(NAN, NAN, NAN);
 		}
-		v_isnan(l_ptr->pos) ? set_default_pos(scene, T_LIGHT, l_ptr, &l_ptr->pos) : 0;
+		//if no dir or pos, give pos.
+		v_isnan(l_ptr->dir) && v_isnan(l_ptr->pos) ? set_default_pos(scene, T_LIGHT, l_ptr, &l_ptr->pos) : 0;
+		
 		//replace with default direction for light when infinity far light handled.
 		v_isnan(l_ptr->col) ? set_default_col(scene, T_LIGHT, l_ptr, &l_ptr->col) : 0;
 		isnan(l_ptr->intensity) ? set_default_intensity(scene, T_LIGHT, l_ptr, &l_ptr->intensity) : 0;
+		if (!v_isnan(l_ptr->dir))
+			l_ptr->intensity /= 1000;
 		l_ptr = l_ptr->next;
 	}
 }
@@ -101,6 +107,9 @@ void	check_objects(t_scene *scene, t_object *objects)
 		if ((o_ptr->type == T_CONE || o_ptr->type == T_CYLINDER) &&
 			o_ptr->height == -1)
 			set_default_height(scene, o_ptr->type, o_ptr, &o_ptr->height);
+		isnan(o_ptr->ks) ? set_default_ks(scene, o_ptr->type, o_ptr, &o_ptr->ks) : 0;
+		isnan(o_ptr->kd) ? set_default_kd(scene, o_ptr->type, o_ptr, &o_ptr->kd) : 0;
+		isnan(o_ptr->specular_exp) ? set_default_specular_exp(scene, o_ptr->type, o_ptr, &o_ptr->specular_exp) : 0;
 		if (o_ptr->type == T_CONE)
 			get_cone_angle(o_ptr);
 		// if (o_ptr->type == T_CONE || o_ptr->type == T_CYLINDER)

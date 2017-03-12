@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 14:13:01 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 16:25:34 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/12 17:50:13 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,24 @@ t_vec3	get_color(t_parse_tools *t, char *value)
 	t_vec3	new_col;
 	
 	if (ft_charcount(value, ',') == 2)
-		new_col = parse_rgb(t, value);
+		new_col = parse_rgb(value);
 	else if (ft_charcount(value, ',') != 0)
 		return (v_new(NAN, NAN, NAN));
 	else if (value && value[0] == '0' && ft_tolower(value[1]) == 'x')
-		new_col = parse_hexadecimal(t, value);
+		new_col = parse_hexadecimal(value);
 	else if (value && ft_isalpha(value[0]))
 		new_col = parse_color_name(t, value);
 	else
 		return (v_new(NAN, NAN, NAN));
 	return (new_col);
-
-	//check if there are commas ->parse rgb
-	//check if first two chars are 0x or 0X ->parse hexademical
-	//check if first char is alpha ->parse color_name
 }
 
-//add debug here from outside function
-t_vec3	parse_rgb(t_parse_tools *t, char *value)
+t_vec3	parse_rgb(char *value)
 {
-	(void)t;
 	return (parse_vector(value));
 }
 
-t_vec3	parse_hexadecimal(t_parse_tools *t, char *value)
+t_vec3	parse_hexadecimal(char *value)
 {
 	int		i;
 	t_vec3	new_col;
@@ -50,22 +44,21 @@ t_vec3	parse_hexadecimal(t_parse_tools *t, char *value)
 	if (!(value && value[0] == '0' && ft_tolower(value[1]) == 'x') ||
 	 (value && ft_strlen(value) > 8))
 	{
-		rt_file_warning(t, "Invalid hexademical format.");
+		ft_printf("%{yellow}Invalid hexademical format.\n%{}");
 		return (new_col);
 	}
 	while (value[i])
 	{
 		if (!(ft_isdigit(value[i]) || ('a' <= ft_tolower(value[i]) && ft_tolower(value[i]) <= 'f')))
 		{
-			printf("value: [%c]\n", value[i]);
-			rt_file_warning(t, "Invalid hexademical format.");
+			ft_printf("%{yellow}Invalid hexademical format.\n%{}");
 			return (new_col);
 		}
 		++i;
 	}
 	if (ft_tolower(value[i - 1]) == 'x')
 	{
-		rt_file_warning(t, "Invalid hexademical format.");
+		ft_printf("%{yellow}Invalid hexademical format.\n%{}");
 		return (new_col);
 	}
 	ft_tolower(value[i - 1]) != 'x' ? new_col.z = get_hex_value(value[--i]) : 0;
@@ -101,7 +94,7 @@ t_vec3	parse_color_name(t_parse_tools *t, char *value)
 	if (find_color_value(t->colors, value, &new_col))
 		return (new_col);
 	else
-		rt_file_warning(t, "Color name not found.");
+		ft_printf("%{yellow}Color name not found\n%{}");
 	return (new_col);
 }
 

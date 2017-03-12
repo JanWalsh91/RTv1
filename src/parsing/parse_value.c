@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:35:28 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/06 16:29:27 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/12 18:08:49 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	parse_empty_line(t_parse_tools *t)
 
 void	parse_scene(t_parse_tools *t)
 {
-	// printf("parse_scene\n");
+	printf("parse_scene\n");
 	can_add_new_scene(t);
 	t->current_scene = get_new_scene(t);
 	push_scene(&t->scenes, t->current_scene);
@@ -62,6 +62,10 @@ void	parse_scene(t_parse_tools *t)
 		t->current_scene->res = t->global_attributes->res;
 	if (t->global_attributes->ray_depth != -1)
 		t->current_scene->ray_depth = t->global_attributes->ray_depth;
+	if (!isnan(t->global_attributes->ambient_light_coef))
+		t->current_scene->ambient_light_coef = t->global_attributes->ambient_light_coef;
+	if (!v_isnan(t->global_attributes->ambient_light_color))
+		t->current_scene->ambient_light_color = t->global_attributes->ambient_light_color;
 	t->input = t->input->next;
 	//no default values. Default values given later when checking. 
 }
@@ -149,7 +153,6 @@ void	parse_resolution(t_parse_tools *t)
 	char 	**s2;
 	t_pt2	new_res;
 
-	// printf("parse_resolution\n");
 	if (ft_charcount(t->input->value, ',') != 1)
 	{
 		rt_file_warning(t, "Resolution formatting error.");
@@ -161,14 +164,14 @@ void	parse_resolution(t_parse_tools *t)
 		rt_file_warning(t, "Resolution formatting error.");
 		return ;
 	}
-	new_res.x = ft_atoi(s2[0]);
-	new_res.y = ft_atoi(s2[1]);
+	if ((new_res.x = ft_atoi(s2[0])) <= 0 || (new_res.y = ft_atoi(s2[1])) <= 0)
+		rt_file_warning(t, "Resolution width and height must be positive an non-zero integers.");
 	if (!t->in_scene)
 		t->global_attributes->res = new_res;
 	else if (!t->in_object)
 		t->current_scene->res = new_res;
-	else if (!t->in_object)
-		rt_file_warning(t, "Skip resolution attribute in object...");
+	else if (t->in_object)
+		rt_file_warning(t, "You tryin' to give a resolution to an object?");
 }
 
 void	parse_ray_depth(t_parse_tools *t)
@@ -180,18 +183,17 @@ void	parse_ray_depth(t_parse_tools *t)
 		rt_file_warning(t, "Ray depth formatting error.");
 		return ;
 	}
-	new_ray_depth = ft_atoi(t->input->value);
-	if (new_ray_depth < 1)
+	if ((new_ray_depth = ft_atoi(t->input->value)) < 1)
 	{
-		rt_file_warning(t, "Ray depth must be positive and non-zero.");
+		rt_file_warning(t, "Ray depth must be a positive and non-zero integer.");
 		return ;
 	}
 	if (!t->in_scene)
 		t->global_attributes->ray_depth = new_ray_depth;
 	else if (!t->in_object)
-		t->scene_attributes->ray_depth = new_ray_depth;
+		t->current_scene->ray_depth = new_ray_depth;
 	else if (t->in_object)
-		rt_file_warning(t, "Skip ray_depth attribute...");
+		rt_file_warning(t, "Ray depth is a scene, not an object attribute!");
 }
 
 void	parse_background_color(t_parse_tools *t)
@@ -209,12 +211,55 @@ void	parse_background_color(t_parse_tools *t)
 		new_col = v_clamp(new_col, 0, 255);
 		rt_file_warning(t, "Color clamped to [0 - 255].");
 	}
+	
 	if (!t->in_scene)
 		t->global_attributes->col = new_col;
 	else if (!t->in_object)
 		t->current_scene->background_color = new_col;
 	else if (t->in_object)
-		rt_file_warning(t, "Skip background_color attribute...");
+		rt_file_warning(t, "Objects cannot have background colors!");
+}
+
+void	parse_ambient_light_color(t_parse_tools *t)
+{
+	t_vec3	new_col;
+
+	if (v_isnan(new_col = get_color(t, t->input->value)))
+	{
+		rt_file_warning(t, "Ambient color formatting error.");
+		return ;
+	}
+	if (new_col.x < 0 || new_col.y < 0 || new_col.z < 0 ||
+		new_col.x > 255 || new_col.y > 255 || new_col.z > 255)
+	{
+		new_col = v_clamp(new_col, 0, 255);
+		rt_file_warning(t, "Color clamped to [0 - 255].");
+	}
+	if (!t->in_scene)
+		t->global_attributes->ambient_light_color = new_col;
+	else if (!t->in_object)
+		t->current_scene->ambient_light_color = new_col;
+	else if (t->in_object)
+		rt_file_warning(t, "Ambient lighting is a scene attribute, not an object attribute.");
+}
+
+void	parse_ambient_light_coef(t_parse_tools *t)
+{
+	double	new_coef;
+
+	new_coef = NAN;
+	if (isnan(new_coef = parse_double(t->input->value)) || 
+		new_coef < 0 || new_coef > 1)
+	{
+		rt_file_warning(t, "Ambient light coefficient formatting error.");
+		return ;
+	}
+	if (!t->in_scene)
+		t->global_attributes->ambient_light_coef = new_coef;
+	else if (!t->in_object)
+		t->current_scene->ambient_light_coef = new_coef;
+	else if (t->in_object)
+		rt_file_warning(t, "Ambient light coefficient only applicable to scenes, not objects.");
 }
 
 void	parse_position(t_parse_tools *t)
@@ -251,8 +296,6 @@ void	parse_direction(t_parse_tools *t)
 		t->object_attributes->dir = new_dir;
 }
 
-//rotation in degrees around axes x, y, z
-//no value limit
 void	parse_rotation(t_parse_tools *t)
 {
 	t_vec3	new_rot;
@@ -330,7 +373,7 @@ void	parse_radius(t_parse_tools *t)
 		t->object_attributes->rad = new_radius;
 	if (t->current_type != T_CONE && t->current_type != T_CYLINDER &&
 		t->current_type != T_SPHERE && t->current_type != T_DISK)
-		rt_file_warning(t, "Radius attribute only applicable to spheres, cones and cylinders. Ignore.");
+		rt_file_warning(t, "Radius attribute only applicable to spheres, cones and cylinders.");
 }
 
 void	parse_height(t_parse_tools *t)
@@ -351,7 +394,72 @@ void	parse_height(t_parse_tools *t)
 	else if (t->in_object)
 		t->object_attributes->height = new_height;
 	if (t->current_type != T_CONE && t->current_type != T_CYLINDER)
-		rt_file_warning(t, "Height attribute only applicable to cones and cylinders. Ignore.");
+		rt_file_warning(t, "Height attribute only applicable to cones and cylinders.");
+}
+
+void	parse_diffuse_coef(t_parse_tools *t)
+{
+	double	new_diffuse_coef;
+
+	new_diffuse_coef = NAN;
+	if (isnan(new_diffuse_coef = parse_double(t->input->value)) || 
+		new_diffuse_coef < 0 || new_diffuse_coef > 1)
+	{
+		rt_file_warning(t, "Diffuse coefficient formatting error.\
+			The diffuse coefficient is a double between 0 and 1.");
+		return ;
+	}
+	if (!t->in_scene)
+		t->global_attributes->kd = new_diffuse_coef;
+	else if (!t->in_object)
+		t->scene_attributes->kd = new_diffuse_coef;
+	else if (t->in_object)
+		t->object_attributes->kd = new_diffuse_coef;
+	if (t->current_type == T_LIGHT || t->current_type == T_CAMERA)
+		rt_file_warning(t, "Diffuse coefficient attribute only applicable to objects.");
+}
+
+void	parse_specular_coef(t_parse_tools *t)
+{
+	double	new_specular_coef;
+
+	new_specular_coef = NAN;
+	if (isnan(new_specular_coef = parse_double(t->input->value)) || 
+		new_specular_coef < 0 || new_specular_coef > 1)
+	{
+		rt_file_warning(t, "Specular coefficient formatting error.\
+			The specular coefficient is a double between 0 and 1.");
+		return ;
+	}
+	if (!t->in_scene)
+		t->global_attributes->ks = new_specular_coef;
+	else if (!t->in_object)
+		t->scene_attributes->ks = new_specular_coef;
+	else if (t->in_object)
+		t->object_attributes->ks = new_specular_coef;
+	if (t->current_type == T_LIGHT || t->current_type == T_CAMERA)
+		rt_file_warning(t, "Specular coefficient attribute only applicable to objects.");
+}
+
+void	parse_specular_exponent(t_parse_tools *t)
+{
+	double	new_specular_exp;
+
+	new_specular_exp = NAN;
+	if (isnan(new_specular_exp = parse_double(t->input->value)) || 
+		new_specular_exp < 0)
+	{
+		rt_file_warning(t, "Specular exponent formatting error.");
+		return ;
+	}
+	if (!t->in_scene)
+		t->global_attributes->specular_exp = new_specular_exp;
+	else if (!t->in_object)
+		t->scene_attributes->specular_exp = new_specular_exp;
+	else if (t->in_object)
+		t->object_attributes->specular_exp = new_specular_exp;
+	if (t->current_type == T_LIGHT || t->current_type == T_CAMERA)
+		rt_file_warning(t, "Specular exponent attribute only applicable to objects. Ignore.");
 }
 
 void	parse_refraction(t_parse_tools *t)
@@ -372,7 +480,7 @@ void	parse_refraction(t_parse_tools *t)
 	else if (t->in_object)
 		t->object_attributes->refraction = new_refraction;
 	if (t->current_type == T_CAMERA || t->current_type == T_LIGHT)
-		rt_file_warning(t, "Cannot apply refraction to lights or cameras. Ignore.");
+		rt_file_warning(t, "Cannot apply refraction to lights or cameras.");
 }
 
 void	parse_reflection(t_parse_tools *t)
@@ -393,28 +501,7 @@ void	parse_reflection(t_parse_tools *t)
 	else if (t->in_object)
 		t->object_attributes->reflection = new_reflection;
 	if (t->current_type == T_CAMERA || t->current_type == T_LIGHT)
-		rt_file_warning(t, "Cannot apply reflection to lights or cameras. Ignore.");
-}
-
-void	parse_specular(t_parse_tools *t)
-{
-	double	new_specular;
-
-	new_specular = NAN;
-	if (isnan(new_specular = parse_double(t->input->value)) || 
-		new_specular < 0 || new_specular > 0)
-	{
-		rt_file_warning(t, "Specular index formatting error. Ignore.");
-		return ;
-	}
-	if (!t->in_scene)
-		t->global_attributes->specular = new_specular;
-	else if (!t->in_object)
-		t->scene_attributes->specular = new_specular;
-	else if (t->in_object)
-		t->object_attributes->specular = new_specular;
-	if (t->current_type == T_CAMERA || t->current_type == T_LIGHT)
-		rt_file_warning(t, "Cannot apply specular effect to lights or cameras. Ignore.");
+		rt_file_warning(t, "Cannot apply reflection to lights or cameras.");
 }
 
 void	parse_transparency(t_parse_tools *t)
@@ -446,7 +533,8 @@ void	parse_fov(t_parse_tools *t)
 	if (isnan(new_fov = parse_double(t->input->value)) || 
 		new_fov < 0 || new_fov > 180)
 	{
-		rt_file_warning(t, "Fov index formatting error.");
+		rt_file_warning(t, "Fov index formatting error.\
+			The field of view is a double between 0 and 180.");
 		return ;
 	}
 	if (!t->in_scene)
@@ -456,7 +544,7 @@ void	parse_fov(t_parse_tools *t)
 	else if (t->in_object)
 		t->object_attributes->fov = new_fov;
 	if (t->current_type != T_CAMERA)
-		rt_file_warning(t, "Can only modify the fov of cameras. Ignore.");
+		rt_file_warning(t, "Field of view is a camera-only attribute.");
 }
 
 void	parse_intensity(t_parse_tools *t)
@@ -467,7 +555,8 @@ void	parse_intensity(t_parse_tools *t)
 	if (isnan(new_intensity = parse_double(t->input->value)) || 
 		new_intensity < 0)
 	{
-		rt_file_warning(t, "Intensity index formatting error.");
+		rt_file_warning(t, "Intensity index formatting error.\
+			Intensity is a positive double.");
 		return ;
 	}
 	if (!t->in_scene)
@@ -477,7 +566,7 @@ void	parse_intensity(t_parse_tools *t)
 	else if (t->in_object)
 		t->object_attributes->intensity = new_intensity;
 	if (t->current_type != T_LIGHT)
-		rt_file_warning(t, "Can only modify the fov of lights. Ignore.");
+		rt_file_warning(t, "Intensity describes lights only.");
 }
 
 void	import_rt_file(t_parse_tools *t)

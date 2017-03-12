@@ -6,11 +6,11 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 17:13:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 15:52:48 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/12 14:02:58 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/rtv1.h"
+#include "../../inc/rtv1.h"
 #include <stdio.h>
 
 
@@ -29,6 +29,8 @@ void	print_scenes(t_scene *scenes_head)
 		printf("scene: %s\n", s_ptr->name);
 		printf("	res: [%i, %i]\n", s_ptr->res.x, s_ptr->res.y);
 		printf("	ray_depth: [%i]\n", s_ptr->ray_depth);
+		printf("	ambient coef: [%f]\n", s_ptr->ambient_light_coef);
+		printf("	ambient col: [%f] [%f] [%f]\n", s_ptr->ambient_light_color.x, s_ptr->ambient_light_color.y, s_ptr->ambient_light_color.z);
 		printf("	image aspect ratio: [%f]\n", s_ptr->image_aspect_ratio);
 		o_ptr = s_ptr->objects;
 		printf("	objects:\n");
@@ -42,6 +44,9 @@ void	print_scenes(t_scene *scenes_head)
 			printf("		object dir: [%f] [%f] [%f]\n", o_ptr->dir.x, o_ptr->dir.y, o_ptr->dir.z);
 			printf("		object rad: [%f]\n", o_ptr->rad);
 			printf("		object height: [%f]\n", o_ptr->height);
+			printf("		object kd: [%f]\n", o_ptr->kd);
+			printf("		object ks: [%f]\n", o_ptr->ks);
+			printf("		object specular exponent: [%f]\n", o_ptr->specular_exp);
 			o_ptr = o_ptr->next;
 		}
 		c_ptr = s_ptr->cameras;
