@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:57:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/12 16:49:37 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/13 14:53:39 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ int	main(int ac, char **av)
 	init_raytracing_tools(&r);
 	while (++i < ac)
 	{
-		if (ft_strstr(av[i], ".rt")) //to fix
+		if (ft_strstr(av[i], ".rt") && *(ft_strstr(av[i], ".rt") + 3) == '\0')
 			get_file(av[i], &t.input);
 		else
-			set_options(av[i], &r.options);
+			rt_file_warning(NULL, "Skipped invalid file.");
 	}
 	i = 0;
 	while (++i < ac)

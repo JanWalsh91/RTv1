@@ -1,0 +1,17 @@
+scene:
+{
+	plane:
+	{
+		position: 0, 0, 0
+		direction: 0, 1, 0
+	}
+	light:l
+	{
+		position: 0, 10, 0
+	}
+	camera: 
+	{
+		look at: l
+		position: 0, 10, 0
+	}
+}

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 14:42:55 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/07 14:32:54 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/13 15:23:36 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ t_camera 	*get_new_camera(t_parse_tools *t)
 	if (!(new_camera = (t_camera *)ft_memalloc(sizeof(t_camera))))
 		ft_error_exit("Malloc error");
 	set_cam_non_values(new_camera);
-	if (!t->input->value)
+	if (!t->input->value || !*t->input->value)
 	{
 		if (!current_scene_name)
 			current_scene_name = t->current_scene->name;
-		else if (ft_strcmp(current_scene_name, t->current_scene->name)) //if on new scene
+		else if (ft_strcmp(current_scene_name, t->current_scene->name))
 			i = 1;
 		new_camera->name = ft_strdup(ft_strsjoin(3, TOKENS[t->input->token], " ", ft_itoa(i)));
 		++i;

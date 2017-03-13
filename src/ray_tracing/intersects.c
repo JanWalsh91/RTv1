@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:11:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/10 16:33:04 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/13 17:14:47 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ bool		get_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj
 	int						n_dir;
 
 	// printf("cylinder intersection\n");
-	n_dir = 1;
+	i.n_dir = 1;
 	i.v3 = v_sub(ray->origin, obj->pos);
 	i.v1 = v_scale(obj->dir, v_dot(ray->dir, obj->dir));
 	i.v1 = v_sub(ray->dir, i.v1);
@@ -133,12 +133,11 @@ bool		get_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj
 	i.q.z = v_dot(i.v2, i.v2) - powf(obj->rad, 2);
  	if (!solve_quadratic(i.q, &i.r1, &i.r2))
 		return (false);
-	obj->height > 0 ? get_finite_cylinder_intersection(r, ray, obj, &i) : 0;
 	(i.r2 < i.r1) ? ft_swapd(&i.r1, &i.r2) : 0;
-	// obj->height > 0 ? get_cyclinder_caps_intersection(r, ray, obj, &i) : 0;
+	obj->height > 0 ? get_finite_cylinder_intersection(r, ray, obj, &i) : 0;
 	if (i.r1 < 0 || isnan(i.r1)) //the smallest one is negative, thus take the other one and normal direction is inversed.
 	{
-		!isnan(i.r1) ? n_dir = -1 : 0;
+		i.n_dir = -1;
 		i.r1 = i.r2;
 	} 
 	if (i.r1 < 0 || isnan(i.r1))	
@@ -152,7 +151,7 @@ bool		get_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj
 		{
 			ray->hit_obj = obj;
 			ray->hit_type = T_CYLINDER;
-			ray->n_dir = n_dir;
+			ray->n_dir = i.n_dir;
 		}
 	}
 	// ray->hit_obj = obj;
@@ -318,7 +317,7 @@ bool		get_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *cone)
 	cone->height > 0 ? get_finite_cone_intersection(r, ray, cone, &i) : 0;
 	if (i.r1 < 0 || isnan(i.r1)) //the smallest one is negative, thus take the other one
 	{
-		// !isnan(i.r1) ? i.n_dir = -1 : 0;
+		// i.n_dir = -i.n_dir;
 		i.r1 = i.r2;
 	}
 	if (i.r1 < 0 || isnan(i.r1))	
@@ -326,13 +325,11 @@ bool		get_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *cone)
 	if (r->t > i.r1)
 	{
 		ray->t = i.r1;
-		// r->t = ray->t;
 		if (ray->type == R_PRIMARY)
 		{
 			ray->hit_obj = cone;
 			ray->hit_type = T_CONE;
 			ray->n_dir = i.n_dir;
-			// ray->n_dir = 1;
 		}
 	}
 	return (true);
@@ -364,10 +361,23 @@ bool		get_finite_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *
 	bool	r2_too_low;
 	bool	r2_too_high;
 
+	static int y = 5;
+
+
 	r1_too_low = lower_than_min(i->r1, i, obj, ray);
 	r1_too_high = higher_than_max(i->r1, i, obj, ray);
 	r2_too_low = lower_than_min(i->r2, i, obj, ray);
 	r2_too_high = higher_than_max(i->r2, i, obj, ray);
+
+	while(i->r1 > 0 && i->r1 < obj->rad && y)
+	{
+		printf("r1: [%f]\nr2: [%f]\n", i->r1, i->r2);
+		--y;
+		printf("r1_too_low: %i\n", r1_too_low);
+		printf("r1_too_high: %i\n", r1_too_high);
+		printf("r2_too_low: %i\n", r1_too_low);
+		printf("r2_too_high: %i\n", r1_too_high);
+	}
 	if (r1_too_low)
 	{
 		i->r1 = NAN;

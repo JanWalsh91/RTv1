@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/12 16:40:33 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/13 15:24:07 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 t_object 	*get_new_object(t_parse_tools *t)
 {
-	// printf("GET_NEW_OBJECT\n");
 	t_object 	*new_object;
 	static int	i = 1;
 	static char	*current_scene_name = NULL;
@@ -26,11 +25,11 @@ t_object 	*get_new_object(t_parse_tools *t)
 	if (!(new_object = (t_object *)ft_memalloc(sizeof(t_object))))
 		ft_error_exit("Malloc error");
 	set_non_values(new_object);
-	if (!t->input->value)
+	if (!t->input->value || !*t->input->value)
 	{
 		if (!current_scene_name)
 			current_scene_name = t->current_scene->name;
-		else if (ft_strcmp(current_scene_name, t->current_scene->name)) //if on new scene
+		else if (ft_strcmp(current_scene_name, t->current_scene->name))
 			i = 1;
 		new_object->name = ft_strdup(ft_strsjoin(3, TOKENS[t->input->token], " ", ft_itoa(i)));
 		++i;

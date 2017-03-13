@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_input.1.c                                    :+:      :+:    :+:   */
+/*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/29 12:25:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/02 14:18:59 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/13 12:15:24 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,6 @@ void		parse_input(t_parse_tools *t)
 		// printf("t->input = t->input->next\n");
 		t->input = t->input->next;
 	}
+	if (t->in_scene || t->in_object)
+		rt_file_error_exit(NULL, "Brackets error.");
 }

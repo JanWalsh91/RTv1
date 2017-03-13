@@ -1,0 +1,22 @@
+scene: 
+{
+	plane: test
+	{
+		position: 0, 0, 0
+		direction: 0, 1, 0
+	}
+	sphere:s
+	{
+		position: 0, 2, 0
+		radius: 1
+	}
+	light: 
+	{
+		position: 0, 20, 0
+	}
+	camera
+	{
+		position: 0, 10, -30
+		look at:s 	
+	}
+}

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 10:39:37 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/12 16:17:34 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/13 15:15:49 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	check_lights(t_scene *scene, t_light *lights)
 	l_ptr = lights;
 	while (l_ptr)
 	{
+		(v_isnan(l_ptr->pos)) ? get_light_direction(scene, l_ptr) : 0;
 		if (!v_isnan(l_ptr->dir) && !v_isnan(l_ptr->pos))
 		{
 			data_warning(scene, T_LIGHT, l_ptr, "Lights can either have position or direction. Setting direction to NAN.");
@@ -182,9 +183,9 @@ void	get_light_direction(t_scene *scene, t_light *light)
 		light->dir = m_v_mult(light->dir, m);
 		free_matrix(&m);
 	}
-	if ((!light->dir.x && !light->dir.y && !light->dir.z))
+	if (v_isnan(light->dir) || (!light->dir.x && !light->dir.y && !light->dir.z))
 		set_default_light_dir(scene, T_LIGHT, light, &light->dir);
-	light->dir = v_norm (light->dir);
+	light->dir = v_norm(light->dir);
 }
 
 void	add_disks(t_scene *scene, t_object *obj)

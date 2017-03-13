@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:35:28 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/12 18:08:49 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/13 16:31:34 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,19 @@ static t_vec3	look_at_object(t_parse_tools *t, char *value);
 
 void	parse_open_bracket(t_parse_tools *t)
 {
-	rt_file_warning(t, "Extraneous '{'. Ignore.");
-	// ? may not be nessesary
-	// if parsed using this function, means that there is an extra open bracket where there shouldnt be
+	rt_file_error_exit(t, "Extraneous '{'.");
 }
 
 void	parse_close_bracket(t_parse_tools *t)
 {
-	// printf("parse_close_bracket\n");
 	if (t->in_object)
 	{
 		set_attributes(t, t->object_attributes);
 		reset_attributes(t->object_attributes);
-		// printf("exit object\n");
-		t->in_object = 0;
+		t->in_object = false;
 	}
 	else if (t->in_scene)
-	{
-		t->in_scene = 0;
-		// printf("exit scene\n");
-	}
+		t->in_scene = false;
 	else
 		rt_file_error_exit(t, "Extraneous '}'.");
 }
@@ -53,7 +46,6 @@ void	parse_empty_line(t_parse_tools *t)
 
 void	parse_scene(t_parse_tools *t)
 {
-	printf("parse_scene\n");
 	can_add_new_scene(t);
 	t->current_scene = get_new_scene(t);
 	push_scene(&t->scenes, t->current_scene);
@@ -601,7 +593,7 @@ void	hashtag(t_parse_tools *t)
 
 void	invalid_token(t_parse_tools *t)
 {
-	rt_file_warning(t, "Invalid token.");
+	rt_file_error_exit(t, "Invalid token.");
 }
 
 static int	can_add_new_scene(t_parse_tools *t)
@@ -621,15 +613,15 @@ static int	can_add_new_scene(t_parse_tools *t)
 static int	can_add_new_object(t_parse_tools *t)
 {
 	if (!t->in_scene)
-		rt_file_error_exit(t, "Cannot add new object outside a scene");
+		rt_file_error_exit(t, "Cannot add new object outside a scene.");
 	if (!t->in_object)
 		t->in_object = 1;
 	else
-		rt_file_error_exit(t, "Cannot add new object inside another object");
+		rt_file_error_exit(t, "Cannot add new object inside another object.");
 	if (t->input->next->token != T_OPEN_BRACKET)
 	{
 		t->input = t->input->next;
-		rt_file_error_exit(t, "New object must be followed by open bracket");
+		rt_file_error_exit(t, "New object must be followed by open bracket.");
 	}
 	return (1);
 }
@@ -644,26 +636,31 @@ t_vec3	parse_vector(char *value)
 	if (ft_charcount(value, ',') != 2)
 		return (new_vec);
 	split_value = split_trim(value, ',');
-	new_vec.x = ft_atod(split_value[0]);
-	new_vec.y = ft_atod(split_value[1]);
-	new_vec.z = ft_atod(split_value[2]);
+	new_vec.x = parse_double(split_value[0]);
+	new_vec.y = parse_double(split_value[1]);
+	new_vec.z = parse_double(split_value[2]);
+	if (isnan(new_vec.x) || isnan(new_vec.y) || isnan(new_vec.z))
+		return (v_new(NAN, NAN, NAN));
 	return (new_vec);
 }
 
-//add verification for non digit values
 double	parse_double(char *value)
 {
 	double	new_d;
+	int		i;
 
 	new_d = NAN;
-	if (ft_charcount(value, ','))
+	if (ft_charcount(value, ',') || !(ft_charcount(value, '.') == 1 || ft_charcount(value, '.') == 0))
 		return (new_d);
+	i = -1;
+	while (value[++i])
+		if (!((ft_isdigit(value[i]) || value[i] == '-' || value[i] == '+') || value[i] == '.'))
+			return (new_d);
 	new_d = ft_atod(value);
 	return (new_d);
 }
 
 
-//perhaps calculate dir from look at after scene has been generated. (in check data)
 static t_vec3	look_at_object(t_parse_tools *t, char *value)
 {
 	t_object	*o_ptr;

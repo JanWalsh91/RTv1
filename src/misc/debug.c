@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 17:13:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/12 14:02:58 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/13 15:00:27 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	print_scenes(t_scene *scenes_head)
 		{
 			printf("	light name: [%s]\n", l_ptr->name);
 			printf("		light pos: [%f] [%f] [%f]\n", l_ptr->pos.x, l_ptr->pos.y, l_ptr->pos.z);
+			printf("		light dir: [%f] [%f] [%f]\n", l_ptr->dir.x, l_ptr->dir.y, l_ptr->dir.z);			
 			printf("		light col: [%f] [%f] [%f]\n", l_ptr->col.x, l_ptr->col.y, l_ptr->col.z);
 			printf("		light intensity: [%f]\n", l_ptr->intensity);
 			l_ptr = l_ptr->next;

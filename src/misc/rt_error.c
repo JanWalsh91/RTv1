@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 15:39:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/06 16:18:32 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/13 14:53:14 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,11 @@ void	rt_file_error_exit(t_parse_tools *t, char *msg)
 
 void	rt_file_warning(t_parse_tools *t, char *msg)
 {
-	ft_printf("%{yellow}WARNING in file \"%{i}%s%{}%{yellow}\" on line %{i}%lu%{}%{yellow}:\n%s\n%{}",
+	if (t)
+		ft_printf("%{yellow}WARNING in file \"%{i}%s%{}%{yellow}\" on line %{i}%lu%{}%{yellow}:\n%s\n%{}",
 	t->input->file_name, t->input->line_number, (char *)msg);
+	else
+		ft_printf("%{yellow}WARNING: %s\n", msg);
 }
 
 void	data_error_exit(t_scene *scene, int type, void *object, char *msg)

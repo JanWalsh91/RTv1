@@ -1,0 +1,16 @@
+scene: myscene
+{
+	camera:
+	{
+
+	}
+	light:
+	{
+
+	}
+	sphere:
+	{
+		radius: 1
+		position: 1, 1, 1
+	}
+}

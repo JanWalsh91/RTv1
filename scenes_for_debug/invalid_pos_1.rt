@@ -1,0 +1,42 @@
+scene:
+{
+	plane:
+	{
+		position: 0, 0, 0
+		direction: 0, 1, 0
+	}
+	sphere:s
+	{
+		position: 0, 2
+		radius: 1
+	}
+	sphere:
+	{
+		position: 1, 2. 
+		radius: 1
+	}
+	sphere:
+	{
+		position: 2, 6	 2 2, 00
+		radius: 1
+	}
+	sphere:
+	{
+		position: abc
+		radius: 1
+	}
+	sphere:
+	{
+		position: -31035463540, 254035403, 035146087068708671
+		radius: 1
+	}
+	light:
+	{
+		position: 0, 20, 0
+	}
+	camera:
+	{
+		position: 0, 10, -30
+		look at:s
+	}
+}

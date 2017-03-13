@@ -1,0 +1,118 @@
+scene: rendu6
+{
+	ambient light coefficient: 0.1
+	ambient light color: white
+	resolution: 1000, 1000
+	camera
+	{
+		position: 0, 5, -40
+		direction: 0, 0, 1
+		fov: 30
+	}
+	light
+	{
+		position: -15, 6, -10
+		intensity: 10
+	}
+	light
+	{
+		position: 15, 6, -10
+		intensity: 10
+	}
+	sphere: grosse
+	{
+		position: 0, 2, 3
+		color: 0xFF0000
+		radius: 1
+		kd: 1
+		ks: 1
+		specular exponent: 400
+	}
+	plane: mur_fond
+	{
+		position: 0, 0, 30
+		direction: 0, 0, 1
+		color: 0x0000FF
+	}
+	plane: sol
+	{
+		position: 0, 0, 0
+		# direction: 0, 1, 0
+		color: 0x999999
+	}
+	plane: plafond
+	{
+		position: 0, 12, 0
+		# direction: 0, 1, 0
+		color: 0x666666
+	}
+	color: 0xBBBBBB
+	# color: 187, 187, 187
+	radius: 1.2
+	specular exponent: 5
+	ks: 0.03
+	cylinder: c1
+	{
+		position: -7, 0, 25
+		height: 12
+		direction: 0, 1, 0
+	}
+	cylinder: c2
+	{
+		position: 7, 0, 25
+		height: 12
+		# direction: 0, 1, 0
+	}
+	cylinder: c3
+	{
+		position: -7, 0, 0
+		height: 12
+		# direction: 0, 1, 0
+	}
+	cylinder: c3
+	{
+		position: 7, 0, 0
+		height: 12
+		direction: 0, 1, 0
+	}
+	sphere: s1
+	{
+		position: -7, 0, 25
+		radius: 2
+	}
+	sphere: s2
+	{
+		position: 7, 0, 25
+		radius: 2
+	}
+	sphere: s3
+	{
+		position: -7, 0, 0
+		radius: 2
+	}
+	sphere: s4
+	{
+		position: 7, 0, 0
+		radius: 2
+	}
+	sphere: s5
+	{
+		position: -7, 12, 25
+		radius: 2
+	}
+	sphere: s6
+	{
+		position: 7, 12, 25
+		radius: 2
+	}
+	sphere: s7
+	{
+		position: -7, 12, 0
+		radius: 2
+	}
+	sphere: s8
+	{
+		position: 7, 12, 0
+		radius: 2
+	}
+}

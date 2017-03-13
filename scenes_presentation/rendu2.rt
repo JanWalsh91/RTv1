@@ -1,0 +1,26 @@
+scene: rendu2
+{
+	ambient light coefficient: 0.2
+	resolution: 1200, 1200
+	camera: cam
+	{
+		position: 0, 0, -15
+		direction: 0, 0, 1
+	}
+	light: light
+	{
+		position: 20, 2.5, -20
+		direction: -1, 0, 0
+		intensity: 30
+	}
+	cylinder: c1
+	{
+		color: 0x155315
+		position: 0, -4, 5
+		direction: 0, 1, 0
+		radius: 1.5
+		height: 10
+		ks: 0.3
+		specular exponent: 100
+	}
+}

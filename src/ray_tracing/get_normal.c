@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_normal.1.c                                     :+:      :+:    :+:   */
+/*   get_normal.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/21 16:05:39 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/10 15:19:15 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/13 16:40:46 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static void	get_cylinder_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj
 	x = v_sub(ray->origin, obj->pos);
 	m = v_dot(ray->dir, v_scale(obj->dir, ray->t)) + v_dot(x, obj->dir);
 	x = v_add(obj->pos, v_scale(obj->dir, m));
-	// N = nrm( ray->hit - obj->pos - obj->dir * m )
 	ray->nhit = v_norm(v_sub(ray->hit, x));
 }
 

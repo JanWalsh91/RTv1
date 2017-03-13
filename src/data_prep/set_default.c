@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 16:31:14 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/12 14:00:10 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/13 15:11:54 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	set_default_obj_dir(t_scene *scene, int type, void *obj, t_vec3 *dir)
 
 void	set_default_light_dir(t_scene *scene, int type, void *obj, t_vec3 *dir)
 {
-	if (type != T_LIGHT)
+	if (type == T_LIGHT)
 		data_warning(scene, type, ((t_light *)obj), "Providing default direction.");
 	else
 		return ;

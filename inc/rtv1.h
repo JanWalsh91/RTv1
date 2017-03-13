@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/12 17:48:29 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/13 15:09:34 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,20 @@
 # define DEFAULT_AMBIENT_LIGHT_COLOR_R 255
 # define DEFAULT_AMBIENT_LIGHT_COLOR_G 255
 # define DEFAULT_AMBIENT_LIGHT_COLOR_B 255
-# define DEFAULT_POS_X 1
-# define DEFAULT_POS_Y 1
-# define DEFAULT_POS_Z 1
+# define DEFAULT_POS_X 0
+# define DEFAULT_POS_Y 0
+# define DEFAULT_POS_Z 0
 # define DEFAULT_DIR_X 0
-# define DEFAULT_DIR_Y 0
+# define DEFAULT_DIR_Y 1
 # define DEFAULT_DIR_Z 0
-# define DEFAULT_COL_R 0xAA
-# define DEFAULT_COL_G 0xAA
+# define DEFAULT_COL_R 0xFF
+# define DEFAULT_COL_G 0xFF
 # define DEFAULT_COL_B 0xFF
 # define DEFAULT_CAM_DIR_X 0
 # define DEFAULT_CAM_DIR_Y 0
 # define DEFAULT_CAM_DIR_Z 1
 # define DEFAULT_FOV 45
-# define DEFAULT_INTENSITY 10000
+# define DEFAULT_INTENSITY 10
 # define DEFAULT_RADIUS 1
 # define DEFAULT_HEIGHT 1
 # define DEFAULT_KS 0.1
@@ -450,6 +450,7 @@ void	set_default_kd(t_scene *scene, int type, void *obj, double *kd);
 void	set_default_specular_exp(t_scene *scene, int type, void *obj, double *specular_exp);
 void	get_obj_direction(t_scene *scene, t_object *obj);
 void	get_cam_direction(t_scene *scene, t_camera *cam);
+void	get_light_direction(t_scene *scene, t_light *light);
 void	init_camera(t_scene *scene, t_camera *cam);
 void	update_camera_scale(t_camera *camera);
 void	update_camera_ctw(t_camera *camera);

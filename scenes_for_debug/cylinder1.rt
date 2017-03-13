@@ -1,0 +1,16 @@
+scene:
+{
+	camera: cam
+	{
+		position: 0, 2, -20
+	}
+	cylinder:
+	{
+		height: 5
+		look at: 2, 0, -20
+	}
+	light:
+	{
+		position: 0, 10, -5
+	}
+}
