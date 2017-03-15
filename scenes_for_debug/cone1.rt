@@ -1,21 +1,34 @@
+ambient light color: goldenrod
+specular exponent: 0.5
+ks: 0.3
 scene:
 {
 	camera: cam
 	{
-		position: 0, 5, -20
+		position: 0, 20, -10
+		direction: 0, -1, 0
 	}
-	direction: 0, 1, -1.1	
-	height: 5
+	direction: 0, 1, 0
+	height: 10
 	radius: 1
+	plane:
+	{
+		position: 0, 0, 5
+		direction: 0, 0, 2
+	}
+	color: 0x9E0E40
 	cone:
 	{
 	}
 	cylinder: 
 	{
-		position: 2, 0, 0
+		position: 3, 0, 1
 	}
 	light:
 	{
-		position: 0, 10, -15	
+		direction: -1.4, -1, 1
+		# position: 5, 10, 0
+		intensity: 4
+		color: daisy
 	}
 }

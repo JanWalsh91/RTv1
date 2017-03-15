@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:11:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/13 17:14:47 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 14:22:25 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ bool		get_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj
 	t_intersection_tools	i;
 	int						n_dir;
 
-	// printf("cylinder intersection\n");
 	i.n_dir = 1;
 	i.v3 = v_sub(ray->origin, obj->pos);
 	i.v1 = v_scale(obj->dir, v_dot(ray->dir, obj->dir));
@@ -145,8 +144,6 @@ bool		get_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj
 	if (r->t > i.r1)
 	{
 		ray->t = i.r1;
-		// r->t = ray->t;
-		
 		if (ray->type == R_PRIMARY)
 		{
 			ray->hit_obj = obj;
@@ -154,15 +151,11 @@ bool		get_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj
 			ray->n_dir = i.n_dir;
 		}
 	}
-	// ray->hit_obj = obj;
 	return (true);
 }
 
 bool		get_finite_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj, t_intersection_tools *i)
 {
-	//chek for validity of roots. 
-	//set to -1 those which are not on finite cylinder body.
-	//check first point: distance r1
 	if (i->r1 > 0) //first point;
 	{
 		i->p = v_add(ray->origin, v_scale(ray->dir, i->r1));
@@ -231,79 +224,12 @@ bool		get_cyclinder_caps_intersection(t_raytracing_tools *r, t_ray *ray, t_objec
 	return (true);
 }
 
-
-// //not yet quite working. 
-// bool		get_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj)
-// {
-// 	t_intersection_tools	i;
-
-// 	i.d1 = pow(obj->rad / obj->height, 2.);
-// 	i.v1 = v_sub(ray->origin, obj->pos);
-// 	i.q.x = v_dot(ray->dir, ray->dir) - (1 + i.d1) * powf(v_dot(ray->dir, obj->dir), 2);
-// 	i.q.y = 2 * (v_dot(ray->dir, i.v1) - (1 + i.d1) * v_dot(ray->dir, obj->dir) * v_dot(i.v1, obj->dir));
-// 	i.q.z = v_dot(i.v1, i.v1) - (1 + i.d1) * powf(v_dot(i.v1, obj->dir), 2);
-//  	if (!solve_quadratic(i.q, &i.r1, &i.r2))
-// 	 	return (false);
-// 	(i.r2 < i.r1) ? ft_swapd(&i.r1, &i.r2) : 0;
-// 	(i.r1 < 0) ? i.r1 = i.r2 : 0;
-// 	if (i.r1 < 0)
-// 		return (false);
-// 	ray->t = i.r1;	
-// 	return (true);
-// }
-// bool		get_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *cone)
-// {
-// 	t_intersection_tools	i;
-// 	int						n_dir;
-// 	double 					k;
-
-// 	k = cone->angle;
-// 	// C = cone->pos
-// 	// V = cone->dir
-// 	// k = angle;
-// 	// D = ray->dir;
-// 	// X  = v_sub(ray->origin, cone->pos);
-// 	n_dir = 1;
-// 	// i.q.x = v_dot(ray->dir, ray->dir) - (1 + cone->angle * cone->angle)*powf(v_dot(ray->dir, cone->dir), 2);
-// 	// i.q.y = (v_dot(ray->dir, v_sub(ray->origin, cone->pos)) - (1 + cone->angle * cone->angle)*v_dot(ray->dir, cone->dir)*v_dot(v_sub(ray->origin, cone->pos), cone->dir)) * 2;
-// 	// i.q.z = v_dot(v_sub(ray->origin, cone->pos), v_sub(ray->origin, cone->pos)) - (1 + cone->angle * cone->angle) * powf(v_dot(v_sub(ray->origin, cone->pos), cone->dir), 2);
-// 	i.v3 = v_sub(ray->origin, cone->pos);
-// 	i.d1 = v_dot(i.v3, cone->dir);
-// 	i.d2 = v_dot(ray->dir, cone->dir);
-// 	i.q.x = v_dot(ray->dir, ray->dir) - (1+k*k)*powf(i.d2, 2);
-// 	i.q.y = (v_dot(ray->dir, i.v3) - (1+k*k)*i.d2*i.d1) / 2;
-// 	i.q.z =  v_dot(i.v3, i.v3) - (1+k*k)*powf(i.d1, 2);
-// 	if (!solve_quadratic(i.q, &i.r1, &i.r2))
-// 		return (false);
-// 	// cone->height > 0 ? get_finite_cone_intersection(r, ray, cone, &i) : 0;
-// 	(i.r2 < i.r1) ? ft_swapd(&i.r1, &i.r2) : 0;
-
-// 	(i.r1 < 0) ? i.r1 = i.r2 : 0;
-// 	if (i.r1 < 0)
-// 		return (false);
-// 	if (r->t > i.r1)
-// 	{
-// 		ray->t = i.r1;
-// 		// r->t = ray->t;
-		
-// 		if (ray->type == R_PRIMARY)
-// 		{
-// 			ray->hit_obj = cone;
-// 			ray->hit_type = T_CONE;
-// 			ray->n_dir = n_dir;
-// 		}
-// 	}
-// 	// ray->hit_obj = obj;
-// 	return (true);
-// }
 bool		get_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *cone)
 {
 	t_intersection_tools i;
     t_vec3    ori_cen;
     double    k;
-	int			n_dir;
 
-	i.n_dir = 1;
 	k = tan(cone->angle);
     ori_cen = v_sub(ray->origin, cone->pos);
     i.q.x = v_dot(ray->dir, ray->dir) - (1.0 + k * k) * powf(v_dot(ray->dir, cone->dir), 2.0);
@@ -311,15 +237,12 @@ bool		get_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *cone)
                 * v_dot(ori_cen, cone->dir));
     i.q.z = v_dot(ori_cen, ori_cen) - (1.0 + k * k) * powf(v_dot(ori_cen,
                 cone->dir), 2.0);
-    if (!solve_quadratic(i.q, &i.r1, &i.r2))
+    if (!solve_quadratic(i.q, &i.r1, &i.r2) || (i.r1 < 0 && i.r2 < 0))
         return (0);
     (i.r2 < i.r1) ? ft_swapd(&i.r1, &i.r2) : 0;
 	cone->height > 0 ? get_finite_cone_intersection(r, ray, cone, &i) : 0;
 	if (i.r1 < 0 || isnan(i.r1)) //the smallest one is negative, thus take the other one
-	{
-		// i.n_dir = -i.n_dir;
 		i.r1 = i.r2;
-	}
 	if (i.r1 < 0 || isnan(i.r1))	
 		return (false);
 	if (r->t > i.r1)
@@ -329,30 +252,10 @@ bool		get_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *cone)
 		{
 			ray->hit_obj = cone;
 			ray->hit_type = T_CONE;
-			ray->n_dir = i.n_dir;
 		}
 	}
 	return (true);
 }
-
-// bool		get_finite_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj, t_intersection_tools *i)
-// {
-// 	if (i->r1 > 0) //first point;
-// 	{
-// 		i->p = v_add(ray->origin, v_scale(ray->dir, i->r1)); //i->p is the intersection point.
-// 		if (v_dot(obj->dir, v_sub(i->p, obj->pos)) < 0 || //check if lower than obj->pos
-// 			v_dot(obj->dir, v_sub(i->p, v_add(obj->pos, v_scale(obj->dir, obj->height)))) > 0) //check if lower than obj height.
-// 			i->r1 = NAN;
-// 	}
-// 	if (i->r2 > 0) //second point;
-// 	{
-// 		i->p = v_add(ray->origin, v_scale(ray->dir, i->r2));
-// 		if (v_dot(obj->dir, v_sub(i->p, obj->pos)) < 0 ||
-// 			v_dot(obj->dir, v_sub(i->p, v_add(obj->pos, v_scale(obj->dir, obj->height)))) > 0)
-// 			i->r2 = NAN;
-// 	}
-// 	return (true);
-// }
 
 bool		get_finite_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj, t_intersection_tools *i)
 {
@@ -361,47 +264,18 @@ bool		get_finite_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *
 	bool	r2_too_low;
 	bool	r2_too_high;
 
-	static int y = 5;
-
-
-	r1_too_low = lower_than_min(i->r1, i, obj, ray);
-	r1_too_high = higher_than_max(i->r1, i, obj, ray);
-	r2_too_low = lower_than_min(i->r2, i, obj, ray);
-	r2_too_high = higher_than_max(i->r2, i, obj, ray);
-
-	while(i->r1 > 0 && i->r1 < obj->rad && y)
-	{
-		printf("r1: [%f]\nr2: [%f]\n", i->r1, i->r2);
-		--y;
-		printf("r1_too_low: %i\n", r1_too_low);
-		printf("r1_too_high: %i\n", r1_too_high);
-		printf("r2_too_low: %i\n", r1_too_low);
-		printf("r2_too_high: %i\n", r1_too_high);
-	}
-	if (r1_too_low)
+	r1_too_low = lower_than_min(i->r1, i, obj, ray) || i->r1 == -1;
+	r1_too_high = higher_than_max(i->r1, i, obj, ray) || i->r1 == -1;
+	r2_too_low = lower_than_min(i->r2, i, obj, ray) || i->r2 == -1;
+	r2_too_high = higher_than_max(i->r2, i, obj, ray) || i->r2 == -1;
+	if (r1_too_low || r1_too_high)
 	{
 		i->r1 = NAN;
 		if (r2_too_low || r2_too_high)
 			i->r2 = NAN;
-		else
-			i->n_dir = 1;
-	}
-	else if (r1_too_high)
-	{
-		i->r1 = NAN;
-		if (r2_too_low || r2_too_high)
-			i->r2 = NAN;
-		else
-			i->n_dir = -1;
 	}
 	else if (!r1_too_low && !r1_too_high)
-	{
 		i->r2 = NAN;
-		if (r2_too_low)
-			i->n_dir = -1;
-		else
-			i->n_dir = 1;
-	}
 	return (true);
 }
 
@@ -412,6 +286,8 @@ bool		lower_than_min(double r, t_intersection_tools *i, t_object *obj, t_ray *ra
 		if (v_dot(obj->dir, v_sub(v_add(ray->origin, v_scale(ray->dir, r)), obj->pos)) < 0.0)
 			return (true);		
 	}
+	else
+		return (true);
 	return (false);
 }
 bool		higher_than_max(double r, t_intersection_tools *i, t_object *obj, t_ray *ray)
@@ -422,5 +298,7 @@ bool		higher_than_max(double r, t_intersection_tools *i, t_object *obj, t_ray *r
 			v_add(obj->pos, v_scale(obj->dir, obj->height)))) > 0.0)
 			return (true);		
 	}
+	else
+		return (true);
 	return (false);
 }

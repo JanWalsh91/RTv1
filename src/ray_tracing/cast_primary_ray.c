@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 11:10:43 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/12 16:44:21 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 13:25:25 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_color		cast_primary_ray(t_raytracing_tools *r, t_ray *ray)
 	t_ray		shadow_ray;
 
 	// check intersections with all objects
-	//	set max distance to inf;
+	// set max distance to inf;
 	r->t = INFINITY;
 	// set color to black
 	color = v_new(0, 0, 0);

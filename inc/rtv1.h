@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/13 15:09:34 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 13:24:12 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 
 # define THREAD_COUNT 10
 //Default values if not provided by scene file.
-# define DEFAULT_RES_H 500
-# define DEFAULT_RES_W 700
+# define DEFAULT_RES_W 500
+# define DEFAULT_RES_H 700
 # define DEFAULT_RAY_DEPTH 5
 # define DEFAULT_AMBIENT_LIGHT_COEF 0.1
 # define DEFAULT_AMBIENT_LIGHT_COLOR_R 255
