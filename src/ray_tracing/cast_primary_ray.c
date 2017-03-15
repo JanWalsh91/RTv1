@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 11:10:43 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/15 13:25:25 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 14:59:32 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,40 +15,34 @@
 t_color		cast_primary_ray(t_raytracing_tools *r, t_ray *ray)
 {
 	t_color		color;
-	t_object	*obj;
-	t_light		*light;
+	t_object	*o_ptr;
+	t_light		*l_ptr;
 	t_ray		shadow_ray;
 
-	// check intersections with all objects
-	// set max distance to inf;
 	r->t = INFINITY;
-	// set color to black
 	color = v_new(0, 0, 0);
-	obj = r->scenes->objects;
-	while (obj)
+	o_ptr = r->scenes->objects;
+	while (o_ptr)
 	{
-		// keep the closest one and calulate distance, point of intersection and normal at intersection.
-		if (intersects(r, ray, obj) && r->t > ray->t)
-			r->t = ray->t; //update closest distance
-		obj = obj->next;
+		if (intersects(r, ray, o_ptr) && r->t > ray->t)
+			r->t = ray->t;
+		o_ptr = o_ptr->next;
 	}
 	if (r->t == INFINITY)
 		return (r->scenes->background_color);
 	ray->hit = v_add(ray->origin, v_scale(ray->dir, r->t));
-	get_normal(r, ray, ray->hit_obj); //get normal of hit_obj at hitpoint and save in ray->nhit
-	light = r->scenes->lights;
-	while (light)
+	get_normal(r, ray, ray->hit_obj);
+	l_ptr = r->scenes->lights;
+	while (l_ptr)
 	{
-		if (!in_shadow(r, ray, &shadow_ray, light))
+		if (!in_shadow(r, ray, &shadow_ray, l_ptr))
 		{
-			color = v_add(color, get_diffuse(r, ray, &shadow_ray, light));
-			color = v_add(color, get_specular(r, ray, &shadow_ray, light));
-			color = v_clamp(color, 0, 255);
+			color = v_add(color, get_diffuse(r, ray, &shadow_ray, l_ptr));
+			color = v_add(color, get_specular(r, ray, &shadow_ray, l_ptr));
 			// color = ray->hit_obj->col;
 		}
-		light = light->next;
+		l_ptr = l_ptr->next;
 	}
 	color = v_add(color, get_ambient(r));
-	color = v_clamp(color, 0, 255);
-	return (color);
+	return (v_clamp(color, 0, 255));
 }

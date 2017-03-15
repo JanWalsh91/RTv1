@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:35:28 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/13 16:31:34 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 16:15:32 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,6 @@ void	parse_disk(t_parse_tools *t)
 
 void	parse_sphere(t_parse_tools *t)
 {
-	// printf("parse_sphere\n");
 	can_add_new_object(t);
 	t->current_object = get_new_object(t);
 	t->current_type = T_SPHERE;
@@ -374,7 +373,7 @@ void	parse_height(t_parse_tools *t)
 
 	new_height = NAN;
 	if (isnan(new_height = parse_double(t->input->value)) || 
-		new_height < 0)
+		new_height <= 0)
 	{
 		rt_file_warning(t, "Height formatting error.");
 		return ;
@@ -535,7 +534,7 @@ void	parse_fov(t_parse_tools *t)
 		t->scene_attributes->fov = new_fov;
 	else if (t->in_object)
 		t->object_attributes->fov = new_fov;
-	if (t->current_type != T_CAMERA)
+	if (t->in_object && t->current_type != T_CAMERA)
 		rt_file_warning(t, "Field of view is a camera-only attribute.");
 }
 
@@ -557,7 +556,7 @@ void	parse_intensity(t_parse_tools *t)
 		t->scene_attributes->intensity = new_intensity;
 	else if (t->in_object)
 		t->object_attributes->intensity = new_intensity;
-	if (t->current_type != T_LIGHT)
+	if (t->in_object && t->current_type != T_LIGHT)
 		rt_file_warning(t, "Intensity describes lights only.");
 }
 

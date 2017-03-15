@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 14:13:01 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/12 17:50:13 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 15:00:12 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_vec3	parse_hexadecimal(char *value)
 	i = 2;
 	new_col = v_new(NAN, NAN, NAN);
 	if (!(value && value[0] == '0' && ft_tolower(value[1]) == 'x') ||
-	 (value && ft_strlen(value) > 8))
+		(value && ft_strlen(value) > 8))
 	{
 		ft_printf("%{yellow}Invalid hexademical format.\n%{}");
 		return (new_col);

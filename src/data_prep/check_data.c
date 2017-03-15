@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 10:39:37 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/13 15:15:49 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 15:05:41 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,8 @@ void	check_objects(t_scene *scene, t_object *objects)
 		isnan(o_ptr->specular_exp) ? set_default_specular_exp(scene, o_ptr->type, o_ptr, &o_ptr->specular_exp) : 0;
 		if (o_ptr->type == T_CONE)
 			get_cone_angle(o_ptr);
-		// if (o_ptr->type == T_CONE || o_ptr->type == T_CYLINDER)
-		// 	add_disks(scene, o_ptr);
-
+		if (o_ptr->type == T_CONE || o_ptr->type == T_CYLINDER)
+			add_disks(scene, o_ptr);
 		o_ptr = o_ptr->next;
 	}
 }
@@ -145,11 +144,8 @@ void	get_cam_direction(t_scene *scene, t_camera *cam)
 {
 	t_matrix	m;
 
-	// printf("get_cam_direction\n");
 	if (!v_isnan(cam->look_at) && !v_isnan(cam->pos))
-	{
 		cam->dir = v_sub(cam->look_at, cam->pos);
-	}
 	else if (!v_isnan(cam->rot))
 	{
 		m = m_new_identity();
@@ -218,6 +214,6 @@ static t_object	*get_new_disk(t_object *obj, t_vec3 pos)
 
 static void	get_cone_angle(t_object *cone)
 {
-	if (cone->height > cone->rad && cone->height)
+	if (cone->height)
 		cone->angle = atan(cone->rad / cone->height);
 }

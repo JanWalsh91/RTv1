@@ -6,17 +6,16 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/11 13:25:29 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/20 11:23:43 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 14:49:20 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/rtv1.h"
+#include "../../inc/rtv1.h"
 
 /*
-** Solves a quadratic equation. Returns 0 if there is no solution. 
-** Returns 1 if there is a solution.
-** Modifies the float passed by address to the smallest solution,
-** if it exists.
+** Solves a quadratic equation. Returns 0 if there is no solution, returns 1 if
+** there is a solution.
+** Modifies the floats passed by address to solutions found, if they exist.
 */
 
 int	solve_quadratic(t_vec3 q, double *r1, double *r2)

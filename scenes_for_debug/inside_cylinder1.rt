@@ -1,0 +1,27 @@
+ambient light color: goldenrod
+ambient light coefficient: 0.2	
+scene:
+{
+	cylinder:
+	{
+		position: 0, 0, 0
+		radius: 10
+		height: 10
+		color: deep pink
+	}
+	light: 
+	{
+		position: 0, 5, 0
+		intensity: 4
+	}
+	plane
+	{
+		position: 0, -1, 0
+		direction: 0, 1, 0
+		color: red
+	}
+	camera
+	{
+		position: 0, 1, -9
+	}
+}
