@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 15:36:08 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/16 15:22:07 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/16 16:57:43 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,16 @@ void	update_camera_scale(t_camera *camera)
 
 void	update_camera_ctw(t_camera *camera)
 {
-	// t_vec3	def;
+	t_vec3	forward;
+	t_vec3	right;
+	t_vec3	up;
 
-	// def = v_new(0, 1, 0);
-	// camera->k = v_cross(def, camera->dir);
-	// camera->a = acos(v_dot(def, camera->dir) / (v_length(def) * v_length(camera->dir)));
-	// camera->a = atan((v_norm(v_cross(def, camera->dir)), v_dot(def, camera->dir)));
-	// camera->f = rotate_cam;
-	// camera->ctw = m_new_rodriguez(camera->dir, v_new(0, 0, 1)); //default direction for camera
-	// camera->ctw[0][3] = camera->pos.x;
-	// camera->ctw[1][3] = camera->pos.y;
-	// camera->ctw[2][3] = camera->pos.z;
-
-	// if (v_isnan(camera->look_at))
-		// camera->look_at = v_add(camera->pos, camera->dir);
-	// t_vec3 forward = v_norm(v_sub((camera->look_at), camera->pos));
-	t_vec3 forward = camera->dir;
-	t_vec3 right = v_dot(forward, v_new(0, -1, 0)) ? v_cross(forward, v_new(0, -1, 0)) : v_new(1, 0, 0); 
-	t_vec3 up = v_dot(forward, right) ? v_cross(right, forward) : v_new(0, 1, 0); 
+	forward = v_norm(camera->dir);
+	if (v_dot(forward, v_new(0, 1, 0)) > 0.9999)
+		right = v_new(1, 0, 0);
+	else
+		right = v_norm(v_cross(v_new(0, 1, 0), forward)); 
+	up = v_norm(v_cross(forward, right));
 	
 	camera->ctw = m_new_identity();
     camera->ctw[0][0] = right.x; 
@@ -79,9 +71,9 @@ void	update_camera_ctw(t_camera *camera)
     camera->ctw[2][1] = forward.y; 
     camera->ctw[2][2] = forward.z; 
  
-    camera->ctw[3][0] = camera->pos.x; 
-    camera->ctw[3][1] = camera->pos.y; 
-    camera->ctw[3][2] = camera->pos.z; 
+    camera->ctw[3][0] = camera->pos.x; //?
+    camera->ctw[3][1] = camera->pos.y; //?
+    camera->ctw[3][2] = camera->pos.z; //?
 }
 
 // t_vec3	rotate_cam(t_vec3 k, double a, t_vec3 dir)

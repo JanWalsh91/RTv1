@@ -1,0 +1,35 @@
+scene:
+{
+	sphere: red
+	{
+		radius: 5
+		position: -50, 0, 0
+		color: red
+	}
+	sphere: above/yellow
+	{
+		radius: 5
+		position: -50, 5, 0
+		color: yellow
+	}
+	sphere: below/blue
+	{
+		radius: 5
+		position: -50, -5, 0
+		color: blue
+	}
+	camera:
+	{
+		position: 0, 0, -50
+		look at: red
+		# direction: 0.1, -0.1, 1
+	}
+	light: 
+	{	
+		position: 5, 0, -10	
+	}
+	# plane:
+	# {
+	# 	direction: 0, 0, 1
+	# }
+}

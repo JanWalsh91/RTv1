@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:35:28 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/16 13:15:17 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/16 15:25:06 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -362,7 +362,7 @@ void	parse_radius(t_parse_tools *t)
 		t->scene_attributes->rad = new_radius;
 	else if (t->in_object)
 		t->object_attributes->rad = new_radius;
-	if (t->current_type != T_CONE && t->current_type != T_CYLINDER &&
+	if (t->in_object &&  t->current_type != T_CONE && t->current_type != T_CYLINDER &&
 		t->current_type != T_SPHERE && t->current_type != T_DISK)
 		rt_file_warning(t, "Radius attribute only applicable to spheres, cones and cylinders.");
 }
