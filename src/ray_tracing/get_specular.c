@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 14:13:51 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/15 14:54:15 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 16:32:58 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_color	get_specular(t_raytracing_tools *r, t_ray *primary_ray, t_ray *shadow_ra
 	directional_light_factor = v_isnan(light->pos) ? 1000 : 1;
 	reflection = reflect(primary_ray->dir, v_scale(primary_ray->nhit,
 		primary_ray->n_dir));
-	specular_intensity = powf((ft_clampd(v_dot(reflection,
+	specular_intensity = pow((ft_clampd(v_dot(reflection,
 		shadow_ray->dir), 0, 1)), primary_ray->hit_obj->specular_exp);
 	specular_intensity *= light->intensity * primary_ray->hit_obj->ks *
 		directional_light_factor;

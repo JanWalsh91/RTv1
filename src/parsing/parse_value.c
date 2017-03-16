@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:35:28 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/15 16:15:32 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/16 13:15:17 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,7 +384,7 @@ void	parse_height(t_parse_tools *t)
 		t->scene_attributes->height = new_height;
 	else if (t->in_object)
 		t->object_attributes->height = new_height;
-	if (t->current_type != T_CONE && t->current_type != T_CYLINDER)
+	if (t->in_object && t->current_type != T_CONE && t->current_type != T_CYLINDER)
 		rt_file_warning(t, "Height attribute only applicable to cones and cylinders.");
 }
 
@@ -406,7 +406,7 @@ void	parse_diffuse_coef(t_parse_tools *t)
 		t->scene_attributes->kd = new_diffuse_coef;
 	else if (t->in_object)
 		t->object_attributes->kd = new_diffuse_coef;
-	if (t->current_type == T_LIGHT || t->current_type == T_CAMERA)
+	if (t->in_object && (t->current_type == T_LIGHT || t->current_type == T_CAMERA))
 		rt_file_warning(t, "Diffuse coefficient attribute only applicable to objects.");
 }
 
@@ -428,7 +428,7 @@ void	parse_specular_coef(t_parse_tools *t)
 		t->scene_attributes->ks = new_specular_coef;
 	else if (t->in_object)
 		t->object_attributes->ks = new_specular_coef;
-	if (t->current_type == T_LIGHT || t->current_type == T_CAMERA)
+	if (t->in_object && (t->current_type == T_LIGHT || t->current_type == T_CAMERA))
 		rt_file_warning(t, "Specular coefficient attribute only applicable to objects.");
 }
 
@@ -449,8 +449,8 @@ void	parse_specular_exponent(t_parse_tools *t)
 		t->scene_attributes->specular_exp = new_specular_exp;
 	else if (t->in_object)
 		t->object_attributes->specular_exp = new_specular_exp;
-	if (t->current_type == T_LIGHT || t->current_type == T_CAMERA)
-		rt_file_warning(t, "Specular exponent attribute only applicable to objects. Ignore.");
+	if (t->in_object && (t->current_type == T_LIGHT || t->current_type == T_CAMERA))
+		rt_file_warning(t, "Specular exponent attribute only applicable to objects.");
 }
 
 void	parse_refraction(t_parse_tools *t)
@@ -470,8 +470,8 @@ void	parse_refraction(t_parse_tools *t)
 		t->scene_attributes->refraction = new_refraction;
 	else if (t->in_object)
 		t->object_attributes->refraction = new_refraction;
-	if (t->current_type == T_CAMERA || t->current_type == T_LIGHT)
-		rt_file_warning(t, "Cannot apply refraction to lights or cameras.");
+	if (t->in_object && (t->current_type == T_LIGHT || t->current_type == T_CAMERA))
+		rt_file_warning(t, "Refraction attribute only applicable to objects.");
 }
 
 void	parse_reflection(t_parse_tools *t)
@@ -491,8 +491,8 @@ void	parse_reflection(t_parse_tools *t)
 		t->scene_attributes->reflection = new_reflection;
 	else if (t->in_object)
 		t->object_attributes->reflection = new_reflection;
-	if (t->current_type == T_CAMERA || t->current_type == T_LIGHT)
-		rt_file_warning(t, "Cannot apply reflection to lights or cameras.");
+	if (t->in_object && (t->current_type == T_LIGHT || t->current_type == T_CAMERA))
+		rt_file_warning(t, "Reflection attribute only applicable to objects.");
 }
 
 void	parse_transparency(t_parse_tools *t)
@@ -512,8 +512,8 @@ void	parse_transparency(t_parse_tools *t)
 		t->scene_attributes->transparency = new_transparency;
 	else if (t->in_object)
 		t->object_attributes->transparency = new_transparency;
-	if (t->current_type == T_CAMERA || t->current_type == T_LIGHT)
-		rt_file_warning(t, "Cannot apply transparency effect to lights or cameras. Ignore.");	
+	if (t->in_object && (t->current_type == T_LIGHT || t->current_type == T_CAMERA))
+		rt_file_warning(t, "Transparency attribute only applicable to objects.");	
 }
 
 void	parse_fov(t_parse_tools *t)
@@ -535,7 +535,7 @@ void	parse_fov(t_parse_tools *t)
 	else if (t->in_object)
 		t->object_attributes->fov = new_fov;
 	if (t->in_object && t->current_type != T_CAMERA)
-		rt_file_warning(t, "Field of view is a camera-only attribute.");
+		rt_file_warning(t, "FOV (field of view) attribute only applicable to cameras.");
 }
 
 void	parse_intensity(t_parse_tools *t)
@@ -557,7 +557,7 @@ void	parse_intensity(t_parse_tools *t)
 	else if (t->in_object)
 		t->object_attributes->intensity = new_intensity;
 	if (t->in_object && t->current_type != T_LIGHT)
-		rt_file_warning(t, "Intensity describes lights only.");
+		rt_file_warning(t, "Intensity attribute only applicable to lights.");
 }
 
 void	import_rt_file(t_parse_tools *t)
@@ -625,7 +625,6 @@ static int	can_add_new_object(t_parse_tools *t)
 	return (1);
 }
 
-//add verification for non digit values
 t_vec3	parse_vector(char *value)
 {
 	t_vec3	new_vec;
@@ -688,6 +687,6 @@ static t_vec3	look_at_object(t_parse_tools *t, char *value)
 		c_ptr = c_ptr->next;
 	}
 	rt_file_warning(t, "Object to look at not found.\n\
-(Make sure to declare the object before the look_at call.)");
+(Make sure to declare the object to look at before the look_at call.)");
 	return (v_new(NAN, NAN, NAN));
 }

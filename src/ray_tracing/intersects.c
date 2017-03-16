@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:11:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/15 15:29:40 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 16:32:58 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ bool		get_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj
 	i.q.x = v_dot(i.v1, i.v1);
 	i.v2 = v_sub(i.v3, v_scale(obj->dir, v_dot(i.v3, obj->dir)));
 	i.q.y = 2 * v_dot(i.v1, i.v2);
-	i.q.z = v_dot(i.v2, i.v2) - powf(obj->rad, 2);
+	i.q.z = v_dot(i.v2, i.v2) - pow(obj->rad, 2);
  	if (!solve_quadratic(i.q, &i.r1, &i.r2))
 		return (false);
 	(i.r2 < i.r1) ? ft_swapd(&i.r1, &i.r2) : 0;
@@ -193,10 +193,10 @@ bool		get_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *cone)
 
 	i.d1 = tan(cone->angle);
     i.v1 = v_sub(ray->origin, cone->pos);
-    i.q.x = v_dot(ray->dir, ray->dir) - (1.0 + i.d1 * i.d1) * powf(v_dot(ray->dir, cone->dir), 2.0);
+    i.q.x = v_dot(ray->dir, ray->dir) - (1.0 + i.d1 * i.d1) * pow(v_dot(ray->dir, cone->dir), 2.0);
     i.q.y = 2 * (v_dot(ray->dir, i.v1) - (1.0 + i.d1 * i.d1) * v_dot(ray->dir, cone->dir)
                 * v_dot(i.v1, cone->dir));
-    i.q.z = v_dot(i.v1, i.v1) - (1.0 + i.d1 * i.d1) * powf(v_dot(i.v1,
+    i.q.z = v_dot(i.v1, i.v1) - (1.0 + i.d1 * i.d1) * pow(v_dot(i.v1,
                 cone->dir), 2.0);
     if (!solve_quadratic(i.q, &i.r1, &i.r2) || (i.r1 < 0 && i.r2 < 0))
         return (0);

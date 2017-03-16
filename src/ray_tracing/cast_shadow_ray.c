@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/21 16:22:03 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/08 16:42:17 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 16:32:58 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	cast_shadow_ray(t_ray *cam_ray, t_object *hitobj, t_scene *scene)
 		if (!in_shadow(scene->objects, cam_ray, &ray, light))
 		{
 			ray.dir = v_norm(v_sub(ray.origin, light->pos));
-			double r2 = powf(v_length(v_sub(ray.origin, light->pos)), 2.0);
+			double r2 = pow(v_length(v_sub(ray.origin, light->pos)), 2.0);
 			new_col = v_scale(v_mult(light->col, v_scale(hitobj->col, light->intensity / (255.0 * 4 * M_PI * r2))), ft_clampd(v_dot(v_scale(ray.dir, -1), cam_ray->nhit), 0, 1));
 			new_col = v_clamp(new_col, 0, 255);
 			cam_ray->col = v_clamp(v_add(cam_ray->col, new_col), 0, 255);

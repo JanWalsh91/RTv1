@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/15 13:24:12 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/16 15:22:38 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,6 +260,10 @@ typedef struct	s_camera
 	t_vec3			rot;
 	t_vec3			look_at;
 	t_color			**pixel_map;
+	// old ctw method:
+	// t_vec3			k; //rotation vector
+	// double			a; //rotation angle
+	// t_vec3			(*f)(t_vec3 k, double a, t_vec3 dir);
 	t_matrix		ctw; //camera to world matrix (only for cameras)
 	double			scale;
 	double			fov;
@@ -420,6 +424,7 @@ void	invalid_token(t_parse_tools *t);
 t_vec3	get_color(t_parse_tools *t, char *value);
 t_vec3	parse_rgb(char *value);
 t_vec3	parse_hexadecimal(char *value);
+bool	valid_hex_format(char *value, int *i);
 t_vec3	parse_color_name(t_parse_tools *t, char *value);
 t_vec3	parse_vector(char *value);
 double	parse_double(char *value);
@@ -454,6 +459,7 @@ void	get_light_direction(t_scene *scene, t_light *light);
 void	init_camera(t_scene *scene, t_camera *cam);
 void	update_camera_scale(t_camera *camera);
 void	update_camera_ctw(t_camera *camera);
+// t_vec3	rotate_cam(t_vec3 k, double a, t_vec3 dir);
 
 /*
 ** Ray Tracing Functions

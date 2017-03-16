@@ -6,11 +6,16 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 14:13:01 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/15 15:00:12 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 17:04:25 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
+
+/*
+** Parses a color attribute. Three formats available: rgb (three ints separated
+** by commas), hexadecimal (hex value starting with 0x or 0X) or name (string).
+*/
 
 t_vec3	get_color(t_parse_tools *t, char *value)
 {
@@ -29,10 +34,18 @@ t_vec3	get_color(t_parse_tools *t, char *value)
 	return (new_col);
 }
 
+/*
+** Parsing a vector is the same as parsing rgb input. 
+*/
+
 t_vec3	parse_rgb(char *value)
 {
 	return (parse_vector(value));
 }
+
+/*
+** Parses the hexademial color, converts it and returns the color if valid.
+*/
 
 t_vec3	parse_hexadecimal(char *value)
 {
@@ -40,27 +53,9 @@ t_vec3	parse_hexadecimal(char *value)
 	t_vec3	new_col;
 
 	i = 2;
-	new_col = v_new(NAN, NAN, NAN);
-	if (!(value && value[0] == '0' && ft_tolower(value[1]) == 'x') ||
-		(value && ft_strlen(value) > 8))
-	{
-		ft_printf("%{yellow}Invalid hexademical format.\n%{}");
-		return (new_col);
-	}
-	while (value[i])
-	{
-		if (!(ft_isdigit(value[i]) || ('a' <= ft_tolower(value[i]) && ft_tolower(value[i]) <= 'f')))
-		{
-			ft_printf("%{yellow}Invalid hexademical format.\n%{}");
-			return (new_col);
-		}
-		++i;
-	}
-	if (ft_tolower(value[i - 1]) == 'x')
-	{
-		ft_printf("%{yellow}Invalid hexademical format.\n%{}");
-		return (new_col);
-	}
+	if (!valid_hex_format(value, &i))
+		return (v_new(NAN, NAN, NAN));
+	new_col = v_new(0, 0, 0);
 	ft_tolower(value[i - 1]) != 'x' ? new_col.z = get_hex_value(value[--i]) : 0;
 	ft_tolower(value[i - 1]) != 'x' ? new_col.z += 16 * get_hex_value(value[--i]) : 0;
 	ft_tolower(value[i - 1]) != 'x' ? new_col.y = get_hex_value(value[--i]) : 0;
@@ -68,6 +63,31 @@ t_vec3	parse_hexadecimal(char *value)
 	ft_tolower(value[i - 1]) != 'x' ? new_col.x = get_hex_value(value[--i]) : 0;
 	ft_tolower(value[i - 1]) != 'x' ? new_col.x += 16 * get_hex_value(value[--i]) : 0;
 	return (new_col);
+}
+
+bool	valid_hex_format(char *value, int *i)
+{
+	if (!(value && value[0] == '0' && ft_tolower(value[1]) == 'x') ||
+		(value && ft_strlen(value) > 8))
+	{
+		ft_printf("%{yellow}Invalid hexademical format.\n%{}");
+		return (false);
+	}
+	while (value[*i])
+	{
+		if (!(ft_isdigit(value[*i]) || ('a' <= ft_tolower(value[*i]) && ft_tolower(value[*i]) <= 'f')))
+		{
+			ft_printf("%{yellow}Invalid hexademical format.\n%{}");
+			return (false);
+		}
+		++*i;
+	}
+	if (ft_tolower(value[*i - 1]) == 'x')
+	{
+		ft_printf("%{yellow}Invalid hexademical format.\n%{}");
+		return (false);
+	}
+	return (true);
 }
 
 int	get_hex_value(char c)
@@ -83,6 +103,12 @@ int	get_hex_value(char c)
 		i = 0;
 	return (i);
 }
+
+/*
+** Initializes the list of colors if not yet initialized
+** and parses the list to find the corresponding rgb value.
+** Returns a NAN vector if no color is found.
+*/
 
 t_vec3	parse_color_name(t_parse_tools *t, char *value)
 {

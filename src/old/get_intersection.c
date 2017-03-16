@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:11:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/06 15:53:57 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 16:32:58 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int		get_cylinder_intersection(t_ray *ray, t_object *obj)
 	i.v2 = v_scale(obj->dir, v_dot(i.v3, obj->dir));
 	i.v2 = v_sub(i.v3, i.v2);
 	i.q.y = 2 * v_dot(i.v1, i.v2);
-	i.q.z = v_dot(i.v2, i.v2) - powf(obj->rad, 2);
+	i.q.z = v_dot(i.v2, i.v2) - pow(obj->rad, 2);
  	if (!solve_quadratic(i.q, &i.r1, &i.r2))
 		return (0);
 	obj->height > 0 ? get_finite_cylinder_intersection(ray, obj, &i) : 0;
@@ -163,7 +163,7 @@ int		get_disk_intersection(t_ray *ray, t_object *disc)
 		p = v_sub(disc->pos, ray->origin); // switch ??
 		ray->t = v_dot(p, tmp) / denom; //distance of intersection to ray origin.
 		p = v_add(ray->origin, v_scale(ray->dir, ray->t)); //point of intersection
-		if (v_dot(v_sub(p, disc->pos), v_sub(p, disc->pos)) < powf(disc->rad, 2))
+		if (v_dot(v_sub(p, disc->pos), v_sub(p, disc->pos)) < pow(disc->rad, 2))
 			return (ray->t >= 0); 
 	}
 	return (0);
@@ -194,9 +194,9 @@ int		get_cone_intersection(t_ray *ray, t_object *obj)
 
 	i.d1 = pow(obj->rad / obj->height, 2.);
 	i.v1 = v_sub(ray->origin, obj->pos);
-	i.q.x = v_dot(ray->dir, ray->dir) - (1 + i.d1) * powf(v_dot(ray->dir, obj->dir), 2);
+	i.q.x = v_dot(ray->dir, ray->dir) - (1 + i.d1) * pow(v_dot(ray->dir, obj->dir), 2);
 	i.q.y = 2 * (v_dot(ray->dir, i.v1) - (1 + i.d1) * v_dot(ray->dir, obj->dir) * v_dot(i.v1, obj->dir));
-	i.q.z = v_dot(i.v1, i.v1) - (1 + i.d1) * powf(v_dot(i.v1, obj->dir), 2);
+	i.q.z = v_dot(i.v1, i.v1) - (1 + i.d1) * pow(v_dot(i.v1, obj->dir), 2);
  	if (!solve_quadratic(i.q, &i.r1, &i.r2))
 	 	return (0);
 	(i.r2 < i.r1) ? ft_swapd(&i.r1, &i.r2) : 0;

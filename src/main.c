@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:57:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/13 14:53:39 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/16 12:25:28 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	main(int ac, char **av)
 	check_data(t.scenes);
 	r.scenes = t.scenes;
 	//free parse tools except for scenes.
-	print_scenes(t.scenes);
+	print_scenes(r.scenes);
 	//pass t_raytracing_tools by addess in rtv1
 	rtv1(&r);
 	return (0);

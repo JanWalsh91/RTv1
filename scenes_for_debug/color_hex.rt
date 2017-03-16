@@ -1,0 +1,31 @@
+scene:
+{
+	camera: cam
+	{
+		position: 1, 5, -30
+		direction: 0, 0, 1	
+	}
+	plane:
+	{
+		direction: 0, 1, 0
+		position: 0, 0, 0
+		color: goldenrod1
+	}
+	sphere: test1
+	{
+		position: 5, 2, 6
+		color: 0x55
+	}
+	sphere: test2
+	{
+		position: -5, 2, 0
+		color: 0x, 0x, 0x
+		color: 0xff0f0f
+	}
+	light:
+	{
+		direction: -1.4, -1, 1
+		intensity: 4
+		color: white
+	}
+}

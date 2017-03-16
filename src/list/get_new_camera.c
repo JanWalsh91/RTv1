@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 14:42:55 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/13 15:23:36 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/16 12:31:41 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_camera 	*get_new_camera(t_parse_tools *t)
 
 static void	set_cam_non_values(t_camera *new_camera)
 {
-	ft_bzero(new_camera, sizeof(t_camera));
+	// ft_bzero(new_camera, sizeof(t_camera));
 	new_camera->prev = NULL;
 	new_camera->next = NULL;
 	new_camera->pos = v_new(NAN, NAN, NAN);

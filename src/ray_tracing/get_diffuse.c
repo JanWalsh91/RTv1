@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 15:18:12 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/15 14:56:38 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/15 16:32:58 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_color	get_diffuse(t_raytracing_tools *r, t_ray *primary_ray, t_ray *shadow_ray
 	(void)r;
 
 	r2 = (!v_isnan(light->pos)) ? 
-		powf(v_length(v_sub(shadow_ray->origin, light->pos)), 2.0) :
+		pow(v_length(v_sub(shadow_ray->origin, light->pos)), 2.0) :
 		1 / (4 * M_PI);
 	new_col = v_scale(v_mult(light->col, v_scale(primary_ray->hit_obj->col,
 		light->intensity / (4 * M_PI * r2))), ft_clampd(v_dot(shadow_ray->dir,
