@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:35:28 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 15:00:48 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 15:14:28 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -507,7 +507,7 @@ void	parse_intensity(t_parse_tools *t)
 
 void	import_rt_file(t_parse_tools *t)
 {
-	rt_file_warning(t, "Import rt file: feature not yet available.");
+	rt_file_warning(t, "Import: feature not yet available.");
 }
 
 void	read_rt_file(t_parse_tools *t)

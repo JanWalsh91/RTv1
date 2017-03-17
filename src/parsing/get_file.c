@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 12:16:50 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 13:11:22 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 16:16:35 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	get_file(char *file_name, t_input **input)
 	int			fd;
 	int			ret;
 
-	// printf("get_file\n");
 	if (!ft_strstr(file_name, ".rt") || *(ft_strstr(file_name, ".rt") + 3))
 		rt_file_error_exit(NULL, "Can only open .rt files.");
 	next_line = NULL;

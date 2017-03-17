@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 10:39:37 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 14:33:46 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 16:00:32 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,15 @@ static void		get_cone_angle(t_object *o_ptr);
 static t_object	*get_new_disk(t_object *obj, t_vec3 pos);
 void			add_disks(t_scene *scene, t_object *obj);
 
-int	check_data(t_scene *scenes)
+void			check_data(t_scene *scenes)
 {
 	t_scene		*s_ptr;
 
 	if (!scenes)
 		data_error_exit(NULL, 0, NULL, "No scenes provided.");
 	s_ptr = scenes;
-	//check_scenes
 	while (s_ptr)
 	{
-		//check if cam, light, or obj are missing.
 		(!s_ptr->cameras) ? data_error_exit(s_ptr, 0, NULL, "No camera provided.") : 0;
 		(!s_ptr->lights) ? data_error_exit(s_ptr, 0, NULL, "No light provided.") : 0;
 		(!s_ptr->objects) ? data_error_exit(s_ptr, 0, NULL, "No objects provided.") : 0;
@@ -48,7 +46,6 @@ int	check_data(t_scene *scenes)
 		check_objects(s_ptr, s_ptr->objects);
 		s_ptr = s_ptr->next;
 	}
-	return (1);
 }
 
 void	check_cameras(t_scene *scene, t_camera *cameras)
@@ -116,7 +113,7 @@ void	check_objects(t_scene *scene, t_object *objects)
 	}
 }
 
-void	get_obj_direction(t_scene *scene, t_object *obj)
+void		get_obj_direction(t_scene *scene, t_object *obj)
 {
 	t_matrix	m;
 
@@ -137,7 +134,7 @@ void	get_obj_direction(t_scene *scene, t_object *obj)
 	obj->dir = v_norm(obj->dir);
 }
 
-void	get_cam_direction(t_scene *scene, t_camera *cam)
+void				get_cam_direction(t_scene *scene, t_camera *cam)
 {
 	t_matrix	m;
 
@@ -159,7 +156,7 @@ void	get_cam_direction(t_scene *scene, t_camera *cam)
 	cam->dir = v_norm (cam->dir);
 }
 
-void	get_light_direction(t_scene *scene, t_light *light)
+void				get_light_direction(t_scene *scene, t_light *light)
 {
 	t_matrix	m;
 
@@ -181,17 +178,16 @@ void	get_light_direction(t_scene *scene, t_light *light)
 	light->dir = v_norm(light->dir);
 }
 
-void	add_disks(t_scene *scene, t_object *obj)
+void				add_disks(t_scene *scene, t_object *obj)
 {
 	t_object		*disk1;
-	//add disk at base.
+
 	if (obj->type == T_CYLINDER)
 		push_object(&scene->objects, get_new_disk(obj, obj->pos));
 	push_object(&scene->objects, get_new_disk(obj, v_add(obj->pos, v_scale(obj->dir, obj->height))));
-	//if cyinder, add another disk
 }
 
-static t_object	*get_new_disk(t_object *obj, t_vec3 pos)
+static t_object		*get_new_disk(t_object *obj, t_vec3 pos)
 {
 	t_object *new_disk;
 	
@@ -214,7 +210,7 @@ static t_object	*get_new_disk(t_object *obj, t_vec3 pos)
 	return (new_disk);
 }
 
-static void	get_cone_angle(t_object *cone)
+static void		get_cone_angle(t_object *cone)
 {
 	if (cone->height)
 		cone->angle = atan(cone->rad / cone->height);

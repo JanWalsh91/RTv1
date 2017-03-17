@@ -6,7 +6,6 @@ scene: rendu6
 	camera
 	{
 		position: 0, 5, -40
-		# position: 0, 2, -40
 		direction: 0, 0, 1
 		fov: 30
 	}

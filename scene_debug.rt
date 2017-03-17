@@ -4,6 +4,7 @@ scene:
 	sphere: s
 	{
 		position: 0, -10, 10
+		refraction: 0.5
 	}
 	camera:
 	{

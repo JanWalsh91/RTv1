@@ -6,12 +6,12 @@ scene: scene1
 {
 	light: white
 	{
-		position: 0, -10, -40
-		intensity: 20000
+		position: 0, 0, -20
+		intensity: 4
 	}
 	camera: camera1
 	{
-		position: -5, -7	, -40
+		position: 0, -10, -40
 		direction: 0, 0, 1
 		fov: 50
 	}

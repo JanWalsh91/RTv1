@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/03/13 14:23:38 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/03/17 16:14:34 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,7 @@ LIBMATH_PATH = Libmathft/
 
 SRC = 		main \
 			handle_sdl_events \
-			init_sdl \
-			init_raytracing_tools
+			init_sdl
 
 PARSING = 	get_color \
 			get_file \
@@ -36,8 +35,7 @@ PARSING = 	get_color \
 
 DATA_PREP = check_data \
 			init_cameras \
-			set_default \
-			set_options
+			set_default
 
 LIST = 		get_new_camera \
 			get_new_light \
