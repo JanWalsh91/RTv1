@@ -6,14 +6,14 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 15:36:08 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 13:36:37 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 14:16:31 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-** Initiliaze camera, allocating memory.
+** Initialize camera, allocates memory to pixel map.
 */
 
 void	init_camera(t_scene *scene, t_camera *cam)
@@ -27,7 +27,6 @@ void	init_camera(t_scene *scene, t_camera *cam)
 	while (++x < scene->res.y)
 		if (!(cam->pixel_map[x] = (t_color *)ft_memalloc(scene->res.x * sizeof(t_color))))
 			ft_error_exit("Malloc error");
-	// cam->ctw = m_new_identity();
 	update_camera_scale(cam);
 	update_camera_ctw(cam);
 }
@@ -39,12 +38,11 @@ void	init_camera(t_scene *scene, t_camera *cam)
 void	update_camera_scale(t_camera *camera)
 {
 	camera->scale = tan(to_radian(camera->fov * 0.5));
-	// printf("fov: [%f]\n", camera->fov);
-	// printf("scale: [%f]\n", camera->scale);
 }
 
 /*
-** Updates the camera to world matrix.
+** Updates the camera to world matrix by setting the new coordinate system
+** in the matrix.
 */
 
 void	update_camera_ctw(t_camera *camera)
@@ -76,9 +74,3 @@ void	update_camera_ctw(t_camera *camera)
     camera->ctw[3][1] = camera->pos.y; //?
     camera->ctw[3][2] = camera->pos.z; //?
 }
-
-// t_vec3	rotate_cam(t_vec3 k, double a, t_vec3 dir)
-// {
-// 	return (v_add(v_add(v_scale(dir, cos(a)), v_scale(v_cross(k, dir),
-// 	sin(a))), v_scale(dir, (v_dot(k, dir)) * (1 - cos(a)))));
-// }

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 10:39:37 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 13:16:27 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 14:33:46 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,11 @@ void	check_objects(t_scene *scene, t_object *objects)
 		if (o_ptr->type != T_SPHERE)
 			get_obj_direction(scene, o_ptr);
 		v_isnan(o_ptr->col) ? set_default_col(scene, o_ptr->type, o_ptr, &o_ptr->col) : 0;
-		if ((o_ptr->type == T_SPHERE || o_ptr->type == T_CONE || o_ptr->type == T_CYLINDER) &&
-			o_ptr->rad == -1)
+		if ((o_ptr->type != T_PLANE) &&
+		isnan(o_ptr->rad))
 			set_default_radius(scene, o_ptr->type, o_ptr, &o_ptr->rad);
 		if ((o_ptr->type == T_CONE || o_ptr->type == T_CYLINDER) &&
-			o_ptr->height == -1)
+			isnan(o_ptr->height))
 			set_default_height(scene, o_ptr->type, o_ptr, &o_ptr->height);
 		isnan(o_ptr->ks) ? set_default_ks(scene, o_ptr->type, o_ptr, &o_ptr->ks) : 0;
 		isnan(o_ptr->kd) ? set_default_kd(scene, o_ptr->type, o_ptr, &o_ptr->kd) : 0;
@@ -194,17 +194,22 @@ void	add_disks(t_scene *scene, t_object *obj)
 static t_object	*get_new_disk(t_object *obj, t_vec3 pos)
 {
 	t_object *new_disk;
+	
 	if (!(new_disk = (t_object *)ft_memalloc(sizeof(t_object))))
 		ft_error_exit("Malloc error");
 	set_non_values(new_disk);
-	// ft_memcpy(new_disk, obj, sizeof(obj));
-	// free(new_disk->name);
 	new_disk->type = T_DISK;
 	new_disk->col = obj->col;
 	new_disk->rad = obj->rad;
 	new_disk->dir = obj->dir;
 	new_disk->name = ft_strjoin(obj->name, " cap");
 	new_disk->pos = pos;
+	new_disk->ks = obj->ks;
+	new_disk->kd = obj->kd;
+	new_disk->refraction = obj->refraction;
+	new_disk->reflection = obj->reflection;
+	new_disk->specular_exp = obj->specular_exp;
+	new_disk->transparency = obj->transparency;
 	new_disk->next = NULL;
 	return (new_disk);
 }

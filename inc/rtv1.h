@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 13:17:35 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 14:52:48 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,6 @@
 # define CAM_IMG_PANE_DIST 1
 # define BIAS 0.01
 # define COLORS_PATH "res/colors.txt"
-
-/*
-** Instructions
-*/
-
-# define INSTRUCTIONS_H 512
-# define INSTRUCTIONS_W 600
-# define LINE_0 "RTv1 instructions:"
 
 typedef enum		e_token
 {
@@ -220,7 +212,7 @@ typedef struct	s_object
 {
 	t_token			type;
     char			*name;
-    void			*t;
+    // void			*t;
     t_vec3			pos;
     t_vec3			dir;
 	t_vec3			rot;
@@ -241,7 +233,7 @@ typedef struct	s_object
 typedef struct	s_light
 {
     char			*name;
-    void			*t;
+    // void			*t;
     t_vec3			pos;
     t_vec3			dir;
 	t_vec3			rot;
@@ -254,16 +246,11 @@ typedef struct	s_light
 typedef struct	s_camera
 {
     char			*name;
-    void			*t;
     t_vec3			pos;
     t_vec3			dir;
 	t_vec3			rot;
 	t_vec3			look_at;
 	t_color			**pixel_map;
-	// old ctw method:
-	// t_vec3			k; //rotation vector
-	// double			a; //rotation angle
-	// t_vec3			(*f)(t_vec3 k, double a, t_vec3 dir);
 	t_matrix		ctw; //camera to world matrix (only for cameras)
 	double			scale;
 	double			fov;
@@ -325,6 +312,7 @@ typedef struct		s_intersection_tools
 
 typedef struct		s_options
 {
+	bool			debugging;
 	bool			shadows;
 	bool			diffuse;
 	bool			specular;
