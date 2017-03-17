@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/16 15:22:38 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 13:17:35 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define DEFAULT_RES_W 500
 # define DEFAULT_RES_H 700
 # define DEFAULT_RAY_DEPTH 5
-# define DEFAULT_AMBIENT_LIGHT_COEF 0.1
+# define DEFAULT_KA 0.1
 # define DEFAULT_AMBIENT_LIGHT_COLOR_R 255
 # define DEFAULT_AMBIENT_LIGHT_COLOR_G 255
 # define DEFAULT_AMBIENT_LIGHT_COLOR_B 255
@@ -91,7 +91,7 @@ typedef enum		e_token
 	T_RESOLUTION,
 	T_RAY_DEPTH,
 	T_BACKGROUND_COLOR,
-	T_AMBIENT_LIGHT_COEF,
+	T_AMBIENT_LIGHT_INTENSITY,
 	T_AMBIENT_LIGHT_COLOR,
 	//object attributes
 	T_POSITION,
@@ -123,7 +123,7 @@ typedef enum		e_token
 }					t_token;
 
 # define TOKENS (const char *[T_COUNT]){"{","}","","scene","camera","light","plane",\
-"disk","sphere","cylinder","cone","resolution","ray depth","background color","ambient light coefficient","ambient light color","position",\
+"disk","sphere","cylinder","cone","resolution","ray depth","background color","ka","ambient light color","position",\
 "direction","rotation","look at","color","radius","height","kd","refraction","reflection",\
 "specular exponent","ks","transparency","fov","intensity","import","read rt file","read obj file",\
 "read texture file","read material file","invalid token"}
@@ -153,7 +153,7 @@ typedef struct		s_attributes
 	t_pt2		res;
 	int			ray_depth;
 	t_color		ambient_light_color;
-	double		ambient_light_coef;
+	double		ka;
 	//light
 	double		intensity;
 	//camera
@@ -278,7 +278,7 @@ typedef struct	s_scene
     int				ray_depth;
 	t_color			background_color;
 	t_color			ambient_light_color;
-	double			ambient_light_coef;
+	double			ka;
 	double			image_aspect_ratio;
     t_camera		*cameras;
     t_light			*lights;
@@ -398,7 +398,7 @@ void	parse_resolution(t_parse_tools *t);
 void	parse_ray_depth(t_parse_tools *t);
 void	parse_background_color(t_parse_tools *t);
 void	parse_ambient_light_color(t_parse_tools *t);
-void	parse_ambient_light_coef(t_parse_tools *t);
+void	parse_ka(t_parse_tools *t);
 void	parse_position(t_parse_tools *t);
 void	parse_direction(t_parse_tools *t);
 void	parse_rotation(t_parse_tools *t);
@@ -436,7 +436,7 @@ double	parse_double(char *value);
 int		check_data(t_scene *scenes);
 void	set_default_resolution(t_scene *scene);
 void	set_default_ray_depth(t_scene *scene);
-void	set_default_ambient_light_coef(t_scene *scene);
+void	set_default_ka(t_scene *scene);
 void	set_default_ambient_light_color(t_scene *scene);
 void	check_cameras(t_scene *scene, t_camera *cameras);
 void	check_lights(t_scene *scene, t_light *lights);

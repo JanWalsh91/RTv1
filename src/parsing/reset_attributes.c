@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 15:41:22 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/12 15:38:41 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 13:16:27 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	reset_attributes(t_attributes *att)
 	att->res.x = -1;
 	att->res.y = -1;
 	att->ray_depth = -1;
-	att->ambient_light_coef = NAN;
+	att->ka = NAN;
 	att->ambient_light_color = v_new(NAN, NAN, NAN);
 	//light
 	att->intensity = NAN;

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 15:36:08 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/16 16:57:43 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 13:36:37 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	update_camera_ctw(t_camera *camera)
 	t_vec3	up;
 
 	forward = v_norm(camera->dir);
-	if (v_dot(forward, v_new(0, 1, 0)) > 0.9999)
+	if (v_dot(forward, v_new(0, 1, 0)) > 0.9999 ||
+		v_dot(forward, v_new(0, 1, 0)) < -0.9999)
 		right = v_new(1, 0, 0);
 	else
 		right = v_norm(v_cross(v_new(0, 1, 0), forward)); 

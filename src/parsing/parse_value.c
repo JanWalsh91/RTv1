@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:35:28 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/16 15:25:06 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 13:30:27 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,15 @@ void	parse_scene(t_parse_tools *t)
 	can_add_new_scene(t);
 	t->current_scene = get_new_scene(t);
 	push_scene(&t->scenes, t->current_scene);
-	// addind global attributes for scene
 	if (t->global_attributes->res.x != -1)
 		t->current_scene->res = t->global_attributes->res;
 	if (t->global_attributes->ray_depth != -1)
 		t->current_scene->ray_depth = t->global_attributes->ray_depth;
-	if (!isnan(t->global_attributes->ambient_light_coef))
-		t->current_scene->ambient_light_coef = t->global_attributes->ambient_light_coef;
+	if (!isnan(t->global_attributes->ka))
+		t->current_scene->ka = t->global_attributes->ka;
 	if (!v_isnan(t->global_attributes->ambient_light_color))
 		t->current_scene->ambient_light_color = t->global_attributes->ambient_light_color;
 	t->input = t->input->next;
-	//no default values. Default values given later when checking. 
 }
 
 void	parse_camera(t_parse_tools *t)
@@ -155,8 +153,16 @@ void	parse_resolution(t_parse_tools *t)
 		rt_file_warning(t, "Resolution formatting error.");
 		return ;
 	}
-	if ((new_res.x = ft_atoi(s2[0])) <= 0 || (new_res.y = ft_atoi(s2[1])) <= 0)
-		rt_file_warning(t, "Resolution width and height must be positive an non-zero integers.");
+	if ((new_res.x = ft_atoi(s2[0])) <= 10 || (new_res.y = ft_atoi(s2[1])) <= 10)
+	{
+		rt_file_warning(t, "Resolution width and height minimum is 10.");
+		return ;
+	}
+	if (new_res.x > 2560 || new_res.y > 1600)
+	{	
+		rt_file_warning(t, "Resolution width or height provided too high.");
+		return ;
+	}
 	if (!t->in_scene)
 		t->global_attributes->res = new_res;
 	else if (!t->in_object)
@@ -234,23 +240,23 @@ void	parse_ambient_light_color(t_parse_tools *t)
 		rt_file_warning(t, "Ambient lighting is a scene attribute, not an object attribute.");
 }
 
-void	parse_ambient_light_coef(t_parse_tools *t)
+void	parse_ka(t_parse_tools *t)
 {
-	double	new_coef;
+	double	new_intensity;
 
-	new_coef = NAN;
-	if (isnan(new_coef = parse_double(t->input->value)) || 
-		new_coef < 0 || new_coef > 1)
+	new_intensity = NAN;
+	if (isnan(new_intensity = parse_double(t->input->value)) || 
+		new_intensity < 0 || new_intensity > 1)
 	{
-		rt_file_warning(t, "Ambient light coefficient formatting error.");
+		rt_file_warning(t, "Ambient light intensity formatting error.");
 		return ;
 	}
 	if (!t->in_scene)
-		t->global_attributes->ambient_light_coef = new_coef;
+		t->global_attributes->ka = new_intensity;
 	else if (!t->in_object)
-		t->current_scene->ambient_light_coef = new_coef;
+		t->current_scene->ka = new_intensity;
 	else if (t->in_object)
-		rt_file_warning(t, "Ambient light coefficient only applicable to scenes, not objects.");
+		rt_file_warning(t, "Ambient light intensity only applicable to scenes, not objects.");
 }
 
 void	parse_position(t_parse_tools *t)
@@ -438,7 +444,7 @@ void	parse_specular_exponent(t_parse_tools *t)
 
 	new_specular_exp = NAN;
 	if (isnan(new_specular_exp = parse_double(t->input->value)) || 
-		new_specular_exp < 0)
+		new_specular_exp <= 0)
 	{
 		rt_file_warning(t, "Specular exponent formatting error.");
 		return ;
@@ -522,10 +528,10 @@ void	parse_fov(t_parse_tools *t)
 
 	new_fov = NAN;
 	if (isnan(new_fov = parse_double(t->input->value)) || 
-		new_fov < 0 || new_fov > 180)
+		new_fov < 1 || new_fov > 179)
 	{
 		rt_file_warning(t, "Fov index formatting error.\
-			The field of view is a double between 0 and 180.");
+			The field of view is a double between 1 and 179.");
 		return ;
 	}
 	if (!t->in_scene)
@@ -567,7 +573,7 @@ void	import_rt_file(t_parse_tools *t)
 
 void	read_rt_file(t_parse_tools *t)
 {
-	rt_file_warning(t, "read rt file: feature not yet available.");
+	rt_file_warning(t, ".rt file name not provided.");
 }
 
 void	read_obj_file(t_parse_tools *t)
@@ -601,6 +607,8 @@ static int	can_add_new_scene(t_parse_tools *t)
 		t->in_scene = true;
 	else
 		rt_file_error_exit(t, "Cannot add new scene within a scene.");
+	if (!t->input->next)
+		rt_file_error_exit(t, "New scene must be followed by open bracket.");
 	if (t->input->next->token != T_OPEN_BRACKET)
 	{
 		t->input = t->input->next;
@@ -651,7 +659,7 @@ double	parse_double(char *value)
 	if (ft_charcount(value, ',') || !(ft_charcount(value, '.') == 1 || ft_charcount(value, '.') == 0))
 		return (new_d);
 	i = -1;
-	while (value[++i])
+	while (value && value[++i])
 		if (!((ft_isdigit(value[i]) || value[i] == '-' || value[i] == '+') || value[i] == '.'))
 			return (new_d);
 	new_d = ft_atod(value);

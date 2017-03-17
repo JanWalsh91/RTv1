@@ -1,5 +1,23 @@
-resolution: 50, 50
-scene: scene1
+scene:
 {
-	test
+	sphere: s
+	{
+		position: 0, -10, 10
+	}
+	sphere:
+	{
+		position: 1, -10, 9
+		radius: 0.5
+		color: beige
+	}
+	camera:
+	{
+		position: 0, 0, 0
+		look at: s
+	}
+	light:
+	{
+		position: 0, 0, 0
+		intensity: 2
+	}
 }

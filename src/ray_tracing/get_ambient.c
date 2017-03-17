@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/12 14:04:10 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/15 14:55:30 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 13:16:27 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,5 @@
 t_color	get_ambient(t_raytracing_tools *r)
 {
 	return (v_clamp(v_scale(r->scenes->ambient_light_color,
-	r->scenes->ambient_light_coef), 0, 255));
+	r->scenes->ka), 0, 255));
 }

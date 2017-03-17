@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/13 15:45:07 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 13:16:27 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void		set_scene_non_values(t_scene *new_scene)
 	new_scene->lights = NULL;
 	new_scene->background_color = v_new(NAN, NAN, NAN);
 	new_scene->ambient_light_color = v_new(NAN, NAN, NAN);
-	new_scene->ambient_light_coef = NAN;
+	new_scene->ka = NAN;
 	new_scene->image_aspect_ratio = NAN;
 	new_scene->next = NULL;
 	new_scene->prev = NULL;

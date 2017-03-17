@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:43:48 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/12 13:50:47 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 13:16:27 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	init_parse_tools(t_parse_tools *t)
 	t->parse[T_RAY_DEPTH] = &parse_ray_depth;
 	t->parse[T_BACKGROUND_COLOR] = &parse_background_color;
 	t->parse[T_AMBIENT_LIGHT_COLOR] = &parse_ambient_light_color;
-	t->parse[T_AMBIENT_LIGHT_COEF] = &parse_ambient_light_coef;
+	t->parse[T_AMBIENT_LIGHT_INTENSITY] = &parse_ka;
 	t->parse[T_POSITION] = &parse_position;
 	t->parse[T_DIRECTION] = &parse_direction;
 	t->parse[T_ROTATION] = &parse_rotation;

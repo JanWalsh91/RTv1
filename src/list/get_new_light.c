@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 14:40:04 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/13 15:23:54 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 13:07:47 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ t_light 	*get_new_light(t_parse_tools *t)
 
 static void		set_light_non_values(t_light *new_light)
 {
-	new_light->next = NULL;
 	ft_bzero(new_light, sizeof(t_light));
+	new_light->next = NULL;
 	new_light->pos = v_new(NAN, NAN, NAN);
 	new_light->dir = v_new(NAN, NAN, NAN);
 	new_light->rot = v_new(NAN, NAN, NAN);

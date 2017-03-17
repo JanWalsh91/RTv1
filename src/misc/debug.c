@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 17:13:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/13 15:00:27 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 13:16:27 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	print_scenes(t_scene *scenes_head)
 		printf("scene: %s\n", s_ptr->name);
 		printf("	res: [%i, %i]\n", s_ptr->res.x, s_ptr->res.y);
 		printf("	ray_depth: [%i]\n", s_ptr->ray_depth);
-		printf("	ambient coef: [%f]\n", s_ptr->ambient_light_coef);
+		printf("	ambient coef: [%f]\n", s_ptr->ka);
 		printf("	ambient col: [%f] [%f] [%f]\n", s_ptr->ambient_light_color.x, s_ptr->ambient_light_color.y, s_ptr->ambient_light_color.z);
 		printf("	image aspect ratio: [%f]\n", s_ptr->image_aspect_ratio);
 		o_ptr = s_ptr->objects;

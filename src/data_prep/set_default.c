@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/02 16:31:14 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/13 15:11:54 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 13:16:59 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ void	set_default_ray_depth(t_scene *scene)
 	scene->ray_depth = DEFAULT_RAY_DEPTH;
 }
 
-void	set_default_ambient_light_coef(t_scene *scene)
+void	set_default_ka(t_scene *scene)
 {
 	data_warning(scene, 0, NULL, "Providing default ambient light coefficient.");
-	scene->ambient_light_coef = DEFAULT_AMBIENT_LIGHT_COEF;
+	scene->ka = DEFAULT_KA;
 }
 
 void	set_default_ambient_light_color(t_scene *scene)
