@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 14:52:48 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/17 15:08:28 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <stdbool.h>
 # include "/Users/jwalsh/.brew/include/SDL2/SDL.h"
 # include "../Libft/inc/libft.h"
-# include "../Libft/inc/ft_printf.h"  //?
+// # include "../Libft/inc/ft_printf.h"  //?
 # include "../Libmathft/inc/libmathft.h"
 # include "keycode_mac.h"
 # include "colors.h"
