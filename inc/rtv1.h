@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 15:34:20 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/18 17:18:05 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <stdio.h>
-# include <pthread.h>
 # include <limits.h>
 # include <stdbool.h>
 # include "/Users/jwalsh/.brew/include/SDL2/SDL.h"
@@ -29,7 +28,7 @@
 ** General settings
 */
 
-# define THREAD_COUNT 10
+# define USAGE "usage: ./RTv1 <file.rt>"
 # define DEFAULT_RES_W 500
 # define DEFAULT_RES_H 700
 # define DEFAULT_RAY_DEPTH 5

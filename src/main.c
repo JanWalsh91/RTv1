@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:57:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 14:12:51 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/18 16:19:57 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int ac, char **av)
 	t_raytracing_tools	r;
 	int					i;
 
-	ac < 2 ? ft_display_usage_exit("usage") : 0;
+	ac < 2 ? ft_display_usage_exit(USAGE) : 0;
 	i = 0;
 	init_parse_tools(&t);
 	while (++i < ac)

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 15:04:42 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 13:27:47 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/18 16:30:31 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_input		*input_new(char *line, char *file_name, int fd, t_parse_tools *t)
 	static int	line_number = 0;
 	char		**key_value;
 
-	// printf("input new\n");
+	printf("input new\n");
 	if (!line)
 		 return (NULL);
 	if (!(new_input = (t_input *)malloc(sizeof(t_input))))
@@ -40,7 +40,7 @@ t_input		*input_new(char *line, char *file_name, int fd, t_parse_tools *t)
 	new_input->token = ft_charcount(line, ':') < 2 ? get_token(t, key_value[0]) : T_INVALID_TOKEN;
 	new_input->value = NULL;
 	new_input->line_number = ++line_number;
-	if (ft_strchr(line, ':'))
+	if (ft_charcount(line, ':') == 1)
 	{
 		if (line && T_READ_RT_FILE == new_input->token)
 		{

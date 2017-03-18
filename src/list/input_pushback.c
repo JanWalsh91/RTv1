@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 15:02:03 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/01 15:08:25 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/18 16:30:45 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	input_pushback(t_input **input, t_input *n)
 {
 	t_input	*ptr;
 
-	// printf("input_pushback\n");
+	printf("input pushback\n");
 	if (n)
 	{
 		if (!(*input))
