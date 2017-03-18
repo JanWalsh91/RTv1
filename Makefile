@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/03/17 16:14:34 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/03/18 15:26:14 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ PARSING = 	get_color \
 			get_file \
 			get_token \
 			init_parse_tools \
+			init_tokens \
 			parse_input \
 			parse_value \
 			reset_attributes \
@@ -56,6 +57,11 @@ RAY_TRACING = cast_primary_ray \
 			rtv1 \
 			solve_quadratic \
 			intersects \
+			get_plane_intersection \
+			get_sphere_intersection \
+			get_disk_intersection \
+			get_cylinder_intersection \
+			get_cone_intersection \
 			in_shadow \
 			get_diffuse \
 			get_specular \

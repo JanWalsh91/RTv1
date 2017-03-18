@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 14:40:04 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 13:07:47 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/18 13:22:10 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_light 	*get_new_light(t_parse_tools *t)
 			current_scene_name = t->current_scene->name;
 		else if (ft_strcmp(current_scene_name, t->current_scene->name))
 			i = 1;
-		new_light->name = ft_strdup(ft_strsjoin(3, TOKENS[t->input->token], " ", ft_itoa(i)));
+		new_light->name = ft_strdup(ft_strsjoin(3, t->tokens[t->input->token], " ", ft_itoa(i)));
 		++i;
 	}
 	else

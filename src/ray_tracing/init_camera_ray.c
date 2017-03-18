@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:05:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/16 15:21:18 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/18 14:14:25 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ t_ray	init_camera_ray(t_pt2 i, t_scene *scene)
 	pix.z = CAM_IMG_PANE_DIST;
 	cam_ray.dir = v_norm(pix);
 	cam_ray.origin = cam->pos; 
-	// cam_ray.origin = m_p_mult(v_new(0, 0, 0), cam->ctw);
 	cam_ray.dir = m_v_mult(cam_ray.dir, cam->ctw);
-	// cam_ray.origin = cam->pos;
-	// cam_ray.dir = cam->f(cam->k, cam->a, cam_ray.dir);
 	cam_ray.dir = v_norm(cam_ray.dir);
 	cam_ray.type = R_PRIMARY;
 	cam_ray.n_dir = 1; //? necessary?

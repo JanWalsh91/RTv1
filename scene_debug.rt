@@ -1,6 +1,5 @@
 scene:
 {
-	invalid token
 	sphere: s
 	{
 		position: 0, -10, 10

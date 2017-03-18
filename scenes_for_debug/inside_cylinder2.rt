@@ -1,6 +1,4 @@
-# ambient light color: white
-# ambient light coefficient: 0.1	
-scene:
+scene: Into the rabbit hole
 {
 	resolution: 1000, 1000
 	fov: 80

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 15:04:42 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/13 15:35:21 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/18 13:27:47 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@
 
 #include "../../inc/rtv1.h"
 
-t_input		*input_new(char *line, char *file_name, int fd, t_input **input)
+t_input		*input_new(char *line, char *file_name, int fd, t_parse_tools *t)
 {
 	t_input		*new_input;
 	static int	current_fd = -1;
 	static int	line_number = 0;
 	char		**key_value;
 
+	// printf("input new\n");
 	if (!line)
 		 return (NULL);
 	if (!(new_input = (t_input *)malloc(sizeof(t_input))))
@@ -36,14 +37,14 @@ t_input		*input_new(char *line, char *file_name, int fd, t_input **input)
 		line_number = 0;
 	}
 	key_value = split_trim(line, ':');
-	new_input->token = ft_charcount(line, ':') < 2 ? get_token(key_value[0]) : T_INVALID_TOKEN;
+	new_input->token = ft_charcount(line, ':') < 2 ? get_token(t, key_value[0]) : T_INVALID_TOKEN;
 	new_input->value = NULL;
 	new_input->line_number = ++line_number;
 	if (ft_strchr(line, ':'))
 	{
 		if (line && T_READ_RT_FILE == new_input->token)
 		{
-			key_value[1] ? get_file(key_value[1], input) : 0 ;
+			key_value[1] ? get_file(key_value[1], t) : 0 ;
 			current_fd = fd;
 			line_number = new_input->line_number;
 			// free(key_value[0]);

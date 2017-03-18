@@ -6,15 +6,23 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:43:48 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 13:16:27 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/18 15:34:45 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
+/*
+** Initializes parse tools including token list, attribute lists and
+** list of function pointers for parsing each token.
+*/
+
+static void	init_attributes(t_parse_tools *t);
+static void	init_parse_functions(t_parse_tools *t);
+static void	init_parse_functions2(t_parse_tools *t);
+
 void	init_parse_tools(t_parse_tools *t)
 {
-	// printf("init_parse_tools\n");
 	t->in_scene = false;
 	t->in_object = false;
 	t->input = NULL;
@@ -27,12 +35,19 @@ void	init_parse_tools(t_parse_tools *t)
 	t->current_type = T_INVALID_TOKEN;
 	t->fd = -1;
 	t->file_name = NULL;
+	t->colors = NULL;
+	init_attributes(t);
+	init_tokens(t);
+	init_parse_functions(t);
+}
+
+static void	init_attributes(t_parse_tools *t)
+{
 	t->global_attributes = NULL;
 	t->scene_attributes = NULL;
 	t->object_attributes = NULL;
-	t->colors = NULL;
 	if (!(t->global_attributes = (t_attributes *)malloc(sizeof(t_attributes))))
-			ft_errno_exit();
+		ft_errno_exit();
 	if (!(t->scene_attributes = (t_attributes *)malloc(sizeof(t_attributes))))
 		ft_errno_exit();
 	if (!(t->object_attributes = (t_attributes *)malloc(sizeof(t_attributes))))
@@ -40,7 +55,10 @@ void	init_parse_tools(t_parse_tools *t)
 	reset_attributes(t->global_attributes);
 	reset_attributes(t->scene_attributes);
 	reset_attributes(t->object_attributes);
-	//init parse function pointer list:
+}
+
+static void	init_parse_functions(t_parse_tools *t)
+{
 	if (!(t->parse = malloc(sizeof(t->parse) * T_COUNT)))
 		ft_errno_exit();
 	t->parse[T_CLOSE_BRACKET] = &parse_close_bracket;
@@ -58,7 +76,12 @@ void	init_parse_tools(t_parse_tools *t)
 	t->parse[T_RAY_DEPTH] = &parse_ray_depth;
 	t->parse[T_BACKGROUND_COLOR] = &parse_background_color;
 	t->parse[T_AMBIENT_LIGHT_COLOR] = &parse_ambient_light_color;
-	t->parse[T_AMBIENT_LIGHT_INTENSITY] = &parse_ka;
+	t->parse[T_KA] = &parse_ka;
+	init_parse_functions2(t);
+}
+
+static void	init_parse_functions2(t_parse_tools *t)
+{
 	t->parse[T_POSITION] = &parse_position;
 	t->parse[T_DIRECTION] = &parse_direction;
 	t->parse[T_ROTATION] = &parse_rotation;
@@ -80,5 +103,5 @@ void	init_parse_tools(t_parse_tools *t)
 	t->parse[T_READ_TEXTURE_FILE] = &read_texture_file;
 	t->parse[T_READ_MATERIAL_FILE] = &read_material_file;
 	t->parse[T_HASHTAG] = &hashtag;
-	t->parse[T_INVALID_TOKEN] = &invalid_token;
+	t->parse[T_INVALID_TOKEN] = &invalid_token;	
 }

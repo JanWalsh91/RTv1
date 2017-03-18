@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 16:14:07 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/18 15:34:20 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ typedef enum		e_token
 	T_RESOLUTION,
 	T_RAY_DEPTH,
 	T_BACKGROUND_COLOR,
-	T_AMBIENT_LIGHT_INTENSITY,
+	T_KA,
 	T_AMBIENT_LIGHT_COLOR,
 	T_POSITION,
 	T_DIRECTION,
@@ -106,12 +106,6 @@ typedef enum		e_token
 	T_INVALID_TOKEN,
 	T_COUNT
 }					t_token;
-
-# define TOKENS (const char *[T_COUNT]){"{","}","","scene","camera","light","plane",\
-"disk","sphere","cylinder","cone","resolution","ray depth","background color","ka","ambient light color","position",\
-"direction","rotation","look at","color","radius","height","kd","refraction","reflection",\
-"specular exponent","ks","transparency","fov","intensity","import","read rt file","read obj file",\
-"read texture file","read material file","invalid token"}
 
 /*
 ** Link for chained list in which is stored info about each line parsed.
@@ -178,8 +172,6 @@ typedef	struct		s_ray
 	t_ray_type	type; //ray type
 	t_vec3		origin; // ray origin
 	t_vec3		dir; // ray direction: must be normalized
-	double		root1;
-	double		root2;
 	double		t; // distance of intersection
 	struct s_object	*hit_obj; //pointer to object hit at intersection point
 	t_vec3		hit; // intersection point in World View
@@ -293,6 +285,7 @@ typedef struct		s_parse_tools
 	t_attributes	*scene_attributes;
 	t_attributes	*object_attributes;
 	t_color_list	*colors;
+	char			**tokens;
 	void			(**parse)(struct s_parse_tools *);
 }					t_parse_tools;
 
@@ -351,8 +344,9 @@ typedef struct		s_env
 */
 
 void			init_parse_tools(t_parse_tools *t);
-void			get_file(char *file_name, t_input **input);
-int				get_token(char *key);
+void			init_tokens(t_parse_tools *t);
+void			get_file(char *file_name, t_parse_tools *t);
+int				get_token(t_parse_tools *t, char *key);
 void			parse_input(t_parse_tools *t);
 char 			**split_trim(char *s, char c);
 t_scene			*get_new_scene(t_parse_tools *t);
@@ -417,7 +411,7 @@ double			parse_double(char *value);
 */
 
 void			input_pushback(t_input **input, t_input *n);
-t_input			*input_new(char *line, char *file_name, int fd, t_input **input);
+t_input			*input_new(char *line, char *file_name, int fd, t_parse_tools *t);
 int				init_color_list(t_color_list **colors);
 void			color_pushback(t_color_list **colors, t_color_list *new_color);
 t_color_list	*color_new(char *next_line);
@@ -485,11 +479,6 @@ bool			intersects(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 bool			get_plane_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 bool			get_sphere_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 bool			get_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj);
-bool			get_finite_cylinder_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj, t_intersection_tools *i);
-bool			get_finite_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj, t_intersection_tools *i);
-bool			lower_than_min(double r, t_intersection_tools *i, t_object *obj, t_ray *ray);
-bool			higher_than_max(double r, t_intersection_tools *i, t_object *obj, t_ray *ray);
-bool			get_cyclinder_caps_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj, t_intersection_tools *i);
 bool			get_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *cone);
 bool			get_disk_intersection(t_raytracing_tools *r, t_ray *ray, t_object *disk);
 bool			solve_quadratic(t_vec3 q, double *r1, double *r2);

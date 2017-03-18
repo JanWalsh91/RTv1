@@ -7,10 +7,10 @@ scene:
 	cylinder:
 	{
 		height: 5
-		look at: 2, 0, -20
+		look at: -2, 0, 20
 	}
 	light:
 	{
-		position: 0, 10, -5
+		position: 0, 10, -6	
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:57:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 16:15:23 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/18 14:12:51 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int ac, char **av)
 	while (++i < ac)
 	{
 		if (ft_strstr(av[i], ".rt") && *(ft_strstr(av[i], ".rt") + 3) == '\0')
-			get_file(av[i], &t.input);
+			get_file(av[i], &t);
 		else
 			rt_file_warning(NULL, "Skipped invalid file.");
 	}
