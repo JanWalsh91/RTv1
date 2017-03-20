@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:35:28 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 15:14:28 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:43:37 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ void	parse_scene(t_parse_tools *t)
 	if (!isnan(t->global_attributes->ka))
 		t->current_scene->ka = t->global_attributes->ka;
 	if (!v_isnan(t->global_attributes->ambient_light_color))
-		t->current_scene->ambient_light_color = t->global_attributes->ambient_light_color;
+		t->current_scene->ambient_light_color =
+			t->global_attributes->ambient_light_color;
 	t->input = t->input->next;
 }
 
@@ -138,30 +139,27 @@ void	parse_cone(t_parse_tools *t)
 
 void	parse_resolution(t_parse_tools *t)
 {
-	char 	**s2;
+	char	**s2;
 	t_pt2	new_res;
+	bool	invalid;
 
-	if (ft_charcount(t->input->value, ',') != 1)
-	{
+	invalid = false;
+	if (ft_charcount(t->input->value, ',') != 1 && (invalid = true))
 		rt_file_warning(t, "Resolution formatting error.");
-		return ;
-	}
 	s2 = split_trim(t->input->value, ',');
-	if (!(s2[0] && s2[1]))
-	{
+	if (!(s2[0] && s2[1]) && (invalid = true))
 		rt_file_warning(t, "Resolution formatting error.");
-		return ;
-	}
-	if ((new_res.x = ft_atoi(s2[0])) <= 10 || (new_res.y = ft_atoi(s2[1])) <= 10)
+	if ((new_res.x = ft_atoi(s2[0])) <= 10 || new_res.x > 2560 ||
+		(new_res.y = ft_atoi(s2[1])) <= 10 || new_res.y > 1600)
 	{
-		rt_file_warning(t, "Resolution width and height minimum is 10.");
-		return ;
+		invalid = true;
+		rt_file_warning(t, "Resolution width and height invalid.");
 	}
-	if (new_res.x > 2560 || new_res.y > 1600)
-	{	
-		rt_file_warning(t, "Resolution width or height too large.");
+	free(s2[0]);
+	free(s2[1]);
+	free(s2);
+	if (invalid)
 		return ;
-	}
 	if (!t->in_scene)
 		t->global_attributes->res = new_res;
 	else if (!t->in_object)
@@ -181,7 +179,8 @@ void	parse_ray_depth(t_parse_tools *t)
 	}
 	if ((new_ray_depth = ft_atoi(t->input->value)) < 1)
 	{
-		rt_file_warning(t, "Ray depth must be a positive and non-zero integer.");
+		rt_file_warning(t, "Ray depth must be a positive \
+		and non-zero integer.");
 		return ;
 	}
 	if (!t->in_scene)
@@ -189,7 +188,8 @@ void	parse_ray_depth(t_parse_tools *t)
 	else if (!t->in_object)
 		t->current_scene->ray_depth = new_ray_depth;
 	else if (t->in_object)
-		rt_file_warning(t, "Ray depth is a scene attribute, not an object attribute!");
+		rt_file_warning(t, "Ray depth is a scene attribute, \
+		not an object attribute!");
 }
 
 void	parse_background_color(t_parse_tools *t)
@@ -236,7 +236,8 @@ void	parse_ambient_light_color(t_parse_tools *t)
 	else if (!t->in_object)
 		t->current_scene->ambient_light_color = new_col;
 	else if (t->in_object)
-		rt_file_warning(t, "Ambient lighting is a scene attribute, not an object attribute.");
+		rt_file_warning(t, "Ambient lighting is a scene attribute, \
+		not an object attribute.");
 }
 
 void	parse_ka(t_parse_tools *t)
@@ -244,7 +245,7 @@ void	parse_ka(t_parse_tools *t)
 	double	new_intensity;
 
 	new_intensity = NAN;
-	if (isnan(new_intensity = parse_double(t->input->value)) || 
+	if (isnan(new_intensity = parse_double(t->input->value)) ||
 		new_intensity < 0 || new_intensity > 1)
 	{
 		rt_file_warning(t, "Ambient light coefficient formatting error.");
@@ -255,7 +256,8 @@ void	parse_ka(t_parse_tools *t)
 	else if (!t->in_object)
 		t->current_scene->ka = new_intensity;
 	else if (t->in_object)
-		rt_file_warning(t, "Ambient light coefficient only applicable to scenes, not objects.");
+		rt_file_warning(t, "Ambient light coefficient only applicable to \
+		scenes, not objects.");
 }
 
 void	parse_position(t_parse_tools *t)
@@ -294,7 +296,8 @@ void	parse_direction(t_parse_tools *t)
 
 void	parse_rotation(t_parse_tools *t)
 {
-	rt_file_warning(t, "Rotation: feature not yet available. Use direction or look at.");
+	rt_file_warning(t, "Rotation: feature not yet available. \
+	Use direction or look at.");
 }
 
 void	parse_look_at(t_parse_tools *t)
@@ -355,9 +358,11 @@ void	parse_radius(t_parse_tools *t)
 		t->scene_attributes->rad = new_radius;
 	else if (t->in_object)
 		t->object_attributes->rad = new_radius;
-	if (t->in_object &&  t->current_type != T_CONE && t->current_type != T_CYLINDER &&
+	if (t->in_object && t->current_type != T_CONE &&
+		t->current_type != T_CYLINDER &&
 		t->current_type != T_SPHERE && t->current_type != T_DISK)
-		rt_file_warning(t, "Radius attribute only applicable to spheres, cones and cylinders.");
+		rt_file_warning(t, "Radius attribute only applicable \
+			to spheres, cones, cylinders and disks.");
 }
 
 void	parse_height(t_parse_tools *t)
@@ -365,7 +370,7 @@ void	parse_height(t_parse_tools *t)
 	double	new_height;
 
 	new_height = NAN;
-	if (isnan(new_height = parse_double(t->input->value)) || 
+	if (isnan(new_height = parse_double(t->input->value)) ||
 		new_height <= 0)
 	{
 		rt_file_warning(t, "Height formatting error.");
@@ -377,8 +382,10 @@ void	parse_height(t_parse_tools *t)
 		t->scene_attributes->height = new_height;
 	else if (t->in_object)
 		t->object_attributes->height = new_height;
-	if (t->in_object && t->current_type != T_CONE && t->current_type != T_CYLINDER)
-		rt_file_warning(t, "Height attribute only applicable to cones and cylinders.");
+	if (t->in_object && t->current_type != T_CONE &&
+		t->current_type != T_CYLINDER)
+		rt_file_warning(t, 
+			"Height attribute only applicable to cones and cylinders.");
 }
 
 void	parse_diffuse_coef(t_parse_tools *t)
@@ -386,7 +393,7 @@ void	parse_diffuse_coef(t_parse_tools *t)
 	double	new_diffuse_coef;
 
 	new_diffuse_coef = NAN;
-	if (isnan(new_diffuse_coef = parse_double(t->input->value)) || 
+	if (isnan(new_diffuse_coef = parse_double(t->input->value)) ||
 		new_diffuse_coef < 0 || new_diffuse_coef > 1)
 	{
 		rt_file_warning(t, "Diffuse coefficient formatting error.\n\
@@ -399,8 +406,10 @@ The diffuse coefficient is a double between 0 and 1.");
 		t->scene_attributes->kd = new_diffuse_coef;
 	else if (t->in_object)
 		t->object_attributes->kd = new_diffuse_coef;
-	if (t->in_object && (t->current_type == T_LIGHT || t->current_type == T_CAMERA))
-		rt_file_warning(t, "Diffuse coefficient attribute only applicable to objects.");
+	if (t->in_object && (t->current_type == T_LIGHT ||
+		t->current_type == T_CAMERA))
+		rt_file_warning(t,
+			"Diffuse coefficient attribute only applicable to objects.");
 }
 
 void	parse_specular_coef(t_parse_tools *t)
@@ -408,7 +417,7 @@ void	parse_specular_coef(t_parse_tools *t)
 	double	new_specular_coef;
 
 	new_specular_coef = NAN;
-	if (isnan(new_specular_coef = parse_double(t->input->value)) || 
+	if (isnan(new_specular_coef = parse_double(t->input->value)) ||
 		new_specular_coef < 0 || new_specular_coef > 1)
 	{
 		rt_file_warning(t, "Specular coefficient formatting error.\n\
@@ -421,8 +430,10 @@ The specular coefficient is a double between 0 and 1.");
 		t->scene_attributes->ks = new_specular_coef;
 	else if (t->in_object)
 		t->object_attributes->ks = new_specular_coef;
-	if (t->in_object && (t->current_type == T_LIGHT || t->current_type == T_CAMERA))
-		rt_file_warning(t, "Specular coefficient attribute only applicable to objects.");
+	if (t->in_object && (t->current_type == T_LIGHT ||
+		t->current_type == T_CAMERA))
+		rt_file_warning(t, "Specular coefficient attribute \
+		only applicable to objects.");
 }
 
 void	parse_specular_exponent(t_parse_tools *t)
@@ -430,7 +441,7 @@ void	parse_specular_exponent(t_parse_tools *t)
 	double	new_specular_exp;
 
 	new_specular_exp = NAN;
-	if (isnan(new_specular_exp = parse_double(t->input->value)) || 
+	if (isnan(new_specular_exp = parse_double(t->input->value)) ||
 		new_specular_exp <= 0)
 	{
 		rt_file_warning(t, "Specular exponent formatting error.");
@@ -442,8 +453,10 @@ void	parse_specular_exponent(t_parse_tools *t)
 		t->scene_attributes->specular_exp = new_specular_exp;
 	else if (t->in_object)
 		t->object_attributes->specular_exp = new_specular_exp;
-	if (t->in_object && (t->current_type == T_LIGHT || t->current_type == T_CAMERA))
-		rt_file_warning(t, "Specular exponent attribute only applicable to objects.");
+	if (t->in_object && (t->current_type == T_LIGHT ||
+		t->current_type == T_CAMERA))
+		rt_file_warning(t,
+			"Specular exponent attribute only applicable to objects.");
 }
 
 void	parse_refraction(t_parse_tools *t)
@@ -466,7 +479,7 @@ void	parse_fov(t_parse_tools *t)
 	double	new_fov;
 
 	new_fov = NAN;
-	if (isnan(new_fov = parse_double(t->input->value)) || 
+	if (isnan(new_fov = parse_double(t->input->value)) ||
 		new_fov < 1 || new_fov > 179)
 	{
 		rt_file_warning(t, "Fov index formatting error.\n\
@@ -480,7 +493,8 @@ The field of view is a double between 1 and 179.");
 	else if (t->in_object)
 		t->object_attributes->fov = new_fov;
 	if (t->in_object && t->current_type != T_CAMERA)
-		rt_file_warning(t, "FOV (field of view) attribute only applicable to cameras.");
+		rt_file_warning(t,
+			"FOV (field of view) attribute only applicable to cameras.");
 }
 
 void	parse_intensity(t_parse_tools *t)
@@ -488,7 +502,7 @@ void	parse_intensity(t_parse_tools *t)
 	double	new_intensity;
 
 	new_intensity = NAN;
-	if (isnan(new_intensity = parse_double(t->input->value)) || 
+	if (isnan(new_intensity = parse_double(t->input->value)) ||
 		new_intensity < 0)
 	{
 		rt_file_warning(t, "Intensity index formatting error.\
@@ -561,7 +575,7 @@ static int	can_add_new_object(t_parse_tools *t)
 	if (!t->in_scene)
 		rt_file_error_exit(t, "Cannot add new object outside a scene.");
 	if (!t->in_object)
-		t->in_object = 1;
+		t->in_object = true;
 	else
 		rt_file_error_exit(t, "Cannot add new object inside another object.");
 	if (t->input->next->token != T_OPEN_BRACKET)
@@ -584,6 +598,10 @@ t_vec3	parse_vector(char *value)
 	new_vec.x = parse_double(split_value[0]);
 	new_vec.y = parse_double(split_value[1]);
 	new_vec.z = parse_double(split_value[2]);
+	free(split_value[0]);
+	free(split_value[1]);
+	free(split_value[2]);
+	free(split_value);
 	if (isnan(new_vec.x) || isnan(new_vec.y) || isnan(new_vec.z))
 		return (v_new(NAN, NAN, NAN));
 	return (new_vec);
@@ -606,7 +624,6 @@ double	parse_double(char *value)
 	new_d = ft_atod(value);
 	return (new_d);
 }
-
 
 static t_vec3	look_at_object(t_parse_tools *t, char *value)
 {

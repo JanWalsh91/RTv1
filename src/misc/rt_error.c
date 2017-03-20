@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 15:39:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/13 14:53:14 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:29:43 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 void	rt_file_error_exit(t_parse_tools *t, char *msg)
 {
 	if (t)
-		ft_printf("%{red}ERROR in file \"%{i}%s%{}%{red}\" on line %{i}%lu%{}%{red}:\n%s\n%{}",
+		ft_printf("%{red}ERROR in file \"%{i}%s%{}%{red}\" on \
+		line %{i}%lu%{}%{red}:\n%s\n%{}",
 	t->input->file_name, t->input->line_number, (char *)msg);
 	else
 		ft_printf("%{red}ERROR: %s\n", msg);
-	// printf("token: [%i]\n", t->input->token);
-	// printf("value: [%s]\n", t->input->value);
 	exit(0);
 }
 
 void	rt_file_warning(t_parse_tools *t, char *msg)
 {
 	if (t)
-		ft_printf("%{yellow}WARNING in file \"%{i}%s%{}%{yellow}\" on line %{i}%lu%{}%{yellow}:\n%s\n%{}",
+		ft_printf("%{yellow}WARNING in file \"%{i}%s%{}%{yellow}\" \
+		on line %{i}%lu%{}%{yellow}:\n%s\n%{}",
 	t->input->file_name, t->input->line_number, (char *)msg);
 	else
 		ft_printf("%{yellow}WARNING: %s\n", msg);
@@ -41,8 +41,8 @@ void	data_error_exit(t_scene *scene, int type, void *object, char *msg)
 	else if (type == T_LIGHT)
 		ft_printf("%{red}ERROR in scene \"%s\" in light \"%s\":\n%s%{}\n",
 		scene->name, ((t_light *)object)->name, msg);
-	else if (type == T_SPHERE || type == T_PLANE || type == T_DISK || type == T_SPHERE ||
-		type == T_CONE)
+	else if (type == T_SPHERE || type == T_PLANE ||
+		type == T_DISK || type == T_SPHERE || type == T_CONE)
 		ft_printf("%{red}ERROR in scene \"%s\" in object \"%s\":\n%s%{}\n",
 		scene->name, ((t_object *)object)->name, msg);
 	else if (scene)
@@ -60,8 +60,8 @@ void	data_warning(t_scene *scene, int type, void *object, char *msg)
 	else if (type == T_LIGHT)
 		ft_printf("%{yellow}WARNING in scene \"%s\" in light \"%s\":\n%s%{}\n",
 		scene->name, ((t_light *)object)->name, msg);
-	else if (type == T_SPHERE || type == T_PLANE || type == T_DISK || type == T_SPHERE ||
-		type == T_CONE)
+	else if (type == T_SPHERE || type == T_PLANE ||
+		type == T_DISK || type == T_SPHERE || type == T_CONE)
 		ft_printf("%{yellow}WARNING in scene \"%s\" in object \"%s\":\n%s%{}\n",
 		scene->name, ((t_object *)object)->name, msg);
 	else

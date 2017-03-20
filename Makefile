@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/03/18 15:26:14 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/03/20 18:28:17 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,7 +70,9 @@ RAY_TRACING = cast_primary_ray \
 
 MISC = 		debug \
 			error_line_exit \
-			free \
+			free_matrix \
+			free_parse_tools \
+			free_scenes \
 			rt_error
 
 OBJ_DIR = obj
@@ -93,8 +95,10 @@ OBJ_MISC = $(addprefix $(OBJ_DIR)/, $(SRC_MISC:.c=.o))
 
 CC	= gcc
 FLG = -Werror -Wextra -Wall
-SDL = `~/.brew/bin/sdl2-config --libs`
+# SDL = `~/.brew/bin/sdl2-config --libs`
 #add after FLG on line 74
+SDL_PATH = sdl2/
+SDL = `$(SDL_PATH)/sdl2-config --cflags --libs`
 
 C_NONE = \033[0m
 C_BOLD = \033[1m
@@ -112,6 +116,13 @@ ECHO = echo
 all: $(NAME)
 
 $(NAME): $(OBJ_SRC) $(OBJ_PARSING) $(OBJ_LST) $(OBJ_DATA) $(OBJ_RT) $(OBJ_MISC)
+	@if [ ! -d "$(SDL_PATH)lib" ]; then \
+		/bin/mkdir $(SDL_PATH)lib; \
+		cd $(SDL_PATH) ; ./configure --prefix=`pwd`/lib; \
+	fi
+	@make -C $(SDL_PATH)
+	@make -C $(SDL_PATH) install >/dev/null
+	@$(ECHO) "$(C_GREEN)SDL2 compilation done.$(C_NONE)"
 	@make -C $(LIB_PATH)
 	@make -C $(LIBMATH_PATH)
 	@$(CC) $(FLG) $(SDL) -g $(LIB_PATH)$(LIBFT_NAME) $(LIBMATH_PATH)$(LIBMATHFT_NAME) $(OBJ_PARSING) $(OBJ_SRC) $(OBJ_LST) $(OBJ_DATA) $(OBJ_RT) $(OBJ_MISC) -o $(NAME)
@@ -119,30 +130,33 @@ $(NAME): $(OBJ_SRC) $(OBJ_PARSING) $(OBJ_LST) $(OBJ_DATA) $(OBJ_RT) $(OBJ_MISC)
 
 $(OBJ_DIR)/%.o : ./src/%.c
 	@/bin/mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
+	@$(CC) $(CFLAGS) -g -I./inc -I./$(SDL_PATH)/include -c -o $@ $<
 
 $(OBJ_DIR)/%.o : ./src/parsing/%.c
 	@/bin/mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
+	@$(CC) $(CFLAGS) -g -I./inc -I./$(SDL_PATH)/include -c -o $@ $<
 
 $(OBJ_DIR)/%.o : ./src/list/%.c
 	@/bin/mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
+	@$(CC) $(CFLAGS) -g -I./inc -I./$(SDL_PATH)/include -c -o $@ $<
 
 $(OBJ_DIR)/%.o : ./src/data_prep/%.c
 	@/bin/mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
+	@$(CC) $(CFLAGS) -g -I./inc -I./$(SDL_PATH)/include -c -o $@ $<
 
 $(OBJ_DIR)/%.o : ./src/ray_tracing/%.c
 	@/bin/mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
+	@$(CC) $(CFLAGS) -g -I./inc -I./$(SDL_PATH)/include -c -o $@ $<
 
 $(OBJ_DIR)/%.o : ./src/misc/%.c
 	@/bin/mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -g -I./inc -c -o $@ $<
+	@$(CC) $(CFLAGS) -g -I./inc -I./$(SDL_PATH)/include -c -o $@ $<
 
 clean:
 	@/bin/rm -Rf $(OBJ_DIR)
+	# @/bin/rm -Rf $(SDL_PATH)lib
+	# @/bin/rm -Rf $(SDL_PATH)build
+	# @$(ECHO) "$(C_GREEN)SDL2 clean done.$(C_NONE)"
 	@make -C $(LIB_PATH) clean
 	@make -C $(LIBMATH_PATH) clean
 	@$(ECHO) "$(C_GREEN)RTv1 clean done.$(C_NONE)"

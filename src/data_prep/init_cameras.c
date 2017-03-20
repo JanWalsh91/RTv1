@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 15:36:08 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 14:16:31 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:01:02 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,23 @@
 
 void	init_camera(t_scene *scene, t_camera *cam)
 {
-	int	x;
+	int	y;
 
 	cam->pixel_map = NULL;
-	if (!(cam->pixel_map = (t_color **)ft_memalloc(scene->res.y * sizeof(t_color *))))
+	if (!(cam->pixel_map = (t_color **)ft_memalloc(scene->res.y *
+		sizeof(t_color *))))
 		ft_error_exit("Malloc error");
-	x = -1;
-	while (++x < scene->res.y)
-		if (!(cam->pixel_map[x] = (t_color *)ft_memalloc(scene->res.x * sizeof(t_color))))
+	y = -1;
+	while (++y < scene->res.y)
+		if (!(cam->pixel_map[y] = (t_color *)ft_memalloc(scene->res.x *
+			sizeof(t_color))))
 			ft_error_exit("Malloc error");
 	update_camera_scale(cam);
 	update_camera_ctw(cam);
 }
 
 /*
-** Calculates scale. 
+** Calculates scale.
 */
 
 void	update_camera_scale(t_camera *camera)
@@ -56,21 +58,19 @@ void	update_camera_ctw(t_camera *camera)
 		v_dot(forward, v_new(0, 1, 0)) < -0.9999)
 		right = v_new(1, 0, 0);
 	else
-		right = v_norm(v_cross(v_new(0, 1, 0), forward)); 
+		right = v_norm(v_cross(v_new(0, 1, 0), forward));
 	up = v_norm(v_cross(forward, right));
-	
 	camera->ctw = m_new_identity();
-    camera->ctw[0][0] = right.x; 
-    camera->ctw[0][1] = right.y; 
-    camera->ctw[0][2] = right.z; 
-    camera->ctw[1][0] = up.x; 
-    camera->ctw[1][1] = up.y; 
-    camera->ctw[1][2] = up.z; 
-    camera->ctw[2][0] = forward.x; 
-    camera->ctw[2][1] = forward.y; 
-    camera->ctw[2][2] = forward.z; 
- 
-    camera->ctw[3][0] = camera->pos.x; //?
-    camera->ctw[3][1] = camera->pos.y; //?
-    camera->ctw[3][2] = camera->pos.z; //?
+	camera->ctw[0][0] = right.x;
+	camera->ctw[0][1] = right.y;
+	camera->ctw[0][2] = right.z;
+	camera->ctw[1][0] = up.x;
+	camera->ctw[1][1] = up.y;
+	camera->ctw[1][2] = up.z;
+	camera->ctw[2][0] = forward.x;
+	camera->ctw[2][1] = forward.y;
+	camera->ctw[2][2] = forward.z;
+	camera->ctw[3][0] = camera->pos.x;
+	camera->ctw[3][1] = camera->pos.y;
+	camera->ctw[3][2] = camera->pos.z;
 }

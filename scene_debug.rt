@@ -1,3 +1,4 @@
+resolution: 10, 10
 scene:
 {
 	sphere: s

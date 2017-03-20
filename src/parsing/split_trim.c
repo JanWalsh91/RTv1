@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:22:02 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 16:30:56 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:46:10 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,22 @@
 
 /*
 ** Splits and trims lines from the input file.
-** Puts the first string (type) in lowercase.
+** Puts the first string in lowercase.
 */
 
-char 	**split_trim(char *s, char c)
+char	**split_trim(char *s, char c)
 {
 	char	**result;
+	char	*tmp;
 	int		i;
-	
-	printf("split trim\n");
+
 	i = 0;
 	result = ft_strsplit(s, c);
 	while (result && result[i])
 	{
-		result[i] = ft_strtrim(result[i]);
+		tmp = ft_strtrim(result[i]);
+		free(result[i]);
+		result[i] = tmp;
 		++i;
 	}
 	if (result)

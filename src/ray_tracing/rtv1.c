@@ -6,19 +6,14 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 10:39:56 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 15:54:43 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 17:55:32 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-** There is a way of simplifying calculations by calculate one vector before hand
-** and using it for each pixel (multiplied by more stuff).
-*/
-
-/*
-** 
+**
 */
 
 int rtv1(t_raytracing_tools *r)

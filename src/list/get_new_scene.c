@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 13:16:27 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:23:49 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 static void		set_scene_non_values(t_scene *new_scene);
 
-t_scene		*get_new_scene(t_parse_tools *t)
+t_scene			*get_new_scene(t_parse_tools *t)
 {
 	t_scene		*new_scene;
 	static int	i = 0;
@@ -27,10 +27,10 @@ t_scene		*get_new_scene(t_parse_tools *t)
 	if (!(new_scene = (t_scene *)ft_memalloc(sizeof(t_scene))))
 		ft_error_exit("Malloc error");
 	new_scene->name = (!t->input->value || !*t->input->value) ?
-		ft_strdup(ft_strjoin("Scene ", ft_itoa(++i))) :
+		ft_strjoinfree("Scene ", ft_itoa(++i), 'r') :
 		ft_strdup(t->input->value);
 	set_scene_non_values(new_scene);
-	return(new_scene);
+	return (new_scene);
 }
 
 static void		set_scene_non_values(t_scene *new_scene)
@@ -47,5 +47,4 @@ static void		set_scene_non_values(t_scene *new_scene)
 	new_scene->image_aspect_ratio = NAN;
 	new_scene->next = NULL;
 	new_scene->prev = NULL;
-
 }

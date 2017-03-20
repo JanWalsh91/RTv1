@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 11:53:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/01 16:07:28 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:26:37 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	push_object(t_object **objects_head, t_object *new_object)
 {
 	t_object	*obj_ptr;
 
-	// printf("push_object: [%s]\n", new_object->name);
 	if (new_object)
 	{
 		if (!(*objects_head))

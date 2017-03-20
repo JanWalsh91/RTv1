@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:43:48 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 15:34:45 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:34:57 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	init_attributes(t_parse_tools *t);
 static void	init_parse_functions(t_parse_tools *t);
 static void	init_parse_functions2(t_parse_tools *t);
 
-void	init_parse_tools(t_parse_tools *t)
+void		init_parse_tools(t_parse_tools *t)
 {
 	t->in_scene = false;
 	t->in_object = false;
@@ -89,7 +89,7 @@ static void	init_parse_functions2(t_parse_tools *t)
 	t->parse[T_COLOR] = &parse_color;
 	t->parse[T_RADIUS] = &parse_radius;
 	t->parse[T_HEIGHT] = &parse_height;
-	t->parse[T_DIFFUSE_COEF] = &parse_diffuse_coef; 
+	t->parse[T_DIFFUSE_COEF] = &parse_diffuse_coef;
 	t->parse[T_REFRACTION] = &parse_refraction;
 	t->parse[T_REFLECTION] = &parse_reflection;
 	t->parse[T_SPECULAR_EXPONENT] = &parse_specular_exponent;
@@ -103,5 +103,5 @@ static void	init_parse_functions2(t_parse_tools *t)
 	t->parse[T_READ_TEXTURE_FILE] = &read_texture_file;
 	t->parse[T_READ_MATERIAL_FILE] = &read_material_file;
 	t->parse[T_HASHTAG] = &hashtag;
-	t->parse[T_INVALID_TOKEN] = &invalid_token;	
+	t->parse[T_INVALID_TOKEN] = &invalid_token;
 }

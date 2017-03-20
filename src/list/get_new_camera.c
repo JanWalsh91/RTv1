@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 14:42:55 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 13:22:01 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:13:51 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 
 static void	set_cam_non_values(t_camera *new_camera);
 
-t_camera 	*get_new_camera(t_parse_tools *t)
+t_camera	*get_new_camera(t_parse_tools *t)
 {
-	t_camera 	*new_camera;
+	t_camera	*new_camera;
 	static int	i = 1;
 	static char	*current_scene_name = NULL;
 
@@ -33,7 +33,8 @@ t_camera 	*get_new_camera(t_parse_tools *t)
 			current_scene_name = t->current_scene->name;
 		else if (ft_strcmp(current_scene_name, t->current_scene->name))
 			i = 1;
-		new_camera->name = ft_strdup(ft_strsjoin(3, t->tokens[t->input->token], " ", ft_itoa(i)));
+		new_camera->name = ft_strjoin(t->tokens[t->input->token], " ");
+		new_camera->name = ft_strjoinfree(new_camera->name, ft_itoa(i), 'b');
 		++i;
 	}
 	else
@@ -43,7 +44,6 @@ t_camera 	*get_new_camera(t_parse_tools *t)
 
 static void	set_cam_non_values(t_camera *new_camera)
 {
-	// ft_bzero(new_camera, sizeof(t_camera));
 	new_camera->prev = NULL;
 	new_camera->next = NULL;
 	new_camera->pos = v_new(NAN, NAN, NAN);

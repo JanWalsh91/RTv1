@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 14:13:01 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/15 17:04:25 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:33:32 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 t_vec3	get_color(t_parse_tools *t, char *value)
 {
 	t_vec3	new_col;
-	
+
 	if (ft_charcount(value, ',') == 2)
 		new_col = parse_rgb(value);
 	else if (ft_charcount(value, ',') != 0)
@@ -56,12 +56,18 @@ t_vec3	parse_hexadecimal(char *value)
 	if (!valid_hex_format(value, &i))
 		return (v_new(NAN, NAN, NAN));
 	new_col = v_new(0, 0, 0);
-	ft_tolower(value[i - 1]) != 'x' ? new_col.z = get_hex_value(value[--i]) : 0;
-	ft_tolower(value[i - 1]) != 'x' ? new_col.z += 16 * get_hex_value(value[--i]) : 0;
-	ft_tolower(value[i - 1]) != 'x' ? new_col.y = get_hex_value(value[--i]) : 0;
-	ft_tolower(value[i - 1]) != 'x' ? new_col.y += 16 * get_hex_value(value[--i]) : 0;
-	ft_tolower(value[i - 1]) != 'x' ? new_col.x = get_hex_value(value[--i]) : 0;
-	ft_tolower(value[i - 1]) != 'x' ? new_col.x += 16 * get_hex_value(value[--i]) : 0;
+	if (ft_tolower(value[i - 1]) != 'x')
+		new_col.z = get_hex_value(value[--i]);
+	if (ft_tolower(value[i - 1]) != 'x')
+		new_col.z += 16 * get_hex_value(value[--i]);
+	if (ft_tolower(value[i - 1]) != 'x')
+		new_col.y = get_hex_value(value[--i]);
+	if (ft_tolower(value[i - 1]) != 'x')
+		new_col.y += 16 * get_hex_value(value[--i]);
+	if (ft_tolower(value[i - 1]) != 'x')
+		new_col.x = get_hex_value(value[--i]);
+	if (ft_tolower(value[i - 1]) != 'x')
+		new_col.x += 16 * get_hex_value(value[--i]);
 	return (new_col);
 }
 
@@ -75,7 +81,8 @@ bool	valid_hex_format(char *value, int *i)
 	}
 	while (value[*i])
 	{
-		if (!(ft_isdigit(value[*i]) || ('a' <= ft_tolower(value[*i]) && ft_tolower(value[*i]) <= 'f')))
+		if (!(ft_isdigit(value[*i]) || ('a' <= ft_tolower(value[*i]) &&
+			ft_tolower(value[*i]) <= 'f')))
 		{
 			ft_printf("%{yellow}Invalid hexademical format.\n%{}");
 			return (false);

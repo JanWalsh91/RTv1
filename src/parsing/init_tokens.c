@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 13:31:55 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 17:19:52 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:35:39 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,17 +97,7 @@ static void	init_tokens2(t_parse_tools *t)
 		ft_errno_exit();
 	if (!(t->tokens[T_HASHTAG] = ft_strdup("#")))
 		ft_errno_exit();
-	// if (!(t->tokens[T_INVALID_TOKEN] = ft_strdup("invalid token")))
-		// ft_errno_exit();
-	t->tokens[T_INVALID_TOKEN] = NULL;
-		
+	if (!(t->tokens[T_INVALID_TOKEN] = ft_strdup("invalid token")))
+		ft_errno_exit();
 	t->tokens[T_COUNT] = NULL;
-		
-	int i = -1;
-	while (t->tokens[++i])
-		printf("%s\n", t->tokens[i]);
-	printf("%d\n", T_OPEN_BRACKET);
-	printf("%d\n", T_CLOSE_BRACKET);
-	printf("%d\n", T_EMPTY_LINE);
-	printf("%d\n", T_SCENE);
 }

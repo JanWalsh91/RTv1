@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 10:39:37 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 16:00:32 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:12:36 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 /*
 ** Performs additional verifications from user input
-** - No scene ? exit 
+** - No scene ? exit
 ** - Scene:
 **	- No object, cam, or light? -> exit
 **  - No res / no depth ? ->provide default
-**  - 
 */
 static void		get_cone_angle(t_object *o_ptr);
 static t_object	*get_new_disk(t_object *obj, t_vec3 pos);
@@ -33,12 +32,16 @@ void			check_data(t_scene *scenes)
 	s_ptr = scenes;
 	while (s_ptr)
 	{
-		(!s_ptr->cameras) ? data_error_exit(s_ptr, 0, NULL, "No camera provided.") : 0;
-		(!s_ptr->lights) ? data_error_exit(s_ptr, 0, NULL, "No light provided.") : 0;
-		(!s_ptr->objects) ? data_error_exit(s_ptr, 0, NULL, "No objects provided.") : 0;
+		(!s_ptr->cameras) ? data_error_exit(s_ptr, 0, NULL,
+			"No camera provided.") : 0;
+		(!s_ptr->lights) ? data_error_exit(s_ptr, 0, NULL,
+			"No light provided.") : 0;
+		(!s_ptr->objects) ? data_error_exit(s_ptr, 0, NULL,
+			"No objects provided.") : 0;
 		(s_ptr->res.x == -1) ? set_default_resolution(s_ptr) : 0;
 		isnan(s_ptr->ka) ? set_default_ka(s_ptr) : 0;
-		v_isnan(s_ptr->ambient_light_color) ? set_default_ambient_light_color(s_ptr) : 0;
+		v_isnan(s_ptr->ambient_light_color) ?
+			set_default_ambient_light_color(s_ptr) : 0;
 		s_ptr->image_aspect_ratio = (double)s_ptr->res.x / (double)s_ptr->res.y;
 		(s_ptr->ray_depth == -1) ? set_default_ray_depth(s_ptr) : 0;
 		check_cameras(s_ptr, s_ptr->cameras);
@@ -55,8 +58,10 @@ void	check_cameras(t_scene *scene, t_camera *cameras)
 	c_ptr = cameras;
 	while (c_ptr)
 	{
-		v_isnan(c_ptr->pos) ? set_default_pos(scene, T_CAMERA, c_ptr, &c_ptr->pos) : 0;
-		isnan(c_ptr->fov) ? set_default_fov(scene, T_CAMERA, c_ptr, &c_ptr->fov) : 0;
+		v_isnan(c_ptr->pos) ? set_default_pos(scene,
+			T_CAMERA, c_ptr, &c_ptr->pos) : 0;
+		isnan(c_ptr->fov) ? set_default_fov(scene,
+			T_CAMERA, c_ptr, &c_ptr->fov) : 0;
 		get_cam_direction(scene, c_ptr);
 		init_camera(scene, c_ptr);
 		c_ptr = c_ptr->next;
@@ -66,19 +71,24 @@ void	check_cameras(t_scene *scene, t_camera *cameras)
 void	check_lights(t_scene *scene, t_light *lights)
 {
 	t_light		*l_ptr;
-	
+
 	l_ptr = lights;
 	while (l_ptr)
 	{
 		(v_isnan(l_ptr->pos)) ? get_light_direction(scene, l_ptr) : 0;
 		if (!v_isnan(l_ptr->dir) && !v_isnan(l_ptr->pos))
 		{
-			data_warning(scene, T_LIGHT, l_ptr, "Lights can either have position or direction. Setting direction to NAN.");
+			data_warning(scene, T_LIGHT, l_ptr,
+				"Lights can either have position or direction. \
+				Setting direction to NAN.");
 			l_ptr->dir = v_new(NAN, NAN, NAN);
 		}
-		v_isnan(l_ptr->dir) && v_isnan(l_ptr->pos) ? set_default_pos(scene, T_LIGHT, l_ptr, &l_ptr->pos) : 0;
-		v_isnan(l_ptr->col) ? set_default_col(scene, T_LIGHT, l_ptr, &l_ptr->col) : 0;
-		isnan(l_ptr->intensity) ? set_default_intensity(scene, T_LIGHT, l_ptr, &l_ptr->intensity) : 0;
+		v_isnan(l_ptr->dir) && v_isnan(l_ptr->pos) ?
+			set_default_pos(scene, T_LIGHT, l_ptr, &l_ptr->pos) : 0;
+		v_isnan(l_ptr->col) ? set_default_col(scene,
+			T_LIGHT, l_ptr, &l_ptr->col) : 0;
+		isnan(l_ptr->intensity) ? set_default_intensity(scene,
+			T_LIGHT, l_ptr, &l_ptr->intensity) : 0;
 		if (!v_isnan(l_ptr->dir))
 			l_ptr->intensity /= 1000;
 		l_ptr = l_ptr->next;
@@ -92,21 +102,22 @@ void	check_objects(t_scene *scene, t_object *objects)
 	o_ptr = objects;
 	while (o_ptr)
 	{
-		v_isnan(o_ptr->pos) ? set_default_pos(scene, o_ptr->type, o_ptr, &o_ptr->pos) : 0;
-		if (o_ptr->type != T_SPHERE)
-			get_obj_direction(scene, o_ptr);
-		v_isnan(o_ptr->col) ? set_default_col(scene, o_ptr->type, o_ptr, &o_ptr->col) : 0;
-		if ((o_ptr->type != T_PLANE) &&
-		isnan(o_ptr->rad))
+		v_isnan(o_ptr->pos) ? set_default_pos(scene, o_ptr->type,
+			o_ptr, &o_ptr->pos) : 0;
+		o_ptr->type != T_SPHERE ? get_obj_direction(scene, o_ptr) : 0;
+		v_isnan(o_ptr->col) ? set_default_col(scene, o_ptr->type,
+			o_ptr, &o_ptr->col) : 0;
+		if ((o_ptr->type != T_PLANE) && isnan(o_ptr->rad))
 			set_default_radius(scene, o_ptr->type, o_ptr, &o_ptr->rad);
-		if ((o_ptr->type == T_CONE || o_ptr->type == T_CYLINDER) &&
-			isnan(o_ptr->height))
-			set_default_height(scene, o_ptr->type, o_ptr, &o_ptr->height);
-		isnan(o_ptr->ks) ? set_default_ks(scene, o_ptr->type, o_ptr, &o_ptr->ks) : 0;
-		isnan(o_ptr->kd) ? set_default_kd(scene, o_ptr->type, o_ptr, &o_ptr->kd) : 0;
-		isnan(o_ptr->specular_exp) ? set_default_specular_exp(scene, o_ptr->type, o_ptr, &o_ptr->specular_exp) : 0;
-		if (o_ptr->type == T_CONE)
-			get_cone_angle(o_ptr);
+		(o_ptr->type == 9 || o_ptr->type == 10) && isnan(o_ptr->height)
+			? set_default_height(scene, o_ptr->type, o_ptr, &o_ptr->height) : 0;
+		isnan(o_ptr->ks) ? set_default_ks(scene, o_ptr->type,
+			o_ptr, &o_ptr->ks) : 0;
+		isnan(o_ptr->kd) ? set_default_kd(scene, o_ptr->type,
+			o_ptr, &o_ptr->kd) : 0;
+		isnan(o_ptr->specular_exp) ? set_default_specular_exp(scene,
+			o_ptr->type, o_ptr, &o_ptr->specular_exp) : 0;
+		o_ptr->type == T_CONE ? get_cone_angle(o_ptr) : 0;
 		if (o_ptr->type == T_CONE || o_ptr->type == T_CYLINDER)
 			add_disks(scene, o_ptr);
 		o_ptr = o_ptr->next;
@@ -153,7 +164,7 @@ void				get_cam_direction(t_scene *scene, t_camera *cam)
 	}
 	if (v_isnan(cam->dir) || (!cam->dir.x && !cam->dir.y && !cam->dir.z))
 		set_default_cam_dir(scene, T_CAMERA, cam, &cam->dir);
-	cam->dir = v_norm (cam->dir);
+	cam->dir = v_norm(cam->dir);
 }
 
 void				get_light_direction(t_scene *scene, t_light *light)
@@ -173,7 +184,8 @@ void				get_light_direction(t_scene *scene, t_light *light)
 		light->dir = m_v_mult(light->dir, m);
 		free_matrix(&m);
 	}
-	if (v_isnan(light->dir) || (!light->dir.x && !light->dir.y && !light->dir.z))
+	if (v_isnan(light->dir) ||
+		(!light->dir.x && !light->dir.y && !light->dir.z))
 		set_default_light_dir(scene, T_LIGHT, light, &light->dir);
 	light->dir = v_norm(light->dir);
 }
@@ -184,13 +196,14 @@ void				add_disks(t_scene *scene, t_object *obj)
 
 	if (obj->type == T_CYLINDER)
 		push_object(&scene->objects, get_new_disk(obj, obj->pos));
-	push_object(&scene->objects, get_new_disk(obj, v_add(obj->pos, v_scale(obj->dir, obj->height))));
+	push_object(&scene->objects, get_new_disk(obj, v_add(obj->pos,
+		v_scale(obj->dir, obj->height))));
 }
 
 static t_object		*get_new_disk(t_object *obj, t_vec3 pos)
 {
 	t_object *new_disk;
-	
+
 	if (!(new_disk = (t_object *)ft_memalloc(sizeof(t_object))))
 		ft_error_exit("Malloc error");
 	set_non_values(new_disk);

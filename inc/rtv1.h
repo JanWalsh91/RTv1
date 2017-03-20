@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 17:18:05 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/19 15:05:54 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 # include <limits.h>
 # include <stdbool.h>
-# include "/Users/jwalsh/.brew/include/SDL2/SDL.h"
+# include "../SDL2/include/sdl.h"
 # include "../Libft/inc/libft.h"
 # include "../Libmathft/inc/libmathft.h"
 # include "keycode_mac.h" //?
@@ -271,7 +271,7 @@ typedef struct		s_parse_tools
 	bool			in_scene;
 	bool			in_object;
 	t_input			*input;
-	t_input			*input_head; //pointer to input. // used?
+	t_input			*input_head; //used for freeing
 	t_scene			*scenes;
 	t_scene			*current_scene;
 	t_object		*current_object;
@@ -494,7 +494,15 @@ int				handle_sdl_events(t_scene *scenes, t_env *env);
 */
 
 void			free_matrix(t_matrix *m);
-
+void			free_parse_tools(t_parse_tools *t);
+void			free_tokens(char **tokens);
+void			free_input(t_input *input);
+void			free_colors(t_color_list *lists);
+void			free_parse_functions(void (**parse)(struct s_parse_tools *));
+void			free_scenes(t_scene *scenes);
+void			free_cameras(t_camera *cams, t_pt2 res);
+void 			free_lights(t_light *lights);
+void			free_objects(t_object *objs);
 /*
 ** Error Functions
 */

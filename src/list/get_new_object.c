@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 13:22:17 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:15:14 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 ** Creates a new object.
 */
 
-t_object 	*get_new_object(t_parse_tools *t)
+t_object	*get_new_object(t_parse_tools *t)
 {
-	t_object 	*new_object;
+	t_object	*new_object;
 	static int	i = 1;
 	static char	*current_scene_name = NULL;
 
@@ -31,7 +31,8 @@ t_object 	*get_new_object(t_parse_tools *t)
 			current_scene_name = t->current_scene->name;
 		else if (ft_strcmp(current_scene_name, t->current_scene->name))
 			i = 1;
-		new_object->name = ft_strdup(ft_strsjoin(3, t->tokens[t->input->token], " ", ft_itoa(i)));
+		new_object->name = ft_strjoin(t->tokens[t->input->token], " ");
+		new_object->name = ft_strjoinfree(new_object->name, ft_itoa(i), 'b');
 		++i;
 	}
 	else
@@ -40,7 +41,7 @@ t_object 	*get_new_object(t_parse_tools *t)
 	return (new_object);
 }
 
-void	set_non_values(t_object *new_object)
+void		set_non_values(t_object *new_object)
 {
 	ft_bzero(new_object, sizeof(t_object));
 	new_object->name = NULL;

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 14:46:09 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/01 16:22:18 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:26:06 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	push_light(t_light **lights_head, t_light *new_light)
 {
 	t_light	*light_ptr;
 
-	// printf("push_light: [%s]\n", new_light->name);
 	if (new_light)
 	{
 		if (!(*lights_head))

@@ -5,8 +5,12 @@ scene:
 		position: 0, 0, 0
 		radius: 10
 		height: 10
+
+
+
 		color: deep pink
 	}
+
 	light: 
 	{
 		position: 0, 5, 0
@@ -18,6 +22,7 @@ scene:
 		direction: 0, 1, 0
 		color: red
 	}
+
 	camera
 	{
 		position: 0, 1, -9

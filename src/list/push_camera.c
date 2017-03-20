@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 14:44:59 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/04 13:18:47 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:17:14 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	push_camera(t_camera **cameras_head, t_camera *new_camera)
 {
 	t_camera	*cam_ptr;
 
-	// printf("push_camera: [%s]\n", new_camera->name);
 	if (new_camera)
 	{
 		if (!(*cameras_head))

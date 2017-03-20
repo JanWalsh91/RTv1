@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 12:38:54 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/02 14:55:39 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:24:33 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,34 @@
 ** Initilializes colors based on external file located at COLORS_PATH
 */
 
-int	init_color_list(t_color_list **colors)
+int				init_color_list(t_color_list **colors)
 {
-	char 		*line;
+	char		*line;
 	int			fd;
 	int			ret;
 
 	fd = open(COLORS_PATH, O_RDONLY);
 	if (fd == -1)
 		ft_errno_exit();
+	line = NULL;
 	while ((ret = get_next_line(fd, &line) > 0))
+	{
 		color_pushback(colors, color_new(line));
+		free(line);
+		line = NULL;
+	}
 	if (ret != 0)
 		ft_errno_exit();
 	close(fd);
 	return (1);
 }
 
-t_color_list *color_new(char *line)
+t_color_list	*color_new(char *line)
 {
 	t_color_list	*new_color;
 	int				i;
 
-	if (!line)
-		return (NULL);
-	if (!(new_color = (t_color_list *)malloc(sizeof(t_color_list))))
+	if (!line || !(new_color = (t_color_list *)malloc(sizeof(t_color_list))))
 		return (NULL);
 	i = 0;
 	while (ft_isspace(line[i]))
@@ -65,7 +68,7 @@ t_color_list *color_new(char *line)
 	return (new_color);
 }
 
-void	color_pushback(t_color_list **colors, t_color_list *new_color)
+void			color_pushback(t_color_list **colors, t_color_list *new_color)
 {
 	t_color_list	*ptr;
 

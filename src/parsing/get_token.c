@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 15:37:10 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 16:39:48 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 18:34:21 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,15 @@
 
 /*
 ** Parses the key in the key-value combination.
-** Returns the enum value. 
+** Returns the enum value.
 */
 
 int	get_token(t_parse_tools *t, char *key)
 {
 	int		i;
 
-	printf("get token: [%s] ", key);
 	i = 0;
-	if (!key)
+	if (!key || !*key)
 		return (T_EMPTY_LINE);
 	if (ft_strchr(key, '#') && (key[0] == '#'))
 		return (T_HASHTAG);
@@ -31,12 +30,10 @@ int	get_token(t_parse_tools *t, char *key)
 	{
 		if (t->tokens[i] == NULL)
 			ft_errno_exit();
-		printf("compare with: [%s] ", t->tokens[i]);
 		if (!ft_strcmp(t->tokens[i], key))
 			break ;
 		++i;
 	}
-	printf("-> %i\n", i);
 	if (i < T_COUNT)
 		return (i);
 	else

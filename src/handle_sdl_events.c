@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 14:15:05 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/02/04 14:22:41 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/20 17:56:56 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,18 @@
 
 int	handle_sdl_events(t_scene *scenes, t_env *env)
 {
+	int quit;
+
+	quit = 0;
 	(void)scenes;
-	int quit = 0;
 	while (!quit)
 	{
 		SDL_WaitEvent(&env->e);
-		if (env->e.window.type == SDL_WINDOWEVENT_CLOSE){
+		if (env->e.window.type == SDL_WINDOWEVENT_CLOSE)
 			quit = 1;
-		}
-		if (env->e.window.type == SDL_KEYDOWN){
-			quit = 1;
-		}
-		if (env->e.window.type == SDL_MOUSEBUTTONDOWN){
-			quit = 1;
-		}
+		if (env->e.window.type == SDL_KEYDOWN)
+			if (env->e.key.keysym.sym == SDLK_ESCAPE)
+				quit = 1;
 	}
 	return (1);
 }
