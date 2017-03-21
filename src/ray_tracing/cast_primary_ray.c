@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 11:10:43 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 14:45:21 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:15:45 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@
 ** - evaluates color at hitpoint based on diffuse, specular and ambient
 ** lighting.
 ** - returns the calculated color, or background color if no intersections
-** is found.
+** are found.
 */
 
 static t_color	get_color_at_hitpoint(t_raytracing_tools *r, t_ray *ray,
 				t_ray *shadow_ray);
 
-t_color		cast_primary_ray(t_raytracing_tools *r, t_ray *ray)
+t_color			cast_primary_ray(t_raytracing_tools *r, t_ray *ray)
 {
 	t_object	*o_ptr;
 	t_ray		shadow_ray;
@@ -45,11 +45,12 @@ t_color		cast_primary_ray(t_raytracing_tools *r, t_ray *ray)
 	return (get_color_at_hitpoint(r, ray, &shadow_ray));
 }
 
-static t_color	get_color_at_hitpoint(t_raytracing_tools *r, t_ray *ray, t_ray *shadow_ray)
+static t_color	get_color_at_hitpoint(t_raytracing_tools *r, t_ray *ray,
+				t_ray *shadow_ray)
 {
 	t_color	color;
 	t_light	*l_ptr;
-	
+
 	color = v_new(0, 0, 0);
 	l_ptr = r->scenes->lights;
 	while (l_ptr)
@@ -58,7 +59,6 @@ static t_color	get_color_at_hitpoint(t_raytracing_tools *r, t_ray *ray, t_ray *s
 		{
 			color = v_add(color, get_diffuse(r, ray, shadow_ray, l_ptr));
 			color = v_add(color, get_specular(r, ray, shadow_ray, l_ptr));
-			// color = ray->hit_obj->col;
 		}
 		l_ptr = l_ptr->next;
 	}

@@ -6,14 +6,14 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 15:26:41 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 15:27:00 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:11:52 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-** Consider doing sphere intersection with quadratic equation instead.
+** Checks for a ray-sphere intersection.
 */
 
 bool	get_sphere_intersection(t_raytracing_tools *r, t_ray *ray,

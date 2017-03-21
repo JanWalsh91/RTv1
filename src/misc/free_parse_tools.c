@@ -6,13 +6,21 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/19 14:01:40 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:28:49 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 16:01:31 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
-void	free_parse_tools(t_parse_tools *t)
+static void	free_input(t_input *input);
+static void	free_tokens(char **tokens);
+static void	free_colors(t_color_list *list);
+
+/*
+** Frees the t_parse_tools structure and substructures.
+*/
+
+void		free_parse_tools(t_parse_tools *t)
 {
 	free_input(t->input_head);
 	free_colors(t->colors);
@@ -25,7 +33,7 @@ void	free_parse_tools(t_parse_tools *t)
 	free(t->parse);
 }
 
-void	free_input(t_input *input)
+static void	free_input(t_input *input)
 {
 	t_input *tmp;
 
@@ -42,7 +50,7 @@ void	free_input(t_input *input)
 	}
 }
 
-void	free_tokens(char **tokens)
+static void	free_tokens(char **tokens)
 {
 	int	i;
 
@@ -54,7 +62,7 @@ void	free_tokens(char **tokens)
 	}
 }
 
-void	free_colors(t_color_list *list)
+static void	free_colors(t_color_list *list)
 {
 	t_color_list	*tmp;
 

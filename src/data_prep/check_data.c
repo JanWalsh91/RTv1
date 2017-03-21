@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/07 10:39:37 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:12:36 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 16:04:03 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,16 +130,6 @@ void		get_obj_direction(t_scene *scene, t_object *obj)
 
 	if (!v_isnan(obj->look_at) && !v_isnan(obj->pos))
 		obj->dir = v_sub(obj->look_at, obj->pos);
-	else if (!v_isnan(obj->rot))
-	{
-		m = m_new_identity();
-		m = m_mult(m, m_new_rotate(obj->rot.x, 'x'));
-		obj->dir = m_v_mult(v_new(0, 1, 0), m);
-		m = m_mult(m, m_new_rotate(obj->rot.y, 'y'));
-		obj->dir = m_v_mult(obj->dir, m);
-		m = m_mult(m, m_new_rotate(obj->rot.z, 'z'));
-		obj->dir = m_v_mult(obj->dir, m);
-	}
 	if (v_isnan(obj->dir) || (!obj->dir.x && !obj->dir.y && !obj->dir.z))
 		set_default_obj_dir(scene, obj->type, obj, &obj->dir);
 	obj->dir = v_norm(obj->dir);
@@ -151,17 +141,6 @@ void				get_cam_direction(t_scene *scene, t_camera *cam)
 
 	if (!v_isnan(cam->look_at) && !v_isnan(cam->pos))
 		cam->dir = v_sub(cam->look_at, cam->pos);
-	else if (!v_isnan(cam->rot))
-	{
-		m = m_new_identity();
-		m = m_mult(m, m_new_rotate(cam->rot.x, 'x'));
-		cam->dir = m_v_mult(v_new(0, 0, 1), m);
-		m = m_mult(m, m_new_rotate(cam->rot.y, 'y'));
-		cam->dir = m_v_mult(cam->dir, m);
-		m = m_mult(m, m_new_rotate(cam->rot.z, 'z'));
-		cam->dir = m_v_mult(cam->dir, m);
-		free_matrix(&m);
-	}
 	if (v_isnan(cam->dir) || (!cam->dir.x && !cam->dir.y && !cam->dir.z))
 		set_default_cam_dir(scene, T_CAMERA, cam, &cam->dir);
 	cam->dir = v_norm(cam->dir);
@@ -173,17 +152,6 @@ void				get_light_direction(t_scene *scene, t_light *light)
 
 	if (!v_isnan(light->look_at) && !v_isnan(light->pos))
 		light->dir = v_sub(light->look_at, light->pos);
-	else if (!v_isnan(light->rot))
-	{
-		m = m_new_identity();
-		m = m_mult(m, m_new_rotate(light->rot.x, 'x'));
-		light->dir = m_v_mult(v_new(0, 0, 1), m);
-		m = m_mult(m, m_new_rotate(light->rot.y, 'y'));
-		light->dir = m_v_mult(light->dir, m);
-		m = m_mult(m, m_new_rotate(light->rot.z, 'z'));
-		light->dir = m_v_mult(light->dir, m);
-		free_matrix(&m);
-	}
 	if (v_isnan(light->dir) ||
 		(!light->dir.x && !light->dir.y && !light->dir.z))
 		set_default_light_dir(scene, T_LIGHT, light, &light->dir);

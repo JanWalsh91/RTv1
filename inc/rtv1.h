@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:53:33 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/19 15:05:54 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:17:47 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 # include "../SDL2/include/sdl.h"
 # include "../Libft/inc/libft.h"
 # include "../Libmathft/inc/libmathft.h"
-# include "keycode_mac.h" //?
-# include "colors.h"//?
 
 /*
 ** General settings
@@ -107,7 +105,7 @@ typedef enum		e_token
 }					t_token;
 
 /*
-** Link for chained list in which is stored info about each line parsed.
+** Link for linked list with info about each line parsed.
 */
 
 typedef	struct		s_input
@@ -121,12 +119,38 @@ typedef	struct		s_input
 
 typedef t_vec3			t_color;
 
+/*
+** Link for linked list with info about colors read from external color file
+*/
+
 typedef struct			s_color_list
 {
 	t_color				value;
 	char				*name;
 	struct s_color_list	*next;
 }						t_color_list;
+
+/*
+** Structure containing info about most attributes that entities can have
+** res - resolution
+** ambient_light_color - color of ambient lighting
+** ka - ambient lighting intensity (0 - 1)
+** intensity - light intensity
+** fov - field of view (camera)
+** pos - position
+** dir - direction
+** rot - rotation (pending feature)
+** look_at - defines direction by position and a target
+** col - color
+** rad - radius
+** height - height
+** ks - specular coefficient (0 - 1)
+** specular_exp - specular exponent
+** kd - diffuse coefficient (0 - 1)
+** refraction - refraction coefficient (0 - 1) (pending feature)
+** reflection - reflection coefficient (0 - 1) (pending feature)
+** transparency - transparency coefficient (0 - 1) (pending feature)
+*/
 
 typedef struct		s_attributes
 {
@@ -144,42 +168,58 @@ typedef struct		s_attributes
 	double		rad;
 	double		height;
 	double		ks;
+	double		specular_exp;
 	double		kd;
 	double		refraction;
 	double		reflection;
-	double		specular_exp;
 	double		transparency;
 }					t_attributes;
+
+/*
+** Current type of rays thrown
+*/
 
 typedef enum		e_ray_type
 {
 	R_PRIMARY,
-	R_SHADOW,
-	R_DIFFUSE,
-	R_SPECULAR,
-	R_REFLECTION,
-	R_REFRACTION,
-	R_AMBIENT
+	R_SHADOW
 }					t_ray_type;
 
 /*
-**
+** Structure containing info about a ray
+** type - ray type (see above)
+** origin - ray origin
+** dir - ray direction
+** t - distance to closest intersection, if any
+** hit - hit point in World View
+** hit_obj - pointer to object hit at intersection point
+** hit_type - type of hit_obj
+** nhit - normal at intersection point
+** n_dir - direction (-1 or 1) of nhit
+** col - color
 */
 
-typedef	struct		s_ray
+typedef	struct	s_ray
 {
-	t_ray_type	type; //ray type
-	t_vec3		origin; // ray origin
-	t_vec3		dir; // ray direction: must be normalized
-	double		t; // distance of intersection
-	struct s_object	*hit_obj; //pointer to object hit at intersection point
-	t_vec3		hit; // intersection point in World View
-	t_token		hit_type; // type of object hit
-	int			n_dir; //direction of normal at intersetion point
-	t_vec3		nhit; //normal at hit point
-	t_color		col; // color found
-}					t_ray;
+	t_ray_type		type;
+	t_vec3			origin;
+	t_vec3			dir;
+	double			t;
+	t_vec3			hit;
+	struct s_object	*hit_obj;
+	t_token			hit_type;
+	int				n_dir;
+	t_vec3			nhit;
+	t_color			col;
+}				t_ray;
 
+/*
+** Link in linked list containing info about an object
+** type - object type (see t_token)
+** name - object name
+** angle - calculated angle for cone
+** (see t_attributes for more information)
+*/
 
 typedef struct	s_object
 {
@@ -190,17 +230,23 @@ typedef struct	s_object
 	t_vec3			rot;
 	t_vec3			look_at;
     t_color			col;
-	double			rad; //radius for sphere, or cylinder, or cone.
-	double			height; //height of cone/cylinder
+	double			rad;
+	double			height;
 	double 			angle;
-	double			kd; //diffuse coefficient
-	double			ks; //specular coefficient
+	double			kd;
+	double			ks;
 	double			refraction;
 	double			reflection;
 	double			specular_exp;
 	double			transparency;
 	struct s_object	*next;
 }				t_object;
+
+/*
+** Link in linked list containing info about a light
+** name - light name
+** (see t_attributes for more information)
+*/
 
 typedef struct	s_light
 {
@@ -213,6 +259,15 @@ typedef struct	s_light
 	double			intensity;
 	struct s_light	*next;
 }				t_light;
+
+/*
+** Link in linked list containing info about a camera
+** name - camera name
+** pixel_map - table of colors for each pixel
+** ctw - Camera to World matrix
+** scale - internal calculation based on fov
+** (see t_attributes for more information)
+*/
 
 typedef struct	s_camera
 {
@@ -233,6 +288,10 @@ typedef struct	s_camera
 ** Link containing info about one scene.
 ** res - resolution
 ** name - scene name
+** cameras - linked list of cameras
+** lights - linked list of lights
+** objects - linked list of objects
+** (see t_attributes for more information)
 */
 
 typedef struct	s_scene
@@ -252,9 +311,9 @@ typedef struct	s_scene
 }				t_scene;
 
 /*
-** Tools for parsing input files.
-** input - chained list with info about each line
-** scenes - chained list with info about all scenes
+** Structure with tools for parsing input files.
+** input - linked list with info about each line
+** scenes - linked list with info about all scenes
 ** current_* - pointers to relevant objects
 ** fd - current fd
 ** file_name - current file name
@@ -262,7 +321,7 @@ typedef struct	s_scene
 ** scene_attributes - attribtues given within scene declarations
 **				      but outside object declarations
 ** object_attributes - attributes given within object declarations
-** colors - chained list with color names and rgb values
+** colors - linked list with color names and rgb values
 ** parse - list of function pointers for each token
 */
 
@@ -271,7 +330,7 @@ typedef struct		s_parse_tools
 	bool			in_scene;
 	bool			in_object;
 	t_input			*input;
-	t_input			*input_head; //used for freeing
+	t_input			*input_head;
 	t_scene			*scenes;
 	t_scene			*current_scene;
 	t_object		*current_object;
@@ -289,7 +348,7 @@ typedef struct		s_parse_tools
 }					t_parse_tools;
 
 /*
-** Tools for determining ray object intersections.
+** Structure with tools for determining ray-object intersections.
 ** q - quadratic equation components
 ** r1, r2 - quadratic equation solutions/roots
 ** t - distance to closest intersection
@@ -304,19 +363,19 @@ typedef struct		s_intersection_tools
 	double			r1;
 	double			r2;
 	double			t;
-	t_vec3			p; // used?
 	t_vec3			v1;
 	t_vec3			v2;
 	t_vec3			v3;
+	t_vec3			p;
 	double			d1;
 	double			d2;
 	int				n_dir;
 }					t_intersection_tools;
 
 /*
-** Tools to help with the raytracing algorithms.
+** Structure with tools to help with raytracing
 ** scenes - contains info about all scenes
-** pix - current pixel
+** pix - coordinates of current pixel
 ** t - distance to closest intersection 
 */
 
@@ -328,7 +387,7 @@ typedef struct		s_raytracing_tools
 }					t_raytracing_tools;
 
 /*
-** Basis structure to handle SDL events.
+** Structure to handle SDL events.
 */
 
 typedef struct		s_env
@@ -348,15 +407,7 @@ void			get_file(char *file_name, t_parse_tools *t);
 int				get_token(t_parse_tools *t, char *key);
 void			parse_input(t_parse_tools *t);
 char 			**split_trim(char *s, char c);
-t_scene			*get_new_scene(t_parse_tools *t);
-t_object 		*get_new_object(t_parse_tools *t);
 void			set_non_values(t_object *new_object);
-t_light 		*get_new_light(t_parse_tools *t);
-t_camera 		*get_new_camera(t_parse_tools *t);
-void			push_scene(t_scene **scenes, t_scene *new_scene);
-void			push_object(t_object **objects, t_object *new_object);
-void			push_light(t_light **lights_head, t_light *new_light);
-void			push_camera(t_camera **cameras_head, t_camera *new_camera);
 void			set_attributes(t_parse_tools *t, t_attributes *a);
 int				reset_attributes(t_attributes *att);
 void			parse_open_bracket(t_parse_tools *t);
@@ -409,11 +460,17 @@ double			parse_double(char *value);
 ** List management Functions
 */
 
+t_scene			*get_new_scene(t_parse_tools *t);
+t_object 		*get_new_object(t_parse_tools *t);
+t_light 		*get_new_light(t_parse_tools *t);
+t_camera 		*get_new_camera(t_parse_tools *t);
+t_input			*get_new_input(char *line, char *file_name, int fd, t_parse_tools *t);
+void			push_scene(t_scene **scenes, t_scene *new_scene);
+void			push_object(t_object **objects, t_object *new_object);
+void			push_light(t_light **lights_head, t_light *new_light);
+void			push_camera(t_camera **cameras_head, t_camera *new_camera);
 void			input_pushback(t_input **input, t_input *n);
-t_input			*input_new(char *line, char *file_name, int fd, t_parse_tools *t);
 int				init_color_list(t_color_list **colors);
-void			color_pushback(t_color_list **colors, t_color_list *new_color);
-t_color_list	*color_new(char *next_line);
 bool			find_color_value(t_color_list *colors, char *value, t_vec3 *new_col);
 int				get_hex_value(char c);
 
@@ -493,21 +550,13 @@ int				handle_sdl_events(t_scene *scenes, t_env *env);
 ** Free Functions
 */
 
-void			free_matrix(t_matrix *m);
 void			free_parse_tools(t_parse_tools *t);
-void			free_tokens(char **tokens);
-void			free_input(t_input *input);
-void			free_colors(t_color_list *lists);
-void			free_parse_functions(void (**parse)(struct s_parse_tools *));
 void			free_scenes(t_scene *scenes);
-void			free_cameras(t_camera *cams, t_pt2 res);
-void 			free_lights(t_light *lights);
-void			free_objects(t_object *objs);
+
 /*
 ** Error Functions
 */
 
-void			error_line_exit(const char *msg, size_t line);
 void			rt_file_error_exit(t_parse_tools *t, char *msg);
 void			rt_file_warning(t_parse_tools *t, char *msg);
 void			data_error_exit(t_scene *scene, int type, void *object, char *msg);

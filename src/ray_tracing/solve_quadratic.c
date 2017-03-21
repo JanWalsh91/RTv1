@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/11 13:25:29 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 15:49:39 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:15:16 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 ** Solves a quadratic equation.
-** Modifies the floats passed by address to solutions found, if they exist.
+** Updates r1 and r2 if at least a solution exists.
 ** Returns true if the quadratic has at least one solution.
 */
 

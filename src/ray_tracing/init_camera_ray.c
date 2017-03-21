@@ -6,14 +6,14 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 16:05:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 14:14:25 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:13:07 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-** Initializes a camera ray to be used in shooting primary/camera rays.
+** Initializes a camera ray.
 */
 
 t_ray	init_camera_ray(t_pt2 i, t_scene *scene)
@@ -31,6 +31,6 @@ t_ray	init_camera_ray(t_pt2 i, t_scene *scene)
 	cam_ray.dir = m_v_mult(cam_ray.dir, cam->ctw);
 	cam_ray.dir = v_norm(cam_ray.dir);
 	cam_ray.type = R_PRIMARY;
-	cam_ray.n_dir = 1; //? necessary?
+	cam_ray.n_dir = 1;
 	return (cam_ray);
 }

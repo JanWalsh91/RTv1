@@ -6,20 +6,20 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 15:27:49 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 15:28:37 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:17:53 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
-/*
-**
-*/
-
 static void	get_finite_cylinder_intersection(t_raytracing_tools *r, t_ray *ray,
 	t_object *obj, t_intersection_tools *i);
 
-bool	get_cylinder_intersection(t_raytracing_tools *r, t_ray *ray,
+/*
+** Checks for a cylinder-ray intersection.
+*/
+
+bool		get_cylinder_intersection(t_raytracing_tools *r, t_ray *ray,
 	t_object *obj)
 {
 	t_intersection_tools	i;

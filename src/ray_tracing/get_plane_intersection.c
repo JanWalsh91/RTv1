@@ -6,21 +6,14 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 15:25:30 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 15:25:37 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:11:40 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-** Checks if t_ray ray intersects plane obj.
-** If the dot product of the ray->dir and obj->dir is close to 0,
-** it means the normal of the plane and the direction of the ray are
-** perpendicular, which means the plane and the ray are almost parallel.
-** Thus, there is no intersection.
-**
-** We also check if that dot product is negative, in which case the normal
-** is facing in the wrong direction. We inverse the normal and check again.
+** Checks for a ray-plane intersection.
 */
 
 bool	get_plane_intersection(t_raytracing_tools *r, t_ray *ray, t_object *obj)

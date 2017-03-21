@@ -6,16 +6,14 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 12:11:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 15:31:04 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:13:49 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-** Returns 1 if an intersection was found. 0 if an intersection was not found.
-** If there is an intersection, modifies ray->t: the distance of ray->origin
-** to the intersection, in order to get the closest intersecting object.
+** Checks for a ray-object intersection.
 */
 
 bool	intersects(t_raytracing_tools *r, t_ray *ray, t_object *obj)

@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/21 16:05:39 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 15:05:01 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:12:41 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,11 @@ static void	get_plane_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 static void	get_cylinder_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 static void	get_cone_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 
-void	get_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj)
+/*
+** Updates the normal at hitpoint (nhit and n_dir).
+*/
+
+void		get_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj)
 {
 	if (ray->hit_type == T_SPHERE)
 		get_sphere_normal(r, ray, obj);

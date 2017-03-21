@@ -6,15 +6,11 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 15:30:04 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 15:31:18 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:16:27 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
-
-/*
-**
-*/
 
 static void	get_finite_cone_intersection(t_raytracing_tools *r, t_ray *ray,
 	t_object *obj, t_intersection_tools *i);
@@ -23,7 +19,12 @@ static bool	lower_than_min(double r, t_intersection_tools *i, t_object *obj,
 static bool	higher_than_max(double r, t_intersection_tools *i, t_object *obj,
 	t_ray *ray);
 
-bool	get_cone_intersection(t_raytracing_tools *r, t_ray *ray, t_object *cone)
+/*
+** Checks for a ray-cone intersection.
+*/
+
+bool		get_cone_intersection(t_raytracing_tools *r, t_ray *ray,
+			t_object *cone)
 {
 	t_intersection_tools i;
 

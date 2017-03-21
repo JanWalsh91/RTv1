@@ -6,14 +6,14 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 10:59:22 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/16 14:40:38 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:14:42 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-** Updates the image
+** Updates a camera's pixel_map (color of image pixels).
 */
 
 void	render(t_raytracing_tools *r)

@@ -6,14 +6,14 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/18 15:29:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/18 15:31:22 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:11:21 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-**
+** Checks for a ray-disk intersection.
 */
 
 bool	get_disk_intersection(t_raytracing_tools *r, t_ray *ray, t_object *disk)

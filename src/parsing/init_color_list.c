@@ -6,17 +6,22 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 12:38:54 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:24:33 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:01:08 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
+static t_color_list	*color_new(char *line);
+static void			move_to_next_col(int *i, char *line);
+static void			color_pushback(t_color_list **colors,
+					t_color_list *new_color);
+
 /*
-** Initilializes colors based on external file located at COLORS_PATH
+** Initilializes t_color_list based on external file located at COLORS_PATH
 */
 
-int				init_color_list(t_color_list **colors)
+int					init_color_list(t_color_list **colors)
 {
 	char		*line;
 	int			fd;
@@ -38,7 +43,7 @@ int				init_color_list(t_color_list **colors)
 	return (1);
 }
 
-t_color_list	*color_new(char *line)
+static t_color_list	*color_new(char *line)
 {
 	t_color_list	*new_color;
 	int				i;
@@ -49,26 +54,26 @@ t_color_list	*color_new(char *line)
 	while (ft_isspace(line[i]))
 		++i;
 	new_color->value.x = ft_atoi(line);
-	while (ft_isdigit(line[i]))
-		++i;
-	while (ft_isspace(line[i]))
-		++i;
+	move_to_next_col(&i, line);
 	new_color->value.y = ft_atoi(line + i);
-	while (ft_isdigit(line[i]))
-		++i;
-	while (ft_isspace(line[i]))
-		++i;
+	move_to_next_col(&i, line);
 	new_color->value.z = ft_atoi(line + i);
-	while (ft_isdigit(line[i]))
-		++i;
-	while (ft_isspace(line[i]))
-		++i;
+	move_to_next_col(&i, line);
 	new_color->name = ft_strdup(line + i);
 	new_color->next = NULL;
 	return (new_color);
 }
 
-void			color_pushback(t_color_list **colors, t_color_list *new_color)
+static void			move_to_next_col(int *i, char *line)
+{
+	while (ft_isdigit(line[*i]))
+		++(*i);
+	while (ft_isspace(line[*i]))
+		++(*i);
+}
+
+static void			color_pushback(t_color_list **colors,
+					t_color_list *new_color)
 {
 	t_color_list	*ptr;
 

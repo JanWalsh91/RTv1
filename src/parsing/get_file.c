@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 12:16:50 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:34:06 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 16:48:39 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	get_file(char *file_name, t_parse_tools *t)
 		ft_errno_exit();
 	while ((ret = get_next_line(fd, &next_line) > 0))
 	{
-		input_pushback(&t->input, input_new(next_line, file_name, fd, t));
+		input_pushback(&t->input, get_new_input(next_line, file_name, fd, t));
 		free(next_line);
 		next_line = NULL;
 	}

@@ -6,11 +6,15 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 15:39:23 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:29:43 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 16:16:54 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
+
+/*
+** Exits the program atfer printing and error message.
+*/
 
 void	rt_file_error_exit(t_parse_tools *t, char *msg)
 {
@@ -23,6 +27,10 @@ void	rt_file_error_exit(t_parse_tools *t, char *msg)
 	exit(0);
 }
 
+/*
+** Displays a warning message.
+*/
+
 void	rt_file_warning(t_parse_tools *t, char *msg)
 {
 	if (t)
@@ -32,6 +40,10 @@ void	rt_file_warning(t_parse_tools *t, char *msg)
 	else
 		ft_printf("%{yellow}WARNING: %s\n", msg);
 }
+
+/*
+** Exits the program atfer printing and error message.
+*/
 
 void	data_error_exit(t_scene *scene, int type, void *object, char *msg)
 {
@@ -51,6 +63,11 @@ void	data_error_exit(t_scene *scene, int type, void *object, char *msg)
 		ft_printf("%{red}ERROR:\n%s%{}\n", msg);
 	exit(0);
 }
+
+
+/*
+** Displays a warning message.
+*/
 
 void	data_warning(t_scene *scene, int type, void *object, char *msg)
 {
