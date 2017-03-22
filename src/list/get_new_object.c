@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:53:20 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/21 16:45:04 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 12:44:38 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_object	*get_new_object(t_parse_tools *t)
 	static char	*current_scene_name = NULL;
 
 	if (!(new_object = (t_object *)ft_memalloc(sizeof(t_object))))
-		ft_error_exit("Malloc error");
+		ft_errno_exit();
 	set_non_values(new_object);
 	if (!t->input->value || !*t->input->value)
 	{

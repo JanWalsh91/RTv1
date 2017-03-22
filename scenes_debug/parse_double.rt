@@ -1,0 +1,14 @@
+scene:
+{
+	camera:
+	{
+	}
+	light:
+	{
+
+	}
+	sphere:
+	{
+		radius: 1.75
+	}
+}

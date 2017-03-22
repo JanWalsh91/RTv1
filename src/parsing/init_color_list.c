@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 12:38:54 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/21 17:01:08 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 16:42:02 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static void			color_pushback(t_color_list **colors,
 					t_color_list *new_color);
 
 /*
-** Initilializes t_color_list based on external file located at COLORS_PATH
+** Initilializes t_color_list based on external file located at COLORS_PATH or
+** res/colors.txt
 */
 
 int					init_color_list(t_color_list **colors)
@@ -29,12 +30,13 @@ int					init_color_list(t_color_list **colors)
 
 	fd = open(COLORS_PATH, O_RDONLY);
 	if (fd == -1)
-		ft_errno_exit();
+		data_error_exit(NULL, 0, NULL, "Color file not found.");
 	line = NULL;
 	while ((ret = get_next_line(fd, &line) > 0))
 	{
 		color_pushback(colors, color_new(line));
-		free(line);
+		if (line)
+			free(line);
 		line = NULL;
 	}
 	if (ret != 0)
@@ -59,7 +61,8 @@ static t_color_list	*color_new(char *line)
 	move_to_next_col(&i, line);
 	new_color->value.z = ft_atoi(line + i);
 	move_to_next_col(&i, line);
-	new_color->name = ft_strdup(line + i);
+	if (!(new_color->name = ft_strdup(line + i)))
+		ft_errno_exit();
 	new_color->next = NULL;
 	return (new_color);
 }

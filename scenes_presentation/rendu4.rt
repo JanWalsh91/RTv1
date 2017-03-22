@@ -1,53 +1,50 @@
 scene: rendu4
 {
-	ambient light coefficient: 0.1
+	ka: 0.1
 	resolution: 1200, 1200
 	camera: cam
 	{
 		position: -1, 1, -15
+		fov: 30
 	}
 	light: light
 	{
 		position: 15, 5, -15
-		direction: -1, 0, 0
 		intensity: 20
 	}
 	plane: ground
 	{
-		color: 0x667777
+		color: 70, 70, 95
 		direction: 0, 1, 0
 		position: 0, 0, 0
 	}
 	plane: wall
 	{
-		color: 0x1010DD
+		color: 0x2020DD
 		direction: 0, 0, 1
 		position: 0, 0, 10
 	}
-	cylinder: cy1
+	ks: 0.05
+	specular exponent: 20
+	cylinder: cylinder1
 	{
 		position: -6, -3, 5
 		direction: 1, 1, 0
-		color: 0xaaaa33
-		height: 12
+		color: lime green
+		height: 20
 		radius: 1
-		ks: 0.5
-		specular exponent: 20
 	}
-	sphere: s1
+	sphere: sphere1
 	{
 		position: -0.5, 1, 5
-		color: 0xef1010
+		color: red
 		radius: 1.5
-		ks: 1
-		specular exponent: 100
 	}
-	cone: c1
+	cone: cone1
 	{
-		color: 0xffff33
+		color: yellow
 		position: 2, 0, 5
 		direction: -1, 1, 0
-		ks: 0.2
 		radius: 5
 		height: 10
 	}

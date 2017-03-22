@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/11 14:13:51 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/15 16:32:58 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:21:01 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 ** Calculates and returns the specular value of the color at hitpoint.
 */
 
-t_color	get_specular(t_raytracing_tools *r, t_ray *primary_ray, t_ray *shadow_ray, t_light *light)
+t_color	get_specular(t_raytracing_tools *r, t_ray *primary_ray,
+		t_ray *shadow_ray, t_light *light)
 {
 	t_color	new_col;
 	double	specular_intensity;

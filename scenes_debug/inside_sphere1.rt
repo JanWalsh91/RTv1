@@ -1,0 +1,27 @@
+ambient light color: goldenrod
+ka: 0.2	
+scene:
+{
+	sphere:
+	{
+		position: 0, 0, 0
+		radius: 10
+		color: deep pink
+	}
+	light: 
+	{
+		position: 0, 0, 4
+		intensity: 1
+	}
+	plane
+	{
+		position: 0, -1, 0
+		direction: 0, 1, 0
+		color: red
+	}
+	camera
+	{
+		position: 0, 0, -9
+
+	}
+}

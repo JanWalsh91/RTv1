@@ -1,6 +1,7 @@
 scene: rendu2
 {
-	ambient light coefficient: 0.2
+	ka: 0.1
+	ambient light color: forest green
 	resolution: 1200, 1200
 	camera: cam
 	{
@@ -15,12 +16,12 @@ scene: rendu2
 	}
 	cylinder: c1
 	{
-		color: 0x155315
+		color: light sea green
 		position: 0, -4, 5
 		direction: 0, 1, 0
 		radius: 1.5
 		height: 10
-		ks: 0.3
-		specular exponent: 100
+		ks: 0.01
+		specular exponent: 20
 	}
 }

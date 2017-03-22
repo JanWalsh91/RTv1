@@ -1,0 +1,30 @@
+ambient light color: goldenrod
+ka: 0.2	
+scene:
+{
+	camera: cam
+	{
+		position: 1, 6, -20
+		direction: 0, 0, 1	
+	}
+	direction: 0, 1, 0
+	height: 1
+	radius: 1
+	plane:
+	{
+		position: 0, 0, 8
+		direction: 0, 0, 2
+	}
+	color: 0x9E0E40
+	cone:
+	{
+		height: 11
+		radius: 4
+	}
+	light:
+	{
+		direction: -1.4, -1, 1
+		intensity: 4
+		color: white
+	}
+}

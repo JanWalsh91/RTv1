@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 15:37:10 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:34:21 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 13:47:06 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
 ** Parses the key in the key-value combination.
-** Returns the enum value.
+** Returns the corresponding enum value.
 */
 
 int	get_token(t_parse_tools *t, char *key)

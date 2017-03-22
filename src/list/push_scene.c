@@ -6,14 +6,12 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 11:53:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:20:31 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 13:44:41 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
-** Adds a new scene to the end of list t_scene.
-** If the list of scenes is empty, makes scene_head point to the first scene.
-** Else, iterates to the end of the list and adds new scene there.
+** Adds new_scene to the end of list t_scene.
 */
 
 #include "../../inc/rtv1.h"

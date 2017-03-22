@@ -1,0 +1,18 @@
+scene:
+{
+	plane:
+	{
+		position: 0, 0, 0
+		direction: 0, 1, 0
+	}
+	light:
+	{
+		direction: 0, 0, 0
+		intensity: 1
+	}
+	camera: 
+	{
+		position: 0, 20, -50
+		direction: 0, 0, 1
+	}
+}

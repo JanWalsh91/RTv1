@@ -1,0 +1,102 @@
+resolution: 1000, 1000
+color: white
+radius: 5
+height: 20
+kd: 0.6
+ks: 0.1
+specular exponent: 50
+ka: 0.1
+ambient light color: Dark Violet
+scene: scene1
+{
+	background color: cyan4
+	light: directional light
+	{
+		direction: -1, -1, 2	
+		intensity: 5
+	}
+	light: directional light
+	{
+		direction: 0, -1, 0	
+		intensity: 0.1
+		color: cyan
+	}
+	light: directional light
+	{
+		direction: 0, -1, 1	
+		intensity: 0.1
+		color: cyan
+	}
+	light: directional light
+	{
+		direction: 0, -1, -1	
+		intensity: 0.1
+		color: cyan
+	}
+	light: directional light
+	{
+		direction: 1, -1, 0	
+		intensity: 0.1
+		color: cyan
+	}
+	light: directional light
+	{
+		direction: -1, -1, 0	
+		intensity: 0.1
+		color: cyan
+	}
+	sphere:
+	{
+		position: -10, 7, -5
+		kd: 0.6
+		ks: 0.1
+		specular exponent: 50
+	}
+	camera: camera1
+	{
+		position: 0, 0, -60
+		direction: 0, 0, 1
+		fov: 50
+		color: pale green
+	}
+	plane: 
+	{
+		position: 0, -10, 0
+		direction: 0, 1, 0
+		ks: 0
+		specular exponent: 100
+		color: forest green
+	}
+	sphere:
+	{
+		position: 0, -10, 0
+		kd: 0.6
+		ks: 0.1
+		radius: 12
+		specular exponent: 50
+		color: maroon
+	}
+	sphere:
+	{
+		position: 0, 20, 0
+		radius: 7
+		color: orange
+	}
+	sphere:
+	{
+		position: -25, 10, 5
+		radius: 5
+	}
+		sphere:
+	{
+		position: 20, 10, -5
+		radius: 2
+		color: goldenrod
+	}
+	sphere:
+	{
+		position: 18, 20, 70
+		radius: 2
+		color: goldenrod4
+	}
+}

@@ -1,0 +1,40 @@
+ambient light color: deep pink
+ka: 0.2
+specular exponent: 10	
+ks: 0.1
+scene:
+{
+	camera: cam
+	{
+		position: 1, 2, -50
+		direction: 0, 0, 1	
+	}
+	plane:
+	{
+		position: 0, 0, 8
+		direction: 0, 0, 1
+	}
+	plane:
+	{
+		position: 0, 0, 0
+		direction: 0, 1, 0
+		color: blue
+	}
+	plane:
+	{
+		position: 0, 0, 0
+		direction: 0, 1, 0
+		color: red
+	}
+	light:
+	{
+		direction: -1.4, -1, 1
+		intensity: 4
+		color: orange
+	}
+	light:
+	{
+		position: 0, 1, 0
+
+	}
+}

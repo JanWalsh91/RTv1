@@ -1,0 +1,58 @@
+resolution: 500, 500
+ka: 0.2
+ambient light color: brown
+radius: 2
+scene:
+{
+	light: 
+	{
+		position: 0, 5, 0
+	}
+	light: 
+	{
+		position: 20, 5, -10
+	}
+	light: 
+	{
+		position: 0, -5, -10
+		intensity: 10
+	}
+	light:
+	{
+		position: -5, 0, 0
+	}
+	sphere: blue
+	{
+		position: 5, 10, 40
+		color: blue 
+	}
+	# sphere: red
+	# {
+	# 	position: 1, 0, 0	
+	# 	radius: 0
+	# 	color: red 
+	# }
+	sphere: green
+	{
+		position: -15, 10, 4
+		color: green 
+	}
+	sphere: orange
+	{
+		position: -10, 10, 0	
+		radius: 2
+		color: orange
+	}
+	sphere: purple
+	{	
+		position: 200, 0, -30	
+		color: purple
+	}
+	camera: TEST
+	{
+		fov: 50
+		position: 0, 0, 0 
+		look at: orange
+		# direction: 	1, 1, 0
+	}
+}

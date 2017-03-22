@@ -6,14 +6,14 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 11:53:17 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:26:37 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 13:44:14 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-** Adds a new object to the end of list t_objects.
+** Adds new_object to the end of list t_objects.
 */
 
 void	push_object(t_object **objects_head, t_object *new_object)

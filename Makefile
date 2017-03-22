@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/03/21 16:54:46 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/03/22 15:48:12 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,15 +31,31 @@ PARSING = 	get_color \
 			init_parse_tools \
 			init_tokens \
 			init_color_list \
+			parse_color_name \
 			parse_input \
-			parse_value \
+			parse_value_1 \
+			parse_value_2 \
+			parse_value_3 \
+			parse_value_4 \
+			parse_value_5 \
+			parse_value_6 \
+			parse_value_7 \
+			parse_value_8 \
+			parse_value_9 \
+			parse_vector \
+			parse_double \
 			reset_attributes \
-			set_attributes \
+			set_attributes_1 \
+			set_attributes_2 \
 			split_trim \
 
-DATA_PREP = check_data \
+DATA_PREP = check_scenes \
+			check_objects \
 			init_cameras \
-			set_default
+			set_default_1 \
+			set_default_2 \
+			set_default_3 \
+			set_default_4
 
 LIST = 		get_new_camera \
 			get_new_light \
@@ -156,7 +172,7 @@ $(OBJ_DIR)/%.o : ./src/misc/%.c
 	@$(CC) $(CFLAGS) -g -I./inc -I./$(SDL_PATH)/include -c -o $@ $<
 
 clean:
-	# @/bin/rm -Rf $(OBJ_DIR)
+	@/bin/rm -Rf $(OBJ_DIR)
 	# @/bin/rm -Rf $(SDL_PATH)lib
 	# @/bin/rm -Rf $(SDL_PATH)build
 	# @$(ECHO) "$(C_GREEN)SDL2 clean done.$(C_NONE)"

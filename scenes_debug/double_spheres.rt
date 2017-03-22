@@ -1,0 +1,33 @@
+ambient light color: goldenrod
+ka: 0.2	
+scene:
+{
+	camera: cam
+	{
+		position: 1, 0, -50
+		direction: 0, 0, 1	
+	}
+	plane:
+	{
+		position: 0, 0, 8
+		direction: 0, 0, 1
+	}
+	sphere:
+	{
+		position: 0, 0, 0
+		radius: 3
+		color: blue
+	}
+	sphere:
+	{
+		position: 0, 0, 0
+		radius: 3
+		color: red
+	}
+	light:
+	{
+		direction: -1.4, -1, 1
+		intensity: 4
+		color: white
+	}
+}

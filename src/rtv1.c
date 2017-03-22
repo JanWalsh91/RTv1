@@ -6,17 +6,18 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 10:39:56 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/21 15:49:01 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 15:45:59 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/rtv1.h"
+#include "../inc/rtv1.h"
 
 /*
-**
+** Manages SDL functions and sets pixel colors found from render() to
+** the renderer.
 */
 
-int rtv1(t_raytracing_tools *r)
+int	rtv1(t_raytracing_tools *r)
 {
 	t_env	env;
 	t_color	col;
@@ -32,7 +33,8 @@ int rtv1(t_raytracing_tools *r)
 		while (++i.x < r->scenes->res.x)
 		{
 			col = (r->scenes)->cameras->pixel_map[i.y][i.x];
-			SDL_SetRenderDrawColor(env.ren, col.x, col.y, col.z, SDL_ALPHA_OPAQUE);
+			SDL_SetRenderDrawColor(env.ren, col.x, col.y, col.z,
+				SDL_ALPHA_OPAQUE);
 			SDL_RenderDrawPoint(env.ren, i.x, i.y);
 		}
 	}
@@ -40,5 +42,5 @@ int rtv1(t_raytracing_tools *r)
 	handle_sdl_events(r->scenes, &env);
 	SDL_DestroyWindow(env.win);
 	SDL_Quit();
-    return(1);
+	return (1);
 }

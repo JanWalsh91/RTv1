@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 15:57:15 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/21 15:49:36 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 15:46:08 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int ac, char **av)
 	i = 0;
 	while (++i < ac)
 		parse_input(&t);
-	check_data(t.scenes);
+	check_scenes(t.scenes);
 	r.scenes = t.scenes;
 	free_parse_tools(&t);
 	rtv1(&r);

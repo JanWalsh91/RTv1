@@ -750,3 +750,21 @@
 139   0   0		DarkRed
 144 238 144		light green
 144 238 144		LightGreen
+255 147 41		candle
+255 147 41		Candle
+255 197 143		tungsten
+255 197 143		Tungsten
+252	212	64		sun
+252	212	64		Sun
+240 94 27		ember
+240 94 27		Ember
+133 187 101		dollar bill
+133 187 101		DollarBill
+255	0	56		carmine red
+255	0	56		CarmineRed
+255	51	204		razzle dazzle rose
+255	51	204		RazzleDazzleRose
+249	66	158		rose bonbon
+249	66	158		RoseBonbon
+255	67	164		wild strawberry
+255	67	164		WildStrawberry

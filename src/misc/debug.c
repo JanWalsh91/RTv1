@@ -6,14 +6,12 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/01 17:13:38 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/17 13:16:27 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 15:28:22 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 #include <stdio.h>
-
-
 
 void	print_scenes(t_scene *scenes_head)
 {
@@ -78,23 +76,6 @@ void	print_scenes(t_scene *scenes_head)
 	printf("\n");
 }
 
-void	print_input(t_list **list_head)
-{
-	t_list *l_ptr;
-	int		i;
-
-	printf("print_input\n");
-	l_ptr = *list_head;
-	i = 0;
-	while (l_ptr)
-	{
-		printf("line: [%i]: [%s]\n", i, (char *)(l_ptr)->content);
-		l_ptr = l_ptr->next;
-		++i;
-	}
-	printf("end print_input\n");
-}
-
 void	print_attributes(t_attributes att)
 {
 	printf("print_attributes\n");
@@ -107,11 +88,6 @@ void	print_vec(t_vec3 vec)
 {
 	printf("print_vec: [%f][%f][%f]\n", vec.x, vec.y, vec.z);
 }
-
-// void	print_pixel_map(t_color **map)
-// {
-	
-// }
 
 void	print_matrix(t_matrix m)
 {

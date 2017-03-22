@@ -6,14 +6,14 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 14:46:09 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:26:06 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 13:44:25 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-** Adds a new light to the end of list t_lights.
+** Adds new_light to the end of list t_lights.
 */
 
 void	push_light(t_light **lights_head, t_light *new_light)

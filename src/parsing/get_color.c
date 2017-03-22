@@ -6,15 +6,17 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/28 14:13:01 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:33:32 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 13:46:23 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-** Parses a color attribute. Three formats available: rgb (three ints separated
-** by commas), hexadecimal (hex value starting with 0x or 0X) or name (string).
+** Parses a color attribute. Three formats available:
+** - rgb (three ints separated by commas)
+** - hexadecimal (hex value starting with 0x or 0X
+** - name (string found in res/colors.txt).
 */
 
 t_vec3	get_color(t_parse_tools *t, char *value)
@@ -35,7 +37,7 @@ t_vec3	get_color(t_parse_tools *t, char *value)
 }
 
 /*
-** Parsing a vector is the same as parsing rgb input. 
+** Parsing a vector is the same as parsing rgb input.
 */
 
 t_vec3	parse_rgb(char *value)
@@ -97,7 +99,7 @@ bool	valid_hex_format(char *value, int *i)
 	return (true);
 }
 
-int	get_hex_value(char c)
+int		get_hex_value(char c)
 {
 	int	i;
 
@@ -109,46 +111,4 @@ int	get_hex_value(char c)
 	else
 		i = 0;
 	return (i);
-}
-
-/*
-** Initializes the list of colors if not yet initialized
-** and parses the list to find the corresponding rgb value.
-** Returns a NAN vector if no color is found.
-*/
-
-t_vec3	parse_color_name(t_parse_tools *t, char *value)
-{
-	t_vec3	new_col;
-
-	new_col = v_new(NAN, NAN, NAN);
-	if (!t->colors)
-		init_color_list(&t->colors);
-	if (find_color_value(t->colors, value, &new_col))
-		return (new_col);
-	else
-		ft_printf("%{yellow}Color name not found\n%{}");
-	return (new_col);
-}
-
-/*
-** Looks for matching color in t->colors. Returns 1 if found, 0 if not.
-** If found, modifies new_col.
-*/
-
-bool	find_color_value(t_color_list *colors, char *value, t_vec3 *new_col)
-{
-	t_color_list *ptr;
-
-	ptr = colors;
-	while (ptr)
-	{
-		if (!ft_strcmp(value, ptr->name))
-		{
-			*new_col = ptr->value;
-			return (true);
-		}
-		ptr = ptr->next;
-	}
-	return (false);
 }

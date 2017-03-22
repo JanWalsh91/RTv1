@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/21 16:05:39 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/21 17:12:41 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:22:56 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static void	get_sphere_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 static void	get_plane_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj);
-static void	get_cylinder_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj);
+static void	get_cylinder_normal(t_raytracing_tools *r,
+			t_ray *ray, t_object *obj);
 static void	get_cone_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj);
 
 /*
@@ -32,7 +33,6 @@ void		get_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj)
 	if (obj->type == T_CONE)
 		get_cone_normal(r, ray, obj);
 	ray->n_dir = v_dot(ray->nhit, ray->dir) < 0 ? 1 : -1;
-
 }
 
 static void	get_sphere_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj)
@@ -48,7 +48,8 @@ static void	get_plane_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj)
 	ray->nhit = v_norm(obj->dir);
 }
 
-static void	get_cylinder_normal(t_raytracing_tools *r, t_ray *ray, t_object *obj)
+static void	get_cylinder_normal(t_raytracing_tools *r,
+			t_ray *ray, t_object *obj)
 {
 	t_vec3	x;
 	double	m;

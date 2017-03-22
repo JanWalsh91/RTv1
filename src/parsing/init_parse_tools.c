@@ -6,14 +6,14 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 14:43:48 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:34:57 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 13:48:03 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-** Initializes parse tools including token list, attribute lists and
+** Initializes t_parse_tools including token list, attribute lists and
 ** list of function pointers for parsing each token.
 */
 
@@ -46,11 +46,14 @@ static void	init_attributes(t_parse_tools *t)
 	t->global_attributes = NULL;
 	t->scene_attributes = NULL;
 	t->object_attributes = NULL;
-	if (!(t->global_attributes = (t_attributes *)malloc(sizeof(t_attributes))))
+	if (!(t->global_attributes =
+		(t_attributes *)ft_memalloc(sizeof(t_attributes))))
 		ft_errno_exit();
-	if (!(t->scene_attributes = (t_attributes *)malloc(sizeof(t_attributes))))
+	if (!(t->scene_attributes =
+		(t_attributes *)ft_memalloc(sizeof(t_attributes))))
 		ft_errno_exit();
-	if (!(t->object_attributes = (t_attributes *)malloc(sizeof(t_attributes))))
+	if (!(t->object_attributes =
+		(t_attributes *)ft_memalloc(sizeof(t_attributes))))
 		ft_errno_exit();
 	reset_attributes(t->global_attributes);
 	reset_attributes(t->scene_attributes);

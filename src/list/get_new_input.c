@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 15:04:42 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/21 16:49:40 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 12:36:16 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@
 #include "../../inc/rtv1.h"
 
 static void	check_fd(int *current_fd, int *line_number, int fd,
-	t_input *new_input);
+			t_input *new_input);
 static void	free_keyvalue(char **key_value, char *line);
 
-t_input		*get_new_input(char *line, char *file_name, int fd, t_parse_tools *t)
+t_input		*get_new_input(char *line, char *file_name, int fd,
+			t_parse_tools *t)
 {
 	t_input		*new_input;
 	static int	current_fd = -1;
@@ -63,9 +64,10 @@ static void	check_fd(int *current_fd, int *line_number, int fd,
 
 static void	free_keyvalue(char **key_value, char *line)
 {
-	if ((key_value)[0])
+	if (key_value && (key_value)[0])
 		free((key_value)[0]);
-	if (ft_charcount(line, ':') == 1)
+	if (key_value && ft_charcount(line, ':') == 1 && (key_value)[1])
 		free((key_value)[1]);
-	(key_value) ? free(key_value) : 0;
+	if (key_value)
+		free(key_value);
 }

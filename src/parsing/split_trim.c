@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/30 15:22:02 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:46:10 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 12:40:56 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@ char	**split_trim(char *s, char c)
 	int		i;
 
 	i = 0;
+	result = NULL;
 	result = ft_strsplit(s, c);
 	while (result && result[i])
 	{
 		tmp = ft_strtrim(result[i]);
-		free(result[i]);
+		if (result[i])
+			free(result[i]);
 		result[i] = tmp;
 		++i;
 	}

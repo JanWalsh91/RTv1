@@ -6,11 +6,11 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 14:07:26 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/21 15:47:02 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/21 17:25:22 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/rtv1.h"
+#include "../../inc/rtv1.h"
 
 /*
 ** Initializes the SDL, window and renderer.

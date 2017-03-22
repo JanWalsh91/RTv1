@@ -1,7 +1,7 @@
 scene: rendu1
 {
 	resolution: 1200, 1200
-	ambient light coefficient: 0.1
+	ka: 0.01
 	camera: cam
 	{
 		position: 0, 2, -13
@@ -12,12 +12,12 @@ scene: rendu1
 		position: 15, 2, -10
 		intensity: 20
 	}
-	sphere: sp1
+	sphere:
 	{
 		position: 0, 2, 4
 		radius: 2
 		color: 0x4f0101
-		ks: 0.7
-		specular exponent: 50
+		ks: 0.05
+		specular exponent: 40
 	}
 }

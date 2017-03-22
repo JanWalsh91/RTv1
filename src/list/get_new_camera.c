@@ -6,7 +6,7 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 14:42:55 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:13:51 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 12:46:13 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_camera	*get_new_camera(t_parse_tools *t)
 	static char	*current_scene_name = NULL;
 
 	if (!(new_camera = (t_camera *)ft_memalloc(sizeof(t_camera))))
-		ft_error_exit("Malloc error");
+		ft_errno_exit();
 	set_cam_non_values(new_camera);
 	if (!t->input->value || !*t->input->value)
 	{
@@ -51,4 +51,5 @@ static void	set_cam_non_values(t_camera *new_camera)
 	new_camera->rot = v_new(NAN, NAN, NAN);
 	new_camera->look_at = v_new(NAN, NAN, NAN);
 	new_camera->fov = NAN;
+	new_camera->name = NULL;
 }

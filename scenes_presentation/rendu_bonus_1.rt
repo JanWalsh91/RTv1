@@ -1,0 +1,52 @@
+resolution: 1000, 600
+ray depth: -2
+scene: Inside a sphere
+{
+	sphere: blue sphere
+	{
+		position: 28.5, 20, 5
+		radius: 2
+		color: 23, 50, 188
+	}
+	sphere: bounding circle
+	{
+		position: 0, 0, -80
+		radius: 120
+		color: 20, 20, 75
+	}
+	sphere: yellow sphere
+	{
+		position: -5, 20, 7
+		radius: 3
+		color: 200, 200, 20
+	}
+	cylinder: cylinder
+	{
+		position: 10, -11, -50
+		direction: -2, 2, 5
+		height: 100
+		radius: 1
+		color: 200, 10, 10
+	}
+	plane: my plane
+	{
+		position: 0, -10, 0
+		direction: 0, 1, 0
+		color: 0, 20, 40
+	}
+	camera: cam1
+	{
+		position: 0, 1, -80
+		look at: 0, 1, 0
+	}
+	light: l1
+	{
+		position: 05, 20, 0
+		intensity: 30
+	}
+	light: l2
+	{
+		position: 0, 20, -50
+		intensity: 20
+	}
+}

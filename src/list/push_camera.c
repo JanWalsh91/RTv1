@@ -6,14 +6,14 @@
 /*   By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/26 14:44:59 by jwalsh            #+#    #+#             */
-/*   Updated: 2017/03/20 18:17:14 by jwalsh           ###   ########.fr       */
+/*   Updated: 2017/03/22 13:44:04 by jwalsh           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/rtv1.h"
 
 /*
-** Adds a new camera to the end of list t_cameras.
+** Adds new_camera to the end of list t_cameras.
 */
 
 void	push_camera(t_camera **cameras_head, t_camera *new_camera)
