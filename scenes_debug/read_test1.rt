@@ -1,0 +1,12 @@
+scene:
+{
+	camera:
+	{
+		position: 0, 0, -50
+	}
+	light:
+	{
+		position: 2, 10, -5
+	}
+	read rt file: scenes_debug/sphere.rt
+}

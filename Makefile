@@ -6,7 +6,7 @@
 #    By: jwalsh <jwalsh@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/01/27 15:51:12 by jwalsh            #+#    #+#              #
-#    Updated: 2017/03/22 15:48:12 by jwalsh           ###   ########.fr        #
+#    Updated: 2017/03/23 11:51:19 by jwalsh           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -131,13 +131,13 @@ ECHO = echo
 all: $(NAME)
 
 $(NAME): $(OBJ_SRC) $(OBJ_SDL) $(OBJ_PARSING) $(OBJ_LST) $(OBJ_DATA) $(OBJ_RT) $(OBJ_MISC)
-	# @if [ ! -d "$(SDL_PATH)lib" ]; then \
-	# 	/bin/mkdir $(SDL_PATH)lib; \
-	# 	cd $(SDL_PATH) ; ./configure --prefix=`pwd`/lib; \
-	# fi
-	# @make -C $(SDL_PATH)
-	# @make -C $(SDL_PATH) install >/dev/null
-	# @$(ECHO) "$(C_GREEN)SDL2 compilation done.$(C_NONE)"
+	@if [ ! -d "$(SDL_PATH)lib" ]; then \
+		/bin/mkdir $(SDL_PATH)lib; \
+		cd $(SDL_PATH) ; ./configure --prefix=`pwd`/lib; \
+	fi
+	@make -C $(SDL_PATH)
+	@make -C $(SDL_PATH) install >/dev/null
+	@$(ECHO) "$(C_CYAN)SDL2 compilation done.$(C_NONE)"
 	@make -C $(LIB_PATH)
 	@make -C $(LIBMATH_PATH)
 	@$(CC) $(FLG) $(SDL2) -g $(LIB_PATH)$(LIBFT_NAME) $(LIBMATH_PATH)$(LIBMATHFT_NAME) $(OBJ_PARSING) $(OBJ_SRC) $(OBJ_SDL) $(OBJ_LST) $(OBJ_DATA) $(OBJ_RT) $(OBJ_MISC) -o $(NAME)
@@ -173,9 +173,9 @@ $(OBJ_DIR)/%.o : ./src/misc/%.c
 
 clean:
 	@/bin/rm -Rf $(OBJ_DIR)
-	# @/bin/rm -Rf $(SDL_PATH)lib
-	# @/bin/rm -Rf $(SDL_PATH)build
-	# @$(ECHO) "$(C_GREEN)SDL2 clean done.$(C_NONE)"
+	@/bin/rm -Rf $(SDL_PATH)lib
+	@/bin/rm -Rf $(SDL_PATH)build
+	@$(ECHO) "$(C_CYAN)SDL2 clean done.$(C_NONE)"
 	@make -C $(LIB_PATH) clean
 	@make -C $(LIBMATH_PATH) clean
 	@$(ECHO) "$(C_GREEN)RTv1 clean done.$(C_NONE)"
