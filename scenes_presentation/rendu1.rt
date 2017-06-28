@@ -16,8 +16,8 @@ scene: rendu1
 	{
 		position: 0, 2, 4
 		radius: 2
-		color: 0x4f0101
-		ks: 0.05
+		color: razzle dazzle rose
+		ks: 0.02
 		specular exponent: 40
 	}
 }

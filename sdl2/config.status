@@ -439,7 +439,7 @@ gives unlimited permission to copy, distribute and modify it."
 
 ac_pwd='/Users/jwalsh/Documents/Github_Repositories/RTv1/sdl2'
 srcdir='/Users/jwalsh/Documents/Github_Repositories/RTv1/sdl2'
-INSTALL='/usr/bin/install -c'
+INSTALL='/Users/jwalsh/.brew/bin/ginstall -c'
 AWK='awk'
 test -n "$AWK" || AWK=awk
 # The default lists apply if the user does not specify any file.
