@@ -13,7 +13,7 @@ Requirements for this proect were:
 - Have a file that defines objects, lights and the camera(s) which is parsed at the beginning of the program.
 
 Here is a simple file which will be parsed by my program: 
-````
+```
 #comments start with a hashtag
 scene: scene1
 {
@@ -40,8 +40,15 @@ scene: scene1
 		color: razzle dazzle rose
                 #specular coefficient:
 		ks: 0.02
-                #specular exponent:
 		specular exponent: 40
 	}
 }
-````
+```
+Here is the output of the file above:
+![Rendu 1](https://github.com/JanWalsh91/RTv1/blob/master/screenshots/Rendu_1.png)
+Enjoy some other cool pictures!
+![Rendu 5](https://github.com/JanWalsh91/RTv1/blob/master/screenshots/Rendu_5.png)
+![Rendu 6](https://github.com/JanWalsh91/RTv1/blob/master/screenshots/Rendu_6.png)
+![Bonus_4](https://github.com/JanWalsh91/RTv1/blob/master/screenshots/Bonus_4.png)
+Inside a Cylinder with about a dozen lights:
+![Bonus_5](https://github.com/JanWalsh91/RTv1/blob/master/screenshots/Bonus_5.png)
