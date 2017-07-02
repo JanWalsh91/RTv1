@@ -1,10 +1,10 @@
 # RTv1
 Rtv1 - My First Ray Tracer (super awesome parser included!)
 
-Requirements for this proect were:
+Requirements for this project were:
 
-- Implementing ray tracing method to generated computer images.
-- Use parametric equations to determine ray itnersections with spheres, planes, cylinders and cones.
+- Implementing ray tracing method to generate computer images.
+- Use parametric equations to determine ray intersections with spheres, planes, cylinders and cones.
 - Be able to modify object position, direction/rotation, and size.
 - Use Lambertian method(diffuse shading)
 - Use Phong-Blinn method (specular lighting)
