@@ -52,3 +52,5 @@ Enjoy some other cool pictures!
 ![Bonus_4](https://github.com/JanWalsh91/RTv1/blob/master/screenshots/Bonus_4.png)
 Inside a Cylinder with about a dozen lights:
 ![Bonus_5](https://github.com/JanWalsh91/RTv1/blob/master/screenshots/Bonus_5.png)
+
+Should you have any questions or suggestions, feel free to send me an email at **jwalsh@student.42.fr**.
